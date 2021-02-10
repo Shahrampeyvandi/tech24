@@ -32,7 +32,7 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="mdi mdi-flip-horizontal"></i>
+                    <i class="mdi mdi-account-circle-outline"></i>
                         <span>اعضای سایت</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">

@@ -111,7 +111,7 @@
           <div class="col-md-4">
             <div class="form-group">
                 <label for="exampleFormControlSelect2">ظرفیت گروه</label>
-                <input type="number" name="capacity" class="form-control" required>
+                <input type="number" name="capacity" class="form-control" value="{{$group->capacity ?? ''}}" required>
             </div>
         </div>
     </div>
