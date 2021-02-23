@@ -27,8 +27,18 @@ class Post extends Model
 
     public function category()
     {
-        return $this->hasOne(Category::class);
+        return $this->belongsTo(Category::class);
     }
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+    
+    public function quiz()
+    {
+        return $this->morphOne(Quiz::class, 'quizable');
+    }
+
     public function teachers()
     {
         return $this->belongsToMany(User::class,'post_teacher','post_id','teacher_id');
@@ -40,5 +50,41 @@ class Post extends Model
        public function prerequisites()
     {
         return $this->belongsToMany(static::class,'post_prerequest','post_id','prerequest_id');
+    }
+
+     /**
+     * Get the post's files.
+     */
+    public function files()
+    {
+        return $this->morphMany(File::class, 'filable');
+    }
+    /**
+     * Get post file url
+     */
+
+     public function getFileUrl()
+     {
+         $file = $this->files->first();
+         if($file) {
+
+             return asset($file->file);
+         }
+         return '#';
+     }
+
+
+
+    public function teacher_name()
+    {
+        $teachers = $this->teachers;
+        $name = '';
+        foreach ($teachers as $key => $teacher) {
+            $name .= $teacher->fname . ' ' . $teacher->lname . ' ' ;
+       
+            
+        }
+
+        return $name;
     }
 }

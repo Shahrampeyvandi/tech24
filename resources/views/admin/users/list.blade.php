@@ -22,10 +22,6 @@
         <div class="card">
             <div class="card-body">
 
-              {{-- <div class="text-right">
-                <a class="btn btn-primary mr-auto mb-3" href="{{URL::route('users.create')}}">تعریف</a>
-             </div> --}}
-
                 <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                     <thead>
@@ -47,7 +43,7 @@
                                 <td>{{($key+1)}}</td>
                                 <td>{{$user->fname}}</td>
                                 <td>{{$user->lname}}</td>
-                                <td></td>
+                                <td>{{$user->username}}</td>
                                 <td>{{$user->mobile}}</td>
                                 <td>{{$user->email}}</td>
                                 <td>
@@ -65,7 +61,7 @@
                                                 <i class="mdi mdi-trash-can-outline"></i>
                                             </button>
                                         </form>
-                                        <button href="#" class="btn btn-sm btn-info"><i class="mdi mdi-account-edit"></i></button>
+                                        <a href="{{route('users.edit',$user->id)}}" class="btn btn-sm btn-info"><i class="mdi mdi-account-edit"></i></a>
                                     </div>
                                 </td>
                             </tr>

@@ -38,7 +38,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-form-label">انتخاب اعضای گروه</label>
+                                <label class="col-form-label">ارسال به</label>
                                 <select required class="form-control select2 " name="for">
                                     <option value="all" {{isset($notification) && $notification->for == 'all' ? 'selected' : ''}}>تمام اعضا</option>
                                     <option value="students" {{isset($notification) && $notification->for == 'students' ? 'selected' : ''}}>دانشجوها</option>

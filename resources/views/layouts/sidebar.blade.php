@@ -50,15 +50,49 @@
                         <span>دوره ها</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{URL::route('posts.create')}}">دوره</a></li>
+                        <li><a href="{{URL::route('lessons.create')}}">درس</a></li>
                         <li><a href="{{URL::route('quizzes.create')}}">آزمون</a></li>
+                        {{-- <li><a href="{{URL::route('questions.create')}}">سوال</a></li> --}}
                         <li><a href="{{URL::route('groups.create')}}">گروه</a></li>
-                        <li><a href="{{URL::route('courses.create')}}">دوره</a></li>
                         <li><a href="{{URL::route('certificates.create')}}">مدرک</a></li>
                         {{-- <li><a href="#">اساتید</a></li> --}}
                     </ul>
                 </li>
-
                 <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-inbox-full"></i>
+                        <span>وبینار ها</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{URL::route('posts.index')}}?post_type=webinar">لیست</a></li>
+                        <li><a href="{{URL::route('posts.create')}}?post_type=webinar">جدید</a></li>
+                 
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-microphone-outline"></i>
+                        <span>پادکست ها</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{URL::route('posts.index')}}?post_type=podcast">لیست</a></li>
+                        <li><a href="{{URL::route('posts.create')}}?post_type=podcast">جدید</a></li>
+                 
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-rss"></i>
+                        <span>بلاگ</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{URL::route('blogs.index')}}">لیست</a></li>
+                        <li><a href="{{URL::route('blogs.create')}}">جدید</a></li>
+                 
+                    </ul>
+                </li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-calendar-check"></i>
                         <span>Tasks</span>
@@ -207,7 +241,7 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
         </div>

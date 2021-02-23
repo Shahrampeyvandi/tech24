@@ -32,39 +32,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        // \DB::table('users')->insert([
-        //     array(
-        //         'fname'=>'reza',
-        //         'lname'=>'shiri',
-        //         'avatar'=>null,
-        //         'mobile'=>'09381699939',
-        //         'username'=>'reza11',
-        //         'password'=>\Hash::make('123456'),
-        //         'email'=>'test1@gmail.com',
-        //         'remember_token'=>null
-
-        //     ),array(
-        //         'fname'=>'ali',
-        //         'lname'=>'rezai',
-        //         'avatar'=>null,
-        //         'mobile'=>'09381693949',
-        //         'username'=>'ali4',
-        //         'password'=>\Hash::make('123456'),
-        //         'email'=>'test3@gmail.com',
-        //         'remember_token'=>null
-
-        //     ),array(
-        //         'fname'=>'javad',
-        //         'lname'=>'khiabani',
-        //         'avatar'=>null,
-        //         'mobile'=>'09381692949',
-        //         'username'=>'javati',
-        //         'password'=>\Hash::make('123456'),
-        //         'email'=>'test4@gmail.com',
-        //         'remember_token'=>null
-
-        //         )]
-        // );
+      
 
         $data['page_title'] = $this->page_title;
         return view('admin.group.create', $data);

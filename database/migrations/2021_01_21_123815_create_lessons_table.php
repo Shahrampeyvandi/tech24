@@ -15,8 +15,8 @@ class CreateLessonsTable extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('post');
-            $table->foreign('post')->references('id')->on('posts')->onDelete('cascade');
+            $table->unsignedBigInteger('post_id')->nullable();
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->integer('number')->nullable();
             $table->string('title');
             $table->string('slug');
@@ -25,11 +25,13 @@ class CreateLessonsTable extends Migration
             $table->string('picture')->nullable();
             $table->string('url')->nullable();
             $table->string('duration')->nullable();
-            $table->enum('cach', ['free', 'money'])->default('free');
+            $table->enum('cash', ['free', 'money'])->default('free');
+            $table->string('price')->nullable();
             $table->integer('views')->default(0);
             $table->integer('show')->default(1);
             $table->timestamps();
         });
+        
         Schema::create('lessons_metas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('lesson_id');

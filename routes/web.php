@@ -12,10 +12,22 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return redirect('/index');
+Route::get('/',function()
+{
+    // $conn = ftp_connect('download.techone24.com');
+    // // tMC&.nJ]fBg,
+    // $login = ftp_login($conn, 'upload@download.techone24.com', 'tMC&.nJ]fBg,');
+    // dd($login);
+    // ftp_set_option($conn, FTP_USEPASVADDRESS, false);
+    // ftp_pasv($conn, true);
+    // ftp_put($conn, '/uploads/file.txt', $_FILES['file']['tmp_name'], FTP_BINARY);
+    // ftp_close($conn);
 });
+
+
+// Route::get('/', function () {
+//     return redirect('/index');
+// });
 
 Auth::routes();
 Route::get('logout', 'QovexController@logout');

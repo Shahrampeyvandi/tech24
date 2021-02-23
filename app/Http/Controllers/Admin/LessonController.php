@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+
 
 class LessonController extends Controller
 {
@@ -32,7 +34,7 @@ class LessonController extends Controller
      */
     public function create()
     {
-  
+
         $data['page_title'] = $this->page_title;
         return view('admin.lesson.create', $data);
     }
@@ -45,41 +47,63 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
 
-        if (isset($request->action)) {
-            $lesson = Lesson::find($request->group_id);
+        $request->validate([
+            'url' => 'required_without:file',
+            'title' => 'required',
+            'file' => "required|mimes:mp4,3gp"
+
+        ]);
+        // dd($request->all());
+
+        $slug = SlugService::createSlug(Lesson::class, 'slug', $request->title);
+        if (isset($request->action) && $request->action == 'edit') {
+            $lesson = Lesson::find($request->lesson_id);
         } else {
-
             $lesson = new Lesson;
         }
 
-        $lesson->capacity = $request->capacity;
-
         if ($request->has('picture')) {
             if (isset($request->action)) {
-                File::delete(public_path($lesson->image));
+                File::delete(public_path($lesson->picture));
             }
-            $fileName = $this->upload_picture($request, 'group', $request->title);
-            // dd($fileName);
-            $lesson->image = $fileName;
+            $fileName = $this->upload_picture($request, 'lesson', $slug);
+            $lesson->picture = $fileName;
         }
+
+       
+
 
         $lesson->title = $request->title;
-        $lesson->type = $request->type;
+        $lesson->post_id = 1;
+        $lesson->duration = $request->duration;
+        $lesson->description = $request->description;
+        $lesson->cash = $request->cash_type;
+        $lesson->price = $request->cash;
+        $lesson->number = $request->number;
+
         $lesson->save();
 
+        if ($request->has('file')) {
+            if (isset($request->action) && $request->action == 'edit') {
+                File::delete(public_path($lesson->url));
+                $lesson->files()->delete();
+            }
 
-        foreach ($request->members as $key => $member) {
-            $members_arr[$member] = ['leader' => 0];
+            // $fileName = $this->upload($request, 'lesson', $slug, "required|mimes:mp4,3gp");
+
+            $fileName = $slug . '.' . $request->file->extension();
+            $url = $this->upload_with_ftp($fileName, 'course');
+        } else {
+            $url = $request->url;
         }
-        foreach ($request->leaders as $key => $leader) {
-            $members_arr[$leader] = ['leader' => 1];
-        }
-        // dd($members_arr);
+
+        $lesson->files()->create([
+            'file' => $url
+        ]);
 
 
-        $lesson->members()->sync($members_arr);
+
         return Redirect::route('lessons.index');
     }
 
@@ -104,7 +128,7 @@ class LessonController extends Controller
     {
 
         $data['page_title'] = $this->page_title;
-        $data['group'] = Lesson::find($id);
+        $data['lesson'] = Lesson::find($id);
         return view('admin.lesson.create', $data);
     }
 

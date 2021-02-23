@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupsTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->boolean('active')->default(1);
-            $table->string('image')->nullable();
-            $table->enum('type',['public','private'])->default('public');
-            $table->integer('capacity')->nullable();
+            $table->string('file');
+            $table->integer('filable_id');
+            $table->string('filable_type');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('files');
     }
 }

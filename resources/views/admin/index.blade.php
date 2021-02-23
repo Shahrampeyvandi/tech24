@@ -15,7 +15,7 @@
         @component('common-components.dashboard-widget')
 
         @slot('title') دوره ها @endslot
-        @slot('iconClass') mdi mdi-teach @endslot
+        @slot('iconClass') mdi mdi-file-video-outline @endslot
         @slot('price') {{\App\Post::where('post_type','course')->count()}} @endslot
 
         @endcomponent
@@ -24,7 +24,7 @@
         @component('common-components.dashboard-widget')
 
         @slot('title') وبینارها @endslot
-        @slot('iconClass') mdi mdi-teach @endslot
+        @slot('iconClass') mdi mdi-file-video-outline @endslot
         @slot('price') {{\App\Post::where('post_type','webinar')->count()}} @endslot
 
 
@@ -78,7 +78,7 @@
     <div class="col-md-3">
         @component('common-components.dashboard-widget')
 
-        @slot('title') New Users @endslot
+        @slot('title') New Item @endslot
         @slot('iconClass') mdi mdi-account-multiple-outline @endslot
         @slot('price') 2,456 @endslot
 
@@ -89,7 +89,7 @@
     <div class="col-md-3">
         @component('common-components.dashboard-widget')
 
-        @slot('title') New Users @endslot
+        @slot('title') New Item @endslot
         @slot('iconClass') mdi mdi-account-multiple-outline @endslot
         @slot('price') 2,456 @endslot
 

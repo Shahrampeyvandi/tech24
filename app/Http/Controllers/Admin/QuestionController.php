@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Course;
+namespace App\Http\Controllers\Admin;
 
-use App\Quiz;
-use App\Question;
-use Illuminate\Http\Request;
-use App\Imports\QuestionsImport;
 use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
+use App\Question;
+use App\Quiz;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class QuizController extends Controller
+class QuestionController extends Controller
 {
 
-    public $title = 'آزمون';
+    public $title = 'سوال';
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +34,7 @@ class QuizController extends Controller
     public function create()
     {
         $data['title'] = $this->title;
-        return view('admin.course.create-quiz',$data);
+        return view('admin.question.create',$data);
     }
 
     /**
@@ -48,7 +45,6 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
-        
         if(isset($request->action)){
             $q = Quiz::find($request->quiz_id);
         }else{
@@ -58,37 +54,27 @@ class QuizController extends Controller
         // dd($request->q);
         $q->title = $request->q_name;
         $q->countdown = $request->q_countdown;
-        $q->description = $request->description;
-        $q->questionscount = $request->questionscount;
         $q->save();
 
-        session()->put('quiz_id',$q->id);
+        foreach ($request->q as $key => $item) {
+            // dd($item);
+            if(array_key_exists('id',$item)){
+                $question = Question::find($item['id']);
+            }else{
+                $question = new Question();
+            }
 
-        Excel::import(new QuestionsImport, $request->file);
-        // $this->upload($request , 'question',$q->title,'required|mimes:xlsx');
-
-        // Storage::disk('local')->put('questions/'.$q->title.'.xlxs', $request->file);
-        
-        $request->file->storeAs('questions', $q->title.'.xlsx');
-        // foreach ($request->q as $key => $item) {
-        //     // dd($item);
-        //     if(array_key_exists('id',$item)){
-        //         $question = Question::find($item['id']);
-        //     }else{
-        //         $question = new Question();
-        //     }
-
-        //     $question->title = $item['title'];
-        //     $question->option_one = $item['option_one'];
-        //     $question->option_two = $item['option_two'];
-        //     $question->option_three = $item['option_three'];
-        //     $question->option_four = $item['option_four'];
-        //     // $question->option_five = $item['option_five'];
-        //     $question->point = '10';
-        //     $question->answer = $item['answer'];
-        //     $question->quiz_id = $q->id;
-        //     $question->save();
-        // }
+            $question->title = $item['title'];
+            $question->option_one = $item['option_one'];
+            $question->option_two = $item['option_two'];
+            $question->option_three = $item['option_three'];
+            $question->option_four = $item['option_four'];
+            // $question->option_five = $item['option_five'];
+            $question->point = '10';
+            $question->answer = $item['answer'];
+            $question->quiz_id = $q->id;
+            $question->save();
+        }
 
         return Redirect::route('quizzes.index');
 
@@ -105,8 +91,6 @@ class QuizController extends Controller
     {
         //
     }
-
-    
 
     /**
      * Show the form for editing the specified resource.
@@ -146,17 +130,5 @@ class QuizController extends Controller
         $quiz->questions()->delete();
         $quiz->delete();
         return Redirect::back();
-    }
-
-    public function download()
-    {
-        $quiz = Quiz::find(request('quiz'));
-        $path = storage_path('app/questions/' . $quiz->title . '.xlsx');
-
-    // Download file with custom headers
-    return response()->download($path,  $quiz->title . '.xlsx', [
-        'Content-Type' => 'application/vnd.ms-excel',
-        'Content-Disposition' => 'inline; filename="' .  $quiz->title . '.xlsx' . '"'
-    ]);
     }
 }

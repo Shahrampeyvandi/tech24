@@ -15,4 +15,4 @@ yarn-error.log
 /resources/sass
 /resources/scss
 /resources/images
-
+*.zip

@@ -17,6 +17,7 @@ class CreateQuizzesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('countdown');
+            $table->integer('questionscount')->nullable();
             $table->text('description')->nullable();
             $table->string('quizable_id')->nullable();
             $table->string('quizable_type')->nullable();

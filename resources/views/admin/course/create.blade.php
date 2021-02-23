@@ -19,26 +19,29 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-right">
-                    <a class="btn btn-primary mr-auto mb-3" href="{{URL::route('courses.index')}}">لیست {{$page_title}}
+                    <a class="btn btn-primary mr-auto mb-3" href="{{URL::route('posts.index')}}?post_type={{$post_type}}">لیست {{$page_title}}
                         ها</a>
                 </div>
-                <form action="{{URL::route('courses.store')}}{{isset($course) ? '?action=edit' : ''}}" method="post"
+                @component('common-components.admin-errors')
+                    
+                @endcomponent
+                <form action="{{URL::route('posts.store')}}{{isset($post) ? '?action=edit&post_type='.$post_type.'' : '?post_type='.$post_type.''}}" method="post"
                     enctype="multipart/form-data">
                     @csrf
-                    @isset($course)
-                    <input type="hidden" name="quiz_id" value="{{$course->id}}">
+                    @isset($post)
+                    <input type="hidden" name="post_id" value="{{$post->id}}">
                     @endisset
                     <div class="form-group row">
                         <div class="col-md-8">
-                            <label for="example-text-input" class=" col-form-label">نام {{$page_title}}</label>
-                            <input class="form-control" type="text" name="title" value="{{$course->title ?? ''}}"
+                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span> نام {{$page_title}}</label>
+                            <input class="form-control" type="text" name="title" value="{{$post->title ?? ''}}"
                                 required id="example-text-input">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-8">
-                            <label for="example-text-input" class=" col-form-label">آدرس یکتای {{$page_title}}</label>
-                            <input class="form-control" type="text" name="url" value="{{$course->title ?? ''}}" required
+                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>  آدرس یکتای {{$page_title}}</label>
+                            <input class="form-control" type="text" name="url" value="{{$post->title ?? ''}}" required
                                 id="example-text-input">
                         </div>
                     </div>
@@ -50,60 +53,98 @@
                         </div>
                     </div>
 
+                    @if ($post_type == 'podcast')
+                    @isset($post)
+                    <h5>فایل پادکست </h5>
+                    <audio controls>
+                        <source src="{{$post->getFileUrl()}}" type="audio/mpeg">
+                        Your browser does not support the audio tag.
+                      </audio>
+                    @endisset
+
+                    <h5>فایل پادکست را به یکی از دو روش زیر وارد نمایید:</h5>
+                    <div class="form-group row">
+                        <label for="" class="col-md-2 col-form-label">انتخاب فایل </label>
+                        <div class="custom-file row col-md-6">
+                            <input type="file" class="custom-file-input" name="file" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-md-2 col-form-label">آدرس فایل </label>
+                        <div class="custom-file row col-md-6">
+                            <input type="url" name="url" id="url" placeholder="https://dl.example.com"
+                            class="form-control"
+                                pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
+                             >
+
+                        </div>
+                    </div>                     
+                    @endif
+
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات: </label>
-                            <textarea id="elm1" name="description"></textarea>
+                            <textarea id="elm1" name="description">{!! $post->description ?? '' !!}</textarea>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-md-4">
-                            <label for="example-text-input" class=" col-form-label">مدت زمان دوره </label>
+                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span> مدت زمان  </label>
                             <div class="">
                                 <input id="input-date1" name="duration" class="form-control input-mask"
-                                    data-inputmask="'mask': '99:99'" required>
+                                    data-inputmask="'mask': '99:99'" required value="{{$post->duration ?? ''}}">
                                 <span class="text-muted">e.g "HH:MM"</span>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="input-date1" class="col-form-label">تاریخ دوره</label>
+                            <label for="input-date1" class="col-form-label"><span class="text-danger">*</span> تاریخ </label>
                             <input id="input-date1" name="date" class="form-control input-mask"
-                                data-inputmask="'alias': 'datetime'" data-inputmask-inputformat="dd/mm/yyyy" required>
+                                value="{{$post->start_date ?? ''}}" data-inputmask="'alias': 'datetime'"
+                                data-inputmask-inputformat="dd/mm/yyyy" required>
                             <span class="text-muted">e.g "dd/mm/yyyy"</span>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="col-form-label">مدرس دوره</label>
-                                <select class="form-control select2 select2-multiple"  name="teachers" required>
-                                    @foreach (\App\User::orderBy('fname')->get() as $item)
-                                    <option value="{{$item->id}}">{{$item->fname . ' ' . $item->lname}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                       @if ($post_type !== 'podcast')
+                       <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-form-label">مدرس </label>
+                            <select class="form-control select2 select2-multiple" name="teachers" required>
+                                @foreach (\App\User::orderBy('fname')->get() as $item)
+                                <option value="{{$item->id}}"
+                                    {{isset($post) && $post->teachers->contains($item->id) ? 'selected' : ''}}>
+                                    {{$item->fname . ' ' . $item->lname}}</option>
+                                @endforeach
+                            </select>
                         </div>
+                    </div>
+                       @endif
                     </div>
 
                     <div class="form-group row">
                         <div class="col-md-4">
                             <label class="col-form-label">رایگان یا غیررایگان</label>
                             <select class="form-control" name="cash_type" id="cash_type">
-                                <option value="free" selected>رایگان</option>
-                                <option value="cash">غیررایگان</option>
+                                <option value="free" {{isset($post) && $post->cach == 'free' ? 'selected' : ''}}>
+                                    رایگان</option>
+                                <option value="cash" {{isset($post) && $post->cach == 'money' ? 'selected' : ''}}>
+                                    غیررایگان</option>
                             </select>
                             <input type="number" id="cash" class="form-control mt-1 hidden" placeholder="قیمت به تومان">
                         </div>
                         <div class="col-md-4">
                             <label class="col-form-label">عمومی یا اختصاصی</label>
                             <select class="form-control" name="public_type" id="public_type">
-                                <option value="public" selected>عمومی</option>
-                                <option value="private">اختصاصی</option>
+                                <option value="public" {{isset($post) && $post->private == 0 ? 'selected' : ''}}>
+                                    عمومی</option>
+                                <option value="private" {{isset($post) && $post->private == 1 ? 'selected' : ''}}>
+                                    اختصاصی</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <label class="col-form-label">ظرفیت گروه</label>
                             <input type="number" id="limit" name="limit" class="form-control ">
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="form-group row">
@@ -113,11 +154,14 @@
                                 <select class="form-control select2" name="group">
                                     <option value=""></option>
                                     @foreach (\App\Group::orderBy('title')->get() as $item)
-                                    <option value="{{$item->id}}">{{$item->title}}</option>
+                                    <option value="{{$item->id}}"
+                                        {{isset($post) && $post->group_id == $item->id ? 'selected' : ''}}>
+                                        {{$item->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+                        @if ($post_type == 'course')
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="col-form-label">مدرک</label>
@@ -135,7 +179,9 @@
                                 <select class="form-control select2" name="quiz">
                                     <option value=""></option>
                                     @foreach (\App\Quiz::orderBy('title')->get() as $item)
-                                    <option value="{{$item->id}}">{{$item->title}}</option>
+                                    <option value="{{$item->id}}"
+                                        {{isset($post) && $post->quiz->id == $item->id ? 'selected' : ''}}>
+                                        {{$item->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -145,9 +191,10 @@
                                 <label class="col-form-label">پیشنیاز دوره</label>
                                 <select class="form-control select2 select2-multiple" multiple="multiple"
                                     name="prerequisites[]">
-                                
                                     @foreach (\App\Post::where('post_type','course')->orderBy('title')->get() as $item)
-                                    <option value="{{$item->id}}">{{Str::limit($item->title,30,'...')}}</option>
+                                    <option value="{{$item->id}}"
+                                        {{isset($post) && $post->prerequisites->contains($item->id) ? 'selected' : ''}}>
+                                        {{Str::limit($item->title,30,'...')}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -157,47 +204,55 @@
                                 <label class="col-form-label">تگ ها</label>
                                 <select class="form-control select2 enable-tag select2-multiple" multiple="multiple"
                                     name="tags[]">
-                                   @foreach (\App\Tag::orderBy('tagname')->get() as $item)
-                                    <option value="{{$item->tagname}}">{{$item->tagname}}</option>
+                                    @foreach (\App\Tag::orderBy('tagname')->get() as $item)
+                                    <option value="{{$item->tagname}}"
+                                        {{isset($post) && $post->tags->contains($item->id) ? 'selected' : ''}}>
+                                        {{$item->tagname}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        @endif
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label"><span class="text-danger">*</span> دسته بندی</label>
+                                <select class="form-control select2 enable-tag" name="category" required>
+                                    @foreach (\App\Category::orderBy('title')->get() as $item)
+                                    <option value="{{$item->title}}"
+                                        {{isset($post) && $post->category->id == $item->id ? 'selected' : ''}}>
+                                        {{$item->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="col-form-label">دسته بندی</label>
-                                <select class="form-control select2 enable-tag" name="category" required>
+                                <label class="col-form-label"><span class="text-danger">*</span> دسته بندی اصلی</label>
+                                <select class="form-control select2 enable-tag" name="parent_category" required>
+                                    <option value="0" >دسته بندی اصلی</option>
                                     @foreach (\App\Category::orderBy('title')->get() as $item)
-                                    <option value="{{$item->title}}">{{$item->title}}</option>
+                                    <option value="{{$item->title}}"
+                                        {{isset($post) && $post->category->parent_id == $item->id ? 'selected' : ''}}>
+                                        {{$item->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
-
-                 
-
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary waves-effect waves-light">
-                            @isset($course)
+                            @isset($post)
                             ویرایش
                             @else
                             ثبت
                             @endisset
-
                         </button>
                     </div>
-
                 </form>
-
-
-
             </div>
         </div>
     </div>
-    <!-- end col -->
 </div>
-<!-- end row -->
 
 @endsection
 

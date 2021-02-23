@@ -95,7 +95,7 @@ class UserController extends Controller
             'group'=>'required'
         ]);
         $user  = User::create($inputs);
-        $user->assignRole($request->group);
+        $user->syncRoles([$request->group]);
 
         return Redirect::route('users.index');
     }
@@ -119,7 +119,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['title'] = 'کاربر';
+        $data['user'] = User::find($id);
+        return view('admin.users.create', $data);
     }
 
     /**
@@ -152,13 +154,16 @@ class UserController extends Controller
 
     public function changegroup()
     {
-        // dd(request()->all());
+        
         $user = User::find(request('id'));
-       $g = $user->group ;
+       $g = $user->group;
+      
        if($g == 'student'){
            $user->group = 'teacher';
+           $user->syncRoles(['teacher']);
        }else{
            $user->group = 'student';
+           $user->syncRoles(['student']);
        }
        $user->save();
        return response()->json(['res'=>$user->group],200);

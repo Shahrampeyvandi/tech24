@@ -13,7 +13,7 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-         Schema::create('categories', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->integer('parent_id')->default(0);
@@ -27,10 +27,10 @@ class CreatePostsTable extends Migration
             $table->text('description')->nullable();
             $table->string('picture')->nullable();
             $table->string('url')->nullable();
-            $table->enum('media',['video','audio'])->default('video');
-            $table->enum('post_type',['course','webinar','podcast']);
+            $table->enum('media', ['video', 'audio'])->default('video');
+            $table->enum('post_type', ['course', 'webinar', 'podcast']);
             $table->string('duration')->nullable();
-            $table->enum('cach',['free','money']);
+            $table->enum('cash', ['free', 'money']);
             $table->integer('price')->nullable();
             $table->integer('views')->default(0);
             $table->boolean('archive')->default(0);
@@ -38,6 +38,7 @@ class CreatePostsTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->unsignedBigInteger('teacher_id')->nullable();
             $table->foreign('teacher_id')->references('id')->on('users');
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->string('start_date');
             $table->boolean('private')->default(0);
             $table->timestamps();

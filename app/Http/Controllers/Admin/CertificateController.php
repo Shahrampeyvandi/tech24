@@ -90,7 +90,7 @@ class CertificateController extends Controller
             if(isset($request->action)){
                 File::delete(public_path($certificate->cfile));
             }
-            $fileName = $this->upload($request, 'certificate', $request->title);
+            $fileName = $this->upload($request, 'certificate', $request->title,"required|mimes:pdf|max:10000");
             // dd($fileName);
             $certificate->cfile = $fileName;
         }
@@ -154,16 +154,5 @@ class CertificateController extends Controller
 
     }
 
-    public function upload(Request $request, $type, $name)
-    {
-        $date = date('Y');
-        $request->validate([
-            "file" => "required|mimes:pdf|max:10000"
-        ]);
-
-        $imageName = $name . '.' . $request->file->extension();
-
-        $request->file->move(public_path('uploads/' . $date . '/' . $type), $imageName);
-        return 'uploads/' . $date . '/' . $type . '/' . $imageName;
-    }
+    
 }
