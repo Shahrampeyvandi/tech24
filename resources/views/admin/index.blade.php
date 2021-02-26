@@ -78,9 +78,9 @@
     <div class="col-md-3">
         @component('common-components.dashboard-widget')
 
-        @slot('title') New Item @endslot
-        @slot('iconClass') mdi mdi-account-multiple-outline @endslot
-        @slot('price') 2,456 @endslot
+        @slot('title') وبلاگ ها @endslot
+        @slot('iconClass') mdi mdi-rss @endslot
+        @slot('price') {{\App\Blog::count()}} @endslot
 
 
         @endcomponent

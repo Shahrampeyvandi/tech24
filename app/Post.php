@@ -51,6 +51,10 @@ class Post extends Model
     {
         return $this->belongsToMany(static::class,'post_prerequest','post_id','prerequest_id');
     }
+    public function registered()
+    {
+        return $this->belongsToMany(User::class,'post_user','post_id','user_id');
+    }
 
      /**
      * Get the post's files.
@@ -71,6 +75,11 @@ class Post extends Model
              return asset($file->file);
          }
          return '#';
+     }
+
+     public function getTeacher()
+     {
+         return $this->teachers->first()->fname . ' ' . $this->teachers->first()->lname; 
      }
 
 

@@ -1,0 +1,84 @@
+:root {
+    --primary: #234175;
+    --secondary: #f79521;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+}
+
+* {
+    padding: 0rem;
+    margin: 0rem;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    scroll-behavior: smooth;
+}
+
+html {
+    font-size: 16px;
+}
+
+.orange_list {
+    list-style: none;
+}
+
+.orange_list::before {
+    content: "\2022";
+    color: var(--secondary);
+    font-weight: bold;
+    width: 1rem;
+    display: inline-block;
+    margin-right: -1rem;
+}
+
+.check_item {
+    list-style: none;
+}
+
+.check_item::before {
+    content: "\2713";
+    color: var(--primary);
+    font-weight: bold;
+    width: 1rem;
+    display: inline-block;
+    margin-right: -1rem;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+body {
+    font-family: 'Yekan';
+    overflow-x: hidden;
+    background-color: #fcfdfd;
+}
+
+button {
+    cursor: pointer;
+}
+
+@font-face {
+    src: url("../fonts/Vazir.ttf");
+    font-family: 'Vazir';
+}
+
+@font-face {
+    src: url("../fonts/Yekan.ttf");
+    font-family: 'Yekan';
+}
+
+@font-face {
+    src: url("../fonts/Yekan.woff");
+    font-family: 'Yekan';
+}
+
+.dropdown .dropdown-menu {
+    cursor: pointer;
+}

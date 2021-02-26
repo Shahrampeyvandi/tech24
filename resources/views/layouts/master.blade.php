@@ -9,7 +9,10 @@
     <meta content="" name="author" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ URL::asset('images/favicon.ico')}}">
+    <link rel="icon" href="https://techone24.com/wp-content/uploads/2020/12/cropped-Favicon-2-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://techone24.com/wp-content/uploads/2020/12/cropped-Favicon-2-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://techone24.com/wp-content/uploads/2020/12/cropped-Favicon-2-180x180.png" />
+<meta name="msapplication-TileImage" content="https://techone24.com/wp-content/uploads/2020/12/cropped-Favicon-2-270x270.png" />
     @include('layouts.head')
 </head>
 

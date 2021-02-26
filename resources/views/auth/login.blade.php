@@ -1,6 +1,6 @@
-@extends('layouts.master-without-nav')
+@extends('layouts.home.master-home')
 
-@section('title') Login @endsection
+@section('title') تکوان | ورود @endsection
 
 @section('body')
 
@@ -17,22 +17,17 @@
                         <div class="bg-login text-center">
                             <div class="bg-login-overlay"></div>
                             <div class="position-relative">
-                                <h5 class="text-white font-size-20">مدیریت تک وان</h5>
-                                <p class="text-white-50 mb-0">لطفا اطلاعات خود را وارد نمایید</p>
-                                <a href="index" class="logo logo-admin mt-4">
-                                    <img src="images/logo-sm-dark.png" alt="" height="30">
-                                </a>
+                                <h5 class="mt-2 font-size-20">اطلاعات حساب خود را وارد کنید</h5>
+                            
                             </div>
                         </div>
-                        <div class="card-body pt-5">
+                        <div class="card-body text-right">
                             <div class="p-2">
-                                <form method="POST" action="{{ route('login') }}">
+                                <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
                                     @csrf
                                     <div class="form-group">
-                                        <label for="username">{{ __('ایمیل') }}</label>
-                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                                         @if(old('email')) value="{{ old('email') }}" @else value="test@gmail.com" @endif
-                                          required autocomplete="email" autofocus>
+                                        <label for="useremail">ایمیل</label>
+                                        <input type="email" name="email" required class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" id="useremail" autofocus  autocomplete="email">
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -41,8 +36,8 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="userpassword">{{ __('رمز عبور') }}</label>
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" value="123456" name="password" required autocomplete="current-password">
+                                        <label for="userpassword">پسورد</label>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" id="userpassword" >
                                         @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -56,7 +51,7 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <button class="btn btn-primary btn-block waves-effect waves-light" id="login" type="submit">{{ __('Login') }}</button>
+                                        <button class="btn btn-primary btn-block waves-effect waves-light" id="login" type="submit">ورود</button>
                                     </div>
 
                                     {{-- <div class="mt-4 text-center">
@@ -67,7 +62,10 @@
 
                         </div>
                     </div>
-                    
+                    <div class="mt-5 text-center">
+                        <p>حساب کاربری ندارید؟<a href="register" class="font-weight-medium text-primary"> ثبت نام</a> </p>
+                        <p>© <script> document.write(new Date().getFullYear()) </script> تکوان</p>
+                    </div>
 
                 </div>
             </div>
@@ -82,4 +80,25 @@
     <script src="{{ URL::asset('libs/node-waves/node-waves.min.js')}}"></script>
 
     <script src="{{ URL::asset('js/app.min.js')}}"></script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+        </script>
+
     @endsection

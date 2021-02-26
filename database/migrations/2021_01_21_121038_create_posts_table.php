@@ -40,6 +40,7 @@ class CreatePostsTable extends Migration
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->unsignedBigInteger('group_id')->nullable();
             $table->string('start_date');
+            $table->integer('sell_count')->default(0);
             $table->boolean('private')->default(0);
             $table->timestamps();
         });

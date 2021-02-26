@@ -45,8 +45,15 @@
                                 id="example-text-input">
                         </div>
                     </div>
+                    @isset($post)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="{{ asset($post->picture) }}" alt="">
+                            </div>
+                        </div>
+                    @endisset
                     <div class="form-group row">
-                        <label for="" class="col-md-2 col-form-label">انتخاب تصویر</label>
+                        <label for="" class="col-md-2 col-form-label">انتخاب تصویر (500 X 500)</label>
                         <div class="custom-file row col-md-6">
                             <input type="file" class="custom-file-input" name="picture" id="customFile">
                             <label class="custom-file-label" for="customFile">Choose file</label>
@@ -227,9 +234,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="col-form-label"><span class="text-danger">*</span> دسته بندی اصلی</label>
+                                <label class="col-form-label"><span class="text-danger">*</span> دسته بالایی</label>
                                 <select class="form-control select2 enable-tag" name="parent_category" required>
-                                    <option value="0" >دسته بندی اصلی</option>
+                                    <option value="0" >ندارد </option>
                                     @foreach (\App\Category::orderBy('title')->get() as $item)
                                     <option value="{{$item->title}}"
                                         {{isset($post) && $post->category->parent_id == $item->id ? 'selected' : ''}}>

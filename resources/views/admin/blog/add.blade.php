@@ -42,8 +42,15 @@
                                 id="example-text-input">
                         </div>
                     </div>
+                    @isset($blog)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="{{ asset($blog->picture) }}" class="img-fluid" alt="">
+                            </div>
+                        </div>
+                    @endisset
                     <div class="form-group row">
-                        <label for="" class="col-md-2 col-form-label">انتخاب تصویر</label>
+                        <label for="" class="col-md-2 col-form-label">انتخاب تصویر (16:9)</label>
                         <div class="custom-file row col-md-6">
                             <input type="file" class="custom-file-input" name="picture" id="customFile">
                             <label class="custom-file-label" for="customFile">Choose file</label>

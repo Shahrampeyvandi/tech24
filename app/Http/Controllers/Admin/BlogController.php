@@ -153,7 +153,10 @@ class BlogController extends Controller
 
     public function Edit(Blog $blog)
     {
-        return view('Panel.Blog.Add', ['blog' => $blog]);
+      
+        $data['page_title'] = $this->page_title;
+        $data['blog'] = $blog;
+        return view('admin.blog.add', $data);
     }
 
     public function SaveEdit(Request $request, Blog $blog)

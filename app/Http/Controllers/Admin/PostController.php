@@ -128,7 +128,7 @@ class PostController extends Controller
         $post->views = 1;
         $post->teacher_id = $request->teachers;
         $post->group_id = $request->group;
-        $post->start_date = $request->date;
+        $post->start_date = carbonDate($request->date);
         $post->private = $request->public_type == 'private' ? 1 : 0;
 
 

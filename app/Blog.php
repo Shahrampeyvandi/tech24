@@ -98,4 +98,9 @@ class Blog extends Model
 
         return preg_replace("/<img[^>]+\>/i", "(image) ", $this->description);
     }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
 }

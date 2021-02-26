@@ -18,10 +18,10 @@
                 <div class="text-right">
                     <a  class="btn btn-primary mr-auto mb-3" href="{{URL::route('users.index')}}">لیست {{$title}} ها</a>
                 </div>
-                <form action="{{URL::route('users.store')}}{{isset($user) ? '?action=edit' : ''}}" method="post">
+                <form action="{{URL::route('users.store')}}{{isset($user) ? '?action=edit' : ''}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @isset($user)
-                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <input type="hidden" name="uid" value="{{$user->id}}">
                     @endisset
                     <div class="form-group row">
                         <label for="example-text-input" class="col-md-2 col-form-label">نام {{$title}}</label>
@@ -34,6 +34,13 @@
                         <div class="col-md-4">
                             <input class="form-control" type="text" name="lname" value="{{$user->lname ?? ''}}" required
                                 id="example-text-input">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-md-3 col-form-label">انتخاب تصویر (1:1)</label>
+                        <div class="custom-file row col-md-6">
+                            <input type="file" class="custom-file-input" name="avatar" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -77,11 +84,19 @@
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label">نقش</label>
                         <div class="col-md-4">
-                            <select class="form-control" name="group">
-                                <option value="student">دانشجو</option>
-                                <option value="teacher">استاد</option>
-                                <option value="admin">مدیر</option>
+                            <select class="form-control" name="group" id="group">
+                                <option value="student" {{isset($user) && $user->hasRole('student') ? 'selected' : ''}}>دانشجو</option>
+                                <option value="teacher" {{isset($user) && $user->hasRole('teacher') ? 'selected' : ''}}>استاد</option>
+                                <option value="admin" {{isset($user) && $user->hasRole('admin') ? 'selected' : ''}}>مدیر</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group row " id="ability" @isset($user)@else style="display: none" @endisset>
+                        <label for="example-text-input" class="col-md-2 col-form-label">تخصص : (به طور مثال 'امنیت شبکه')</label>
+                        <div class="col-md-4">
+                            <input class="form-control" type="text" 
+                            name="ability" value="{{$user->ability ?? ''}}" 
+                                id="example-text-input">
                         </div>
                     </div>
 
@@ -111,5 +126,13 @@
 @endsection
 
 @section('script')
-
+<script>
+    $('#group').change(function(e){
+       if($(this).val()== 'teacher'){
+           $('#ability').removeClass('hidden').addClass('show')
+       }else{
+           $('#ability').removeClass('show').addClass('hidden')
+       }
+   })
+</script>
 @endsection

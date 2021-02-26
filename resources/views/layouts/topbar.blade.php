@@ -105,10 +105,12 @@
                         <!-- item-->
                         <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle mr-1"></i> Profile</a>
                         <div class="dropdown-divider"></div>
-                        <form action="{{route('logout')}}" method="post">
+                        <a class="dropdown-item" href="{{ url('/logout')}}"><i class="bx bx-log-out font-size-16 align-middle mr-1"></i> Logout</a>
+                        {{-- <a href="{{route('logout')}}">Logout</a> --}}
+                        {{-- <form action="{{route('logout')}}" method="post">
                             @csrf
                             <button class="dropdown-item text-danger"  type="submit"><i class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> Logout</button>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
 

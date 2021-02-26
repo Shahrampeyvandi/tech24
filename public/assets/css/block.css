@@ -1,0 +1,294 @@
+.banner_carousel {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.banner_carousel .carousel {
+    width: 100%;
+    height: 100%;
+}
+
+.banner_carousel .carousel .carousel-item,
+.banner_carousel .carousel .carousel-inner {
+    width: 100%;
+    height: 100%;
+}
+
+.banner_carousel .carousel .carousel-item img,
+.banner_carousel .carousel .carousel-inner img {
+    width: 100%;
+    height: 100%;
+    -o-object-position: center;
+    object-position: center;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.banner_carousel .carousel .carousel-indicators {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.banner_carousel .carousel .carousel-indicators li {
+    background-color: whitesmoke;
+    height: 0.35rem;
+    cursor: pointer;
+}
+
+.banner_carousel .carousel .carousel-indicators li:hover,
+.banner_carousel .carousel .carousel-indicators li.active {
+    background-color: #f79521;
+}
+
+.banner_carousel .carousel-item .banner_content {
+    max-width: 30rem;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    right: 15%;
+    color: white;
+    -webkit-transform: translate(15%, -50%);
+    transform: translate(15%, -50%);
+    font-family: 'Yekan';
+}
+
+.banner_carousel .carousel-item .banner_content .banner_border {
+    width: 15rem;
+    height: 0.15rem;
+    background-color: white;
+    margin: 1.5rem 0rem 0.75rem;
+}
+
+.banner_carousel .carousel-item .banner_content .banner_title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 2rem;
+}
+
+.banner_carousel .carousel-item .banner_content .banner_desc {
+    font-size: 1rem;
+}
+
+.banner_carousel .carousel-item .banner_content .banner_btn {
+    border: solid 2px white;
+    border-radius: 0;
+    margin: 0px 0.5rem;
+    color: whitesmoke;
+    font-weight: 500;
+    font-size: 1.15rem;
+    border-radius: 0.15rem;
+}
+
+.banner_carousel .carousel-item .banner_content .banner_btn.btn_orange {
+    border-color: #f79521;
+}
+
+.banner_carousel .carousel-item .banner_content .banner_btn.btn_orange:hover {
+    -webkit-transition: all 350ms linear;
+    transition: all 350ms linear;
+    -webkit-box-shadow: 0px 0px 0.75rem #f79521;
+    box-shadow: 0px 0px 0.75rem #f79521;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    max-width: 40rem;
+    border: dashed 1px #ccc;
+}
+
+.cta_sign {
+    background-color: #e1e1e1;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #1c3c72;
+    margin: 1rem 0rem;
+}
+
+.cta_title {
+    font-family: Yekan;
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin-right: 1rem;
+}
+
+.suggestion {
+    position: relative;
+    background: url("../imgs/suggestion_bg.jpg");
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 5rem 0rem;
+}
+
+.suggestion::before {
+    width: 100%;
+    position: absolute;
+    top: 0rem;
+    right: 0;
+    content: "";
+    background: url("../imgs/wave2.png");
+    background-size: cover;
+    background-position: center;
+    min-height: 3rem;
+    z-index: 0;
+    transform: rotate(180deg);
+}
+
+.suggestion::after {
+    width: 100%;
+    position: absolute;
+    bottom: 0rem;
+    right: 0;
+    content: "";
+    background: url("../imgs/wave2.png");
+    background-size: cover;
+    background-position: center;
+    min-height: 3rem;
+    z-index: 0;
+}
+
+.sg_img {
+    width: 100%;
+    height: 100%;
+}
+
+.sg_img img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.sg_heading {
+    font-size: 1.25rem;
+    margin: 1rem 0rem 0.75rem;
+}
+
+.sg_sub_heading {
+    opacity: 0.5;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.sg_text {
+    font-size: 1rem;
+}
+
+.dark_img {
+    filter: grayscale(1);
+}
+
+.dark_img:hover {
+    transition: all 350ms linear;
+    filter: grayscale(0);
+}
+
+@media (max-width:996px) {
+    .course-item {
+        width: 50%;
+        margin: 1rem auto;
+        text-align: center;
+    }
+}
+
+.row {
+    row-gap: 0.75rem;
+}
+
+.teacher_row {
+    display: grid;
+    /* grid-template-columns: auto auto auto auto; */
+    grid-template-columns: 25% 25% 25% 25%;
+    column-gap: 1.0rem;
+    row-gap: 1rem;
+    text-align: right;
+}
+
+.teacher_card {
+    background-color: #fff;
+    padding-bottom: 00.5rem;
+    box-shadow: 0rem 0rem 0.5rem rgba(0, 0, 0, 0.5);
+}
+
+.teacher_card_img {
+    width: 100%;
+    height: 100%;
+    max-height: 15rem;
+    position: relative;
+}
+
+.teacher_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+}
+
+.techone_logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #fff;
+    transform: rotate(45deg);
+    position: absolute;
+    bottom: -0.5rem;
+    right: 1.25rem;
+    box-shadow: 0px 0px 0.25rem rgba(0, 0, 0, 0.5);
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.techone_logo::before {
+    position: absolute;
+    content: "";
+    width: 2.5rem;
+    height: 2.5rem;
+    top: 0%;
+    right: 0%;
+    background: url("../imgs/Logo.png");
+    background-position: center;
+    background-size: contain;
+    transform: rotate(-45deg);
+}
+
+.teacher_card_content {
+    text-align: center;
+    padding: 0.75rem 0rem 0.5rem;
+}
+
+.teacher_name {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.teacher_info {
+    font-size: 1rem;
+}
+
+@media (max-width:1200px) {
+    .teacher_row {
+        grid-template-columns: auto auto;
+    }
+    .carousel-control-next,
+    .carousel-control-prev {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .teacher_row {
+        grid-template-columns: auto;
+    }
+}
