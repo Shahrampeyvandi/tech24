@@ -82,6 +82,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->all());
 
         // dd($_FILES['picture']['tmp_name']);
 
@@ -131,8 +132,17 @@ class PostController extends Controller
         $post->start_date = carbonDate($request->date);
         $post->private = $request->public_type == 'private' ? 1 : 0;
 
+        if($request->archive == 'yes') {
+            $post->archive = 1;
 
-        $cat = Category::firstOrCreate(['title' => $request->category, 'parent_id' => $request->parent_category]);
+
+        }
+
+        $cat = Category::firstOrCreate([
+            'title' => $request->category,
+            'parent_id' => $request->parent_category],[
+            'slug' => SlugService::createSlug(Category::class, 'slug', $request->category),
+        ]);
         $post->category_id = $cat->id;
         $post->save();
 
@@ -170,22 +180,25 @@ class PostController extends Controller
             }
         }
 
-        if ($request['post_type'] == 'podcast') {
+       
             if (isset($request->file)) {
                 if (isset($request->action) && $request->action == 'edit') {
                     $post->files()->delete();
                 }
                 $fileName =  $slug . '.' . $request->file->extension();
-                $url =  $this->upload_with_ftp($fileName, 'podcast');
+                $url =  $this->upload_with_ftp($fileName, $this->post_type);
 
                 //    $url=  $this->upload($request, 'podcast', $slug, 'required|mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav');
-            } else {
+            } elseif(isset($request->url)) {
                 $url = $request->url;
             }
-            $post->files()->create([
-                'file' => $url
-            ]);
-        }
+
+            if($url) {
+                $post->files()->create([
+                    'file' => $url
+                ]);
+            }
+        
 
 
 

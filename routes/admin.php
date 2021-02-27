@@ -18,6 +18,7 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], f
     Route::resource('lessons', 'LessonController')->except(['show', 'update']);
     Route::resource('blogs', 'BlogController')->except(['show', 'update']);
     Route::resource('sliders', 'SliderController')->except(['show', 'update']);
+    Route::resource('settings', 'SettingController')->except(['show', 'update']);
 
     Route::get('quiz/questions/download', 'Course\QuizController@download')->name('questions.download');
     // ajax requests

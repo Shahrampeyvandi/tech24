@@ -13,7 +13,7 @@
                         <div>
                             <h2 class="footer_col_heading">درباره ما</h2>
                             <p class="footer-text">
-                                موسسه آموزش عالی آزاد تکنو 24 در زمینه آموزش شبکه و امنیت , تست نفوذ , مجازی سازی و برنامه نویسی وب زیر نظر وزارت علوم , تحقیقات فناوری دوره برگزار می کند.
+                                {{\App\Setting::where('key',\App\Setting::About_us)->first()->value ?? 'این متن را تغییر دهید' }}
                             </p>
                         </div>
                     </div>
@@ -21,19 +21,21 @@
                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12">
                     <h2 class="footer_col_heading ">لینک ها</h2>
                     <ul class="pd-0">
-                        <li class="orange_list"><a href="index.html">خانه</a></li>
+                        <li class="orange_list"><a href="{{route('baseurl')}}">خانه</a></li>
                         <li class="orange_list"><a href="#">بلاگ</a></li>
-                        <li class="orange_list"><a href="#">ثبت نام</a></li>
+                        @if (! Auth::check())
+                        <li class="orange_list"><a href="{{ route('register') }}">ثبت نام</a></li>
+                        @endif
                         <li class="orange_list"><a href="#">قوانین و مقررات</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12">
                     <h2 class="footer_col_heading">لینک ها</h2>
                     <ul class="pd-0">
-                        <li class="orange_list"><a href="courses.html">دوره ها</a></li>
-                        <li class="orange_list"><a href="#">وبینار ها</a></li>
-                        <li class="orange_list"> <a href="#">وبینار های گذشته</a></li>
-                        <li class="orange_list"><a href="#">وبینار های پیش رو</a></li>
+                        <li class="orange_list"><a href="{{ url('courses') }}">دوره ها</a></li>
+                        <li class="orange_list"><a href="{{ url('webinars') }}">وبینار ها</a></li>
+                        <li class="orange_list"> <a href="{{ url('webinars') }}?q=archive">وبینار های گذشته</a></li>
+                        <li class="orange_list"><a href="{{ url('webinars') }}">وبینار های پیش رو</a></li>
                         <li class="orange_list"><a href="#">پادکست</a></li>
                     </ul>
                 </div>
@@ -41,21 +43,21 @@
                     <h2 class="footer_col_heading">راه های ارتباطی</h2>
                     <ul class="footer_socials pd-0">
                         <li class="footer_social">
-                            <a href="#"><i class="icon-instagram instagram"></i></a>
+                            <a href="{{\App\Setting::where('key',\App\Setting::Instagram)->first()->value ?? '#' }}"><i class="icon-instagram instagram"></i></a>
                         </li>
                         <li class="footer_social">
-                            <a href="#"><i class="icon-twitter twitter"></i></a>
+                            <a href="{{\App\Setting::where('key',\App\Setting::Twitter)->first()->value ?? '#' }}"><i class="icon-twitter twitter"></i></a>
                         </li>
                         <li class="footer_social">
                             <a href="#"><i class="icon-google google"></i></a>
                         </li>
                         <li class="footer_social ">
-                            <a href="#"><i class="icon-facebook facebook"></i></a>
+                            <a href="{{\App\Setting::where('key',\App\Setting::Facebook)->first()->value ?? '#' }}"><i class="icon-facebook facebook"></i></a>
                         </li>
                     </ul>
-                    <a href="#" class="text-white"><i class="icon-phone"></i> 0901 9444 8210</a>
+                    <a href="#" class="text-white"><i class="icon-phone"></i> {{\App\Setting::where('key',\App\Setting::Mobile)->first()->value ?? '' }}</a>
                     <br>
-                    <a href="#" class="text-white">info@24techone.com <i class="icon-envelope"></i></a>
+                    <a href="#" class="text-white">{{\App\Setting::where('key',\App\Setting::Email)->first()->value ?? '' }} <i class="icon-envelope"></i></a>
                 </div>
             </div>
         </div>

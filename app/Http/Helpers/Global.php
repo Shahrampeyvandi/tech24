@@ -54,3 +54,4 @@ if (!function_exists('fullName')) {
            return $user->fname . ' ' . $user->lname;
       }
 }
+

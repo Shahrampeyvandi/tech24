@@ -82,6 +82,18 @@ class Post extends Model
          return $this->teachers->first()->fname . ' ' . $this->teachers->first()->lname; 
      }
 
+     public function getPrice()
+     {
+         if($this->cash == 'money') {
+            return number_format((int)$this->price) . ' تومان';
+         }
+         return 'رایگان';
+     }
+
+     public function url()
+     {
+         return route('post.show',$this->slug);
+     }
 
 
     public function teacher_name()

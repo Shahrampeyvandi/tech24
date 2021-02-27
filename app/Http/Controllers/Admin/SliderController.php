@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 
-class GroupController extends Controller
+class SliderController extends Controller
 {
     public $page_title = 'اسلایدر';
     /**
@@ -46,7 +46,7 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
 
         if (isset($request->action)) {
             $slider = Slider::find($request->slider_id);
@@ -54,33 +54,23 @@ class GroupController extends Controller
             $slider = new Slider;
         }
 
-        $slider->capacity = $request->capacity;
 
         if ($request->has('picture')) {
             if (isset($request->action)) {
                 File::delete(public_path($slider->image));
             }
-            $fileName = $this->upload_picture($request, 'group', $request->title);
+            $fileName = $this->upload_picture($request, 'slider', $request->title);
             // dd($fileName);
             $slider->image = $fileName;
         }
 
         $slider->title = $request->title;
-        $slider->type = $request->type;
+        $slider->description = $request->description;
+        $slider->post_id = $request->post;
         $slider->save();
 
 
-        foreach ($request->members as $key => $member) {
-            $members_arr[$member] = ['leader' => 0];
-        }
-        foreach ($request->leaders as $key => $leader) {
-            $members_arr[$leader] = ['leader' => 1];
-        }
-        // dd($members_arr);
-
-
-        $slider->members()->sync($members_arr);
-        return Redirect::route('groups.index');
+        return Redirect::route('sliders.index');
     }
 
     /**

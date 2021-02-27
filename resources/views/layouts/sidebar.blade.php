@@ -94,11 +94,12 @@
                 </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="mdi mdi-rss"></i>
+                        <i class="mdi mdi-folder-home"></i>
                         <span>محتوا</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{URL::route('sliders.index')}}">اسلایدر</a></li>
+                        <li><a href="{{URL::route('settings.index')}}">تنظیمات</a></li>
                  
                     </ul>
                 </li>

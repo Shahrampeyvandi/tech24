@@ -20,6 +20,16 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 Route::get('/','Home\IndexController@index')->name('baseurl');
+Route::get('/aboutus','Home\IndexController@aboutus')->name('aboutus');
+Route::get('/contactus','Home\IndexController@contactus')->name('contactus');
+Route::get('/webinars/{category?}','Home\PostController@posts');
+Route::get('/courses/{category?}','Home\PostController@posts');
+Route::get('/podcasts','Home\PostController@podcasts');
+Route::get('/category/{slug}','Home\CategoryController@posts');
+Route::get('/{post}','Home\PostController@show')->name('post.show');
+Route::post('/ticket/send','Home\TicketController@store')->name('ticket.store');
+Route::get('/play/{slug}','Home\PostController@play')->name('play');
+
 
 Route::get('pages-login', 'QovexController@index');
 Route::get('pages-login-2', 'QovexController@index');

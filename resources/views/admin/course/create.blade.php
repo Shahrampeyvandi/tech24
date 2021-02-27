@@ -19,41 +19,45 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-right">
-                    <a class="btn btn-primary mr-auto mb-3" href="{{URL::route('posts.index')}}?post_type={{$post_type}}">لیست {{$page_title}}
+                    <a class="btn btn-primary mr-auto mb-3"
+                        href="{{URL::route('posts.index')}}?post_type={{$post_type}}">لیست {{$page_title}}
                         ها</a>
                 </div>
                 @component('common-components.admin-errors')
-                    
+
                 @endcomponent
-                <form action="{{URL::route('posts.store')}}{{isset($post) ? '?action=edit&post_type='.$post_type.'' : '?post_type='.$post_type.''}}" method="post"
-                    enctype="multipart/form-data">
+                <form
+                    action="{{URL::route('posts.store')}}{{isset($post) ? '?action=edit&post_type='.$post_type.'' : '?post_type='.$post_type.''}}"
+                    method="post" enctype="multipart/form-data">
                     @csrf
                     @isset($post)
                     <input type="hidden" name="post_id" value="{{$post->id}}">
                     @endisset
                     <div class="form-group row">
                         <div class="col-md-8">
-                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span> نام {{$page_title}}</label>
-                            <input class="form-control" type="text" name="title" value="{{$post->title ?? ''}}"
-                                required id="example-text-input">
+                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
+                                نام {{$page_title}}</label>
+                            <input class="form-control" type="text" name="title" value="{{$post->title ?? ''}}" required
+                                id="example-text-input">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-8">
-                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>  آدرس یکتای {{$page_title}}</label>
+                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
+                                آدرس یکتای {{$page_title}}</label>
                             <input class="form-control" type="text" name="url" value="{{$post->title ?? ''}}" required
                                 id="example-text-input">
                         </div>
                     </div>
                     @isset($post)
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img src="{{ asset($post->picture) }}" alt="">
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{ asset($post->picture) }}" alt="">
                         </div>
+                    </div>
                     @endisset
                     <div class="form-group row">
-                        <label for="" class="col-md-2 col-form-label">انتخاب تصویر (500 X 500)</label>
+                        <label for="" class="col-md-2 col-form-label">انتخاب تصویر (1:1)</label>
                         <div class="custom-file row col-md-6">
                             <input type="file" class="custom-file-input" name="picture" id="customFile">
                             <label class="custom-file-label" for="customFile">Choose file</label>
@@ -66,7 +70,7 @@
                     <audio controls>
                         <source src="{{$post->getFileUrl()}}" type="audio/mpeg">
                         Your browser does not support the audio tag.
-                      </audio>
+                    </audio>
                     @endisset
 
                     <h5>فایل پادکست را به یکی از دو روش زیر وارد نمایید:</h5>
@@ -81,12 +85,11 @@
                         <label for="" class="col-md-2 col-form-label">آدرس فایل </label>
                         <div class="custom-file row col-md-6">
                             <input type="url" name="url" id="url" placeholder="https://dl.example.com"
-                            class="form-control"
-                                pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?"
-                             >
+                                class="form-control"
+                                pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?">
 
                         </div>
-                    </div>                     
+                    </div>
                     @endif
 
                     <div class="form-group row">
@@ -98,7 +101,8 @@
 
                     <div class="form-group row">
                         <div class="col-md-4">
-                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span> مدت زمان  </label>
+                            <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
+                                مدت زمان </label>
                             <div class="">
                                 <input id="input-date1" name="duration" class="form-control input-mask"
                                     data-inputmask="'mask': '99:99'" required value="{{$post->duration ?? ''}}">
@@ -106,26 +110,27 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="input-date1" class="col-form-label"><span class="text-danger">*</span> تاریخ </label>
-                            <input id="input-date1" name="date" class="form-control input-mask"
-                                value="{{$post->start_date ?? ''}}" data-inputmask="'alias': 'datetime'"
+                            <label for="input-date1" class="col-form-label"><span class="text-danger">*</span> تاریخ
+                            </label>
+                            <input id="input-date1" name="date" class="form-control input-mask" @isset($post)
+                                value="{{jalaliDate($post->start_date)}}" @endisset data-inputmask="'alias': 'datetime'"
                                 data-inputmask-inputformat="dd/mm/yyyy" required>
                             <span class="text-muted">e.g "dd/mm/yyyy"</span>
                         </div>
-                       @if ($post_type !== 'podcast')
-                       <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="col-form-label">مدرس </label>
-                            <select class="form-control select2 select2-multiple" name="teachers" required>
-                                @foreach (\App\User::orderBy('fname')->get() as $item)
-                                <option value="{{$item->id}}"
-                                    {{isset($post) && $post->teachers->contains($item->id) ? 'selected' : ''}}>
-                                    {{$item->fname . ' ' . $item->lname}}</option>
-                                @endforeach
-                            </select>
+                        @if ($post_type !== 'podcast')
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label">مدرس </label>
+                                <select class="form-control select2 select2-multiple" name="teachers" required>
+                                    @foreach (\App\User::orderBy('fname')->get() as $item)
+                                    <option value="{{$item->id}}"
+                                        {{isset($post) && $post->teachers->contains($item->id) ? 'selected' : ''}}>
+                                        {{$item->fname . ' ' . $item->lname}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                       @endif
+                        @endif
                     </div>
 
                     <div class="form-group row">
@@ -236,24 +241,70 @@
                             <div class="form-group">
                                 <label class="col-form-label"><span class="text-danger">*</span> دسته بالایی</label>
                                 <select class="form-control select2 enable-tag" name="parent_category" required>
-                                    <option value="0" >ندارد </option>
+                                    <option value="0">ندارد </option>
                                     @foreach (\App\Category::orderBy('title')->get() as $item)
-                                    <option value="{{$item->title}}"
+                                    <option value="{{$item->id}}"
                                         {{isset($post) && $post->category->parent_id == $item->id ? 'selected' : ''}}>
                                         {{$item->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
                     </div>
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">
-                            @isset($post)
-                            ویرایش
-                            @else
-                            ثبت
-                            @endisset
-                        </button>
+
+                        @if ($post_type == 'webinar')
+                        <div class="col-md-4">
+                            <label class="col-form-label">آرشیو</label>
+                            <select class="form-control" name="archive" id="archive">
+                                <option value="no" {{isset($post) && $post->archive == 0 ? 'selected' : ''}}>
+                                    خیر</option>
+                                <option value="yes" {{isset($post) && $post->archive == 1 ? 'selected' : ''}}>
+                                    بله</option>
+                            </select>
+                        </div>
+                        @isset($post)
+                   <div class="col-md-6">
+                    <video width="320" height="240" controls>
+                        <source src="{{$post->getFileUrl()}}" type="video/mp4">
+                        <source src="movie.ogg" type="video/ogg">
+                        Your browser does not support the video tag.
+                      </video>
+                   </div>
+                    @endisset
+
+                        <div class="row archive" @if (isset($post))
+                            @else style="display: none" 
+                        @endif  >
+                            <div class="form-group col-md-12">
+                                <label for="" class="col-form-label">انتخاب فایل </label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="file" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="" class="col-form-label">آدرس فایل </label>
+                                <div class="custom-file">
+                                    <input type="url" name="url" id="url" placeholder="https://dl.example.com"
+                                        class="form-control"
+                                        pattern="[Hh][Tt][Tt][Pp][Ss]?:\/\/(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?">
+
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="col-md-12 my-3">
+                        
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">
+                                @isset($post)
+                                ویرایش
+                                @else
+                                ثبت
+                                @endisset
+                            </button>
+                        
                     </div>
                 </form>
             </div>
@@ -287,6 +338,14 @@
            $('#cash').removeClass('hidden').addClass('show')
        }else{
            $('#cash').removeClass('show').addClass('hidden')
+       }
+   })
+
+   $('#archive').change(function(e){
+       if($(this).val()== 'yes'){
+           $('.archive').removeClass('hidden').addClass('show')
+       }else{
+           $('.archive').removeClass('show').addClass('hidden')
        }
    })
 </script>
