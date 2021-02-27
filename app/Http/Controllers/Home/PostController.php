@@ -49,7 +49,7 @@ class PostController extends Controller
                 $q->where('archive',1);
                 
             } else {
-                $q->where('start_date', '>=', Carbon::now());
+                $q->where('archive',0)->where('start_date', '>=', Carbon::now());
             }
 
             $q->where('post_type', $post_type);
