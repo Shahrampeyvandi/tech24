@@ -10,7 +10,7 @@
                     <a href="{{ URL::route('baseurl') }}" class="nav_link">خانه</a>
                 </li>
                 <li class="nav_item">
-                    <a href="#" class="nav_link">پادکست</a>
+                    <a href="{{ url('podcasts') }}" class="nav_link">پادکست</a>
                 </li>
                 <li class="nav_item">
                     <a href="{{ url('webinars') }}?q=archive" class="nav_link">آرشیو وبینار های گذشته</a>

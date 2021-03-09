@@ -83,7 +83,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
 
         // dd($_FILES['picture']['tmp_name']);
 
@@ -136,7 +136,7 @@ class PostController extends Controller
             $post->views = 1;
             $post->teacher_id = $request->teachers;
             $post->group_id = $request->group;
-            $post->start_date = carbonDate($request->date);
+            $post->start_date =$request->date ? carbonDate($request->date) : '';
             $post->private = $request->public_type == 'private' ? 1 : 0;
 
             if ($request->archive == 'yes') {

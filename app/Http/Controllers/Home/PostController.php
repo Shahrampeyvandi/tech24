@@ -7,6 +7,7 @@ use App\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 
 class PostController extends Controller
 {
@@ -15,7 +16,7 @@ class PostController extends Controller
         // dd($slug);
         $data['post'] = Post::whereSlug($slug)->first();
         if (!$data['post']) abort(404);
-        $data['all_webinars'] = Post::where('post_type', 'webinar')
+        $data['related_posts'] = Post::where('post_type', $data['post']->post_type)
             ->where('start_date', '>=', Carbon::now())
             ->where('id', '!=', $data['post']->id)
             ->latest()->take(8)->get();
@@ -40,9 +41,11 @@ class PostController extends Controller
             $post_type = 'webinar';
             $title = isset($request->q) && $request->q == 'archive' ? 'وبینارهای گذشته' : 'وبینار';
         }
+        
 
         $order = isset($request->order) ? $request->order : 'created_at';
         $data['posts'] = Post::where(function ($q) use ($category, $post_type, $request) {
+            
             if ($category) {
                 $q->whereHas('category', function ($q) use ($category, $post_type) {
                     $q->whereSlug($category);
@@ -54,12 +57,15 @@ class PostController extends Controller
             if ($post_type == 'webinar' && isset($request->q) && $request->q == 'archive') {
                 $q->where('archive',1);
                 
-            } else {
+            } elseif($post_type == 'podcast'){
+            }else{
                 $q->where('archive',0)->where('start_date', '>=', Carbon::now());
+
             }
 
             $q->where('post_type', $post_type);
         })->orderByDesc($order)->paginate(6);
+        // dd($data);
 
         $data['page_title'] = $page_title;
         $data['title'] =   $title;
@@ -90,5 +96,16 @@ class PostController extends Controller
         // $data['title'] = $request[''];
        
         return view('home.play',$data);
+    }
+
+    public function register($slug)
+    {
+        // dd(getCurrentUser());
+        $post = Post::whereSlug($slug)->first();
+        if(! $post) abort(404);
+        getCurrentUser()->posts()->attach($post->id);
+
+        return Redirect::route('member.posts',getCurrentUser()->username);
+
     }
 }

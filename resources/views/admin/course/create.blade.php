@@ -298,7 +298,7 @@
             </div>
             <div class="col-md-12 my-3 btn--wrapper">
 
-                <button type="submit" class="btn btn-primary waves-effect waves-light">
+                <button type="submit" class="btn btn-primary waves-effect waves-light" >
                     @isset($post)
                     ویرایش
                     @else
@@ -375,6 +375,7 @@
    $('form').ajaxForm({
         beforeSerialize:function($Form, options){
         /* Before serialize */
+        $("#errors").html('')
         for ( instance in CKEDITOR.instances ) {
             CKEDITOR.instances[instance].updateElement();
         }
@@ -388,6 +389,7 @@
       {
       
         $('.btn--wrapper button').text(`در حال ارسال ...`)
+        $('.btn--wrapper button').attr('disabled','true')
        
         $('.progress-bar').text(percentComplete + '%');
         $('.progress-bar').css('width', percentComplete + '%');
@@ -399,6 +401,7 @@
       {
 
           $('.btn--wrapper button').html(`ارسال`)
+          $('.btn--wrapper button').removeAttr('disabled');
 
         if(data.status == 'success')
         {
@@ -423,6 +426,7 @@
       },
 
       error:function(data){
+        
           if(data.status == 422) {
 
             $("#errors").html('')
@@ -434,6 +438,7 @@
 
       
           $('.btn--wrapper button').html(`ارسال`)
+          $('.btn--wrapper button').removeAttr('disabled');
                   $('.progress-bar').css('width', '0%');
      
       }

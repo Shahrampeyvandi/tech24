@@ -1,13 +1,13 @@
 <div class="col-lg-8 col-md-8 col-sm-12 mt-3 text-right product-content">
-    <h2 class="product_heading">{{$webinar->title}}</h2>
+    <h2 class="product_heading">{{$post->title}}</h2>
     <div class="product_sub_heading">
-        <small><i class="icon-user"></i> مدرس : {{ $webinar->getTeacher() }}</small>
-        <small><i class="icon-calander"></i> زمان برگزاری : {{ jalaliDate($webinar->start_date) }}</small>
-        <small><i class="icon-clock"></i>طول دوره : {{ $webinar->duration }}</small>
+        <small><i class="icon-user"></i> مدرس : {{ $post->getTeacher() }}</small>
+        <small><i class="icon-calander"></i> زمان برگزاری : {{ jalaliDate($post->start_date) }}</small>
+        <small><i class="icon-clock"></i>طول دوره : {{ $post->duration }}</small>
     </div>
     <p class="product_text">
 
-        {!! $webinar->description !!}
+        {!! $post->description !!}
     </p>
     <br>
     <div class="product_details float-left ml-2">
@@ -31,18 +31,16 @@
             </div>
             <div class="cost_detail mr-3">
                 <h6>قیمت :</h6>
-                <b class="blue-text">{{ $webinar->getPrice() }}</b>
+                <b class="blue-text">{{ $post->getPrice() }}</b>
             </div>
 
-            @if ($webinar->archive)
-            <a href="{{ route('play',$webinar->slug) }}" class="py-2 px-5 btn_orange mr-4 mt-2">
+            @if ($post->archive)
+            <a href="{{ route('play',$post->slug) }}" class="py-2 px-5 btn_orange mr-4 mt-2">
                 مشاهده
             </a>
             @else 
 
-            <a href="#" class="py-2 px-5 btn_orange mr-4 mt-2">
-                ثبت نام
-            </a>
+            {!!$post->url() !!}
             @endif
         </div>
     </div>

@@ -29,6 +29,7 @@ Route::get('/category/{slug}','Home\CategoryController@posts');
 Route::get('/{post}','Home\PostController@show')->name('post.show');
 Route::post('/ticket/send','Home\TicketController@store')->name('ticket.store');
 Route::get('/play/{slug}','Home\PostController@play')->name('play');
+Route::get('/{post}/register','Home\PostController@register')->name('post.register')->middleware('auth');
 
 
 Route::get('pages-login', 'QovexController@index');
@@ -48,6 +49,7 @@ Route::post('login-status', 'QovexController@checkStatus');
 
 // You can also use auth middleware to prevent unauthenticated users
 Route::group(['middleware' => 'auth'], function () {
-    // Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('{any}', 'QovexController@index');
+    Route::get('/panel/{user}/posts', 'Panel\PostController@index')->name('member.posts');
+
+    // Route::get('{any}', 'QovexController@index');
 });

@@ -29,6 +29,10 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
     public function group()
     {
         return $this->belongsTo(Group::class);
@@ -121,8 +125,20 @@ class Post extends Model
 
      public function url()
      {
-         return route('post.show',$this->slug);
-     }
+
+        if(getCurrentUser()) {
+            if(getCurrentUser()->posts->contains($this->id)) {
+                return '<a href="'.route('post.show',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">مشاهده</a>';  
+
+
+            }
+            return '<a href="'.route('post.register',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">ثبت نام</a>';  
+
+        }
+        return '<a href="'.route('post.register',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">ثبت نام</a>';  
+    }
+
+    
 
 
     public function teacher_name()

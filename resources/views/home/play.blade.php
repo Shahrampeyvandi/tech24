@@ -10,11 +10,11 @@
 </head>
 
 <body>
-  
+
     <link href="https://vjs.zencdn.net/7.7.6/video-js.css" rel="stylesheet" />
-   
+
     <script src="https://vjs.zencdn.net/7.7.6/video.js"></script>
-  
+
     {{-- <link href="{{asset('frontend/assets/css/videojs.watermark.css')}}" rel="stylesheet">
     <script src="{{asset('frontend/assets/js/videojs.watermark.js')}}"></script> --}}
     <style>
@@ -73,19 +73,17 @@
     </style>
 
     <body>
-   
+
         <section id="play" class=" position-relative">
             <video class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" id="player" controls>
                 @if (isset($post))
-                <source src="{{$post->files->first()->file}}" type='video/mp4'
-                    label='' />
+                <source src="{{$post->files->first()->file}}" type='video/mp4' label='' />
                 @endif
             </video>
         </section>
     </body>
     <script>
-       
-     var video = videojs('player');
+        var video = videojs('player');
      video.responsive(true);
      
    
