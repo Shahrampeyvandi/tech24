@@ -55,11 +55,11 @@ const showCategory = (category) => {
 }
 showAll();
 const preLoader = () => {
-    const prevLoader = document.createElement("section");
-    prevLoader.className = "prevloader";
-    prevLoader.innerHTML = `<div class="preloader">`;
-    document.body.appendChild(prevLoader);
-    document.documentElement.appendChild(prevLoader);
+    const prevLoader = document.querySelector(".prevloader");
+    // prevLoader.className = "prevloader";
+    // prevLoader.innerHTML = `<div class="preloader">`;
+    // document.body.appendChild(prevLoader);
+    // document.documentElement.appendChild(prevLoader);
     setTimeout(() => {
         prevLoader.style.display = "none";
     }, 1500)

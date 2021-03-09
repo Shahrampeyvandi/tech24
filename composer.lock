@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9f66fb336046462cd10080d79e41619",
+    "content-hash": "9a2cfbfdcbc3276d24c887985432caf5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3232,6 +3232,71 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "soheilrt/laravel-adobe-connect-client",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/soheilrt/laravel-adobe-connect-client.git",
+                "reference": "d5e453b51afb4d32e10f049857bc7f24ae8db7ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/soheilrt/laravel-adobe-connect-client/zipball/d5e453b51afb4d32e10f049857bc7f24ae8db7ba",
+                "reference": "d5e453b51afb4d32e10f049857bc7f24ae8db7ba",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-fileinfo": "*",
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "laravel/framework": "~5.8 || ^6 || ^7",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.4",
+                "orchestra/testbench": "~3.8||~4.0||~5.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Soheilrt\\AdobeConnectClient\\AdobeConnectServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Soheilrt\\AdobeConnectClient\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Soheil Rahmat",
+                    "email": "soheilrt314@gmail.com"
+                }
+            ],
+            "description": "Adobe Connect Client Package For Laravel Based Applications",
+            "keywords": [
+                "adobe",
+                "adobe connect",
+                "laravel",
+                "seminar",
+                "virtual classroom",
+                "webinar"
+            ],
+            "support": {
+                "issues": "https://github.com/soheilrt/laravel-adobe-connect-client/issues",
+                "source": "https://github.com/soheilrt/laravel-adobe-connect-client/tree/master"
+            },
+            "time": "2020-03-27T20:28:50+00:00"
         },
         {
             "name": "spatie/laravel-permission",

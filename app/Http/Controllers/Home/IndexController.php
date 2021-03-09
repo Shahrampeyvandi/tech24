@@ -10,11 +10,45 @@ use App\Http\Controllers\Controller;
 use App\Slider;
 use App\User;
 use Carbon\Carbon;
+use Soheilrt\AdobeConnectClient\Facades\Client;
+
 
 class IndexController extends Controller
 {
     public function index()
     {
+        // $ch = curl_init('http://online.techone24.com/api/xml?action=login&login=test@gmail.com&password=123456');
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
+        // curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
+        // $data = curl_exec($ch);
+        // // dd($data);
+        // curl_close($ch);
+        // Query.
+// $ch = curl_init('http://online.techone24.com/api/xml?action=principal-list&filter-type=user');
+// curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+// curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
+// curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+// curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
+// curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
+// $data = curl_exec($ch);
+// var_dump($data);
+// curl_close($ch);
+
+// Query.
+// $ch = curl_init('http://online.techone24.com/api/xml?action=principal-update&first-name=jake&last-name=doe&has-children=0&login=jakedoe@example.com&type=user');
+// curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+// curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
+// curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+// curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
+// curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
+// $data = curl_exec($ch);
+// var_dump($data);
+// curl_close($ch);
+   
+        // dd(public_path());
         // dd(\Request::getRequestUri());
         if(isset(request()->order)) {
             if(request()->order == 'latest') {

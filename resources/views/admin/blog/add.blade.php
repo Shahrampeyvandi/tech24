@@ -26,7 +26,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     @isset($blog)
-                    <input type="hidden" name="post_id" value="{{$blog->id}}">
+                    <input type="hidden" name="blog_id" value="{{$blog->id}}">
                     @endisset
                     <div class="form-group row">
                         <div class="col-md-8">
@@ -38,7 +38,7 @@
                     <div class="form-group row">
                         <div class="col-md-8">
                             <label for="example-text-input" class=" col-form-label">آدرس یکتای {{$page_title}}</label>
-                            <input class="form-control" type="text" name="url" value="{{$blog->title ?? ''}}" required
+                            <input class="form-control" type="text" name="url" value="{{$blog->url ?? ''}}" required
                                 id="example-text-input">
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     @endisset
-                    <div class="form-group row">
+                    <div class="form-group row my-2">
                         <label for="" class="col-md-2 col-form-label">انتخاب تصویر (16:9)</label>
                         <div class="custom-file row col-md-6">
                             <input type="file" class="custom-file-input" name="picture" id="customFile">

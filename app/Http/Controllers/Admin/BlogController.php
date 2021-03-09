@@ -94,9 +94,14 @@ class BlogController extends Controller
 
         $slug = SlugService::createSlug(Blog::class, 'slug', $request->title);
 
-        $blog = new Blog;
+        if (isset($request->action) && $request->action == 'edit') {
+            $blog = Blog::find($request->blog_id);
+        }else{
+
+            $blog = new Blog;
+        }
         if ($request->has('picture')) {
-            if (isset($request->action)) {
+            if (isset($request->action) && $request->action == 'edit') {
                 File::delete(public_path($blog->picture));
             }
             $fileName = $this->upload_picture($request, 'blog', $slug);
@@ -135,19 +140,19 @@ class BlogController extends Controller
         return view('admin.blog.list',$data);
     }
 
-    public function DeleteBlog(Request $request)
+    public function destroy($id)
     {
 
-        $blog = Blog::find($request->blog_id);
-        File::deleteDirectory(public_path("blogs/$blog->slug/"));
-        $blog->comments()->delete();
-        $blog->videos()->delete();
-        $blog->links()->delete();
+        $blog = Blog::find($id);
+        File::delete(public_path($blog->picture));
+        $blog->tags()->detach();
+        // $blog->comments()->delete();
+        // $blog->videos()->delete();
+        // $blog->links()->delete();
         $blog->delete();
 
 
 
-        toastr()->success('بلاگ با موفقیت حذف شد');
         return back();
     }
 
@@ -198,7 +203,6 @@ class BlogController extends Controller
         }
 
 
-        toastr()->success('بلاگ با موفقیت ویرایش شد');
         return redirect()->route('Panel.BlogList');
     }
 

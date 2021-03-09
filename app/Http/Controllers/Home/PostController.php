@@ -31,6 +31,10 @@ class PostController extends Controller
             $page_title =  'تکوان | دوره ها';
             $title = 'دوره';
             $post_type = 'course';
+        }elseif(\Request::path() == 'podcasts') {
+            $page_title =  'تکوان | پادکست ها';
+            $title = 'پادکست';
+            $post_type = 'podcast';
         } else {
             $page_title =  'تکوان | وبینار ها';
             $post_type = 'webinar';
@@ -44,6 +48,8 @@ class PostController extends Controller
                     $q->whereSlug($category);
                 });
             }
+
+        
 
             if ($post_type == 'webinar' && isset($request->q) && $request->q == 'archive') {
                 $q->where('archive',1);
@@ -61,6 +67,9 @@ class PostController extends Controller
 
         $data['latest_posts'] = Post::where('post_type', $post_type)->latest()->take(5)->get();
 
+        if($data['post_type'] == 'podcast') {
+            return view('home.podcasts', $data);     
+        }
         return view('home.posts', $data);
     }
     public function courses(Request $request)
@@ -70,6 +79,8 @@ class PostController extends Controller
     public function podcasts(Request $request)
     {
         // dd($request->url());
+        $data['title'] =   $title;
+        return view('home.posts', $data);
     }
 
     public function play(Request $request,$slug=null)

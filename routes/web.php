@@ -24,7 +24,7 @@ Route::get('/aboutus','Home\IndexController@aboutus')->name('aboutus');
 Route::get('/contactus','Home\IndexController@contactus')->name('contactus');
 Route::get('/webinars/{category?}','Home\PostController@posts');
 Route::get('/courses/{category?}','Home\PostController@posts');
-Route::get('/podcasts','Home\PostController@podcasts');
+Route::get('/podcasts/{category?}','Home\PostController@posts');
 Route::get('/category/{slug}','Home\CategoryController@posts');
 Route::get('/{post}','Home\PostController@show')->name('post.show');
 Route::post('/ticket/send','Home\TicketController@store')->name('ticket.store');

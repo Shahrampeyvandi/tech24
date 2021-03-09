@@ -1,6 +1,6 @@
 <div class="box_col">
     <div class="box_skin">
-        <img src="{{asset($post->picture)}}" alt="{{ $post->title }}" class="box_img">
+        <img src="{{$post->getPicture()}}" alt="{{ $post->title }}" class="box_img">
         <div class="box_overlay">
             <p class="box_overlay_item">شروع دوره :
                 {{ \Morilog\Jalali\Jalalian::forge($post->start_date)->ago() }}</p>

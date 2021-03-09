@@ -26,6 +26,8 @@
   
   @include('layouts.home.footer-script-home')
 
+  <section class="prevloader"><div class="preloader"></div></section>
+
 </body>
 
 </html>

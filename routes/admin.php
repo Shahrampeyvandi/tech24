@@ -20,7 +20,10 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], f
     Route::resource('sliders', 'SliderController')->except(['show', 'update']);
     Route::resource('settings', 'SettingController')->except(['show', 'update']);
 
+    
     Route::get('quiz/questions/download', 'Course\QuizController@download')->name('questions.download');
     // ajax requests
     Route::post('/changeusergroup', 'UserController@changegroup')->name('users.changegroup');
+    Route::post('ajax/parent-category', 'PostController@parent_category');
+
 });

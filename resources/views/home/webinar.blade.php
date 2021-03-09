@@ -5,11 +5,7 @@
 @section('content')
 <!--start product section-->
 <section class="product my-5">
-    <div class="container text-right mb-3">
-        <h4 class="font_size_1 product_sub_heading">تک وان 24 > وبینار > شبکه > امنیت <b href="#"
-                class="black-text mr-1">{{ $post->title }}</b>
-        </h4>
-    </div>
+    @include('common-components.category-breadcrumb',['post'=>$post,'post_type'=>'وبینار' , 'categories' => $post->getImplodeCategories()])
     <div class="container px-3 py-2 product_container">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12 text-center product_img">

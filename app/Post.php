@@ -77,9 +77,38 @@ class Post extends Model
          return '#';
      }
 
+     public function getPicture()
+     {
+         return $this->picture ? asset($this->picture) : asset('assets/imgs/Logo.png');
+     }
+
+     public function getImplodeCategories()
+     {
+
+        $category_id = $this->category_id;
+         
+         
+        
+         do {
+
+            $cat = Category::find($category_id);
+            $arr[] = $cat->title;
+            $category_id = $cat->parent_id;
+            // dd($category_id);
+             
+         } while ($category_id !== 0);
+         
+        
+        //  dd($arr);
+        
+         return implode('> ',array_reverse($arr)); 
+
+     }
      public function getTeacher()
      {
-         return $this->teachers->first()->fname . ' ' . $this->teachers->first()->lname; 
+         $teacher = $this->teachers->first();
+         if(! $teacher) return '#';
+         return $teacher->fname . ' ' . $teacher->lname; 
      }
 
      public function getPrice()
@@ -99,13 +128,17 @@ class Post extends Model
     public function teacher_name()
     {
         $teachers = $this->teachers;
-        $name = '';
-        foreach ($teachers as $key => $teacher) {
-            $name .= $teacher->fname . ' ' . $teacher->lname . ' ' ;
        
-            
+        $name = '';
+        if(count($teachers)) {
+            foreach ($teachers as $key => $teacher) {
+                $name .= $teacher->fname . ' ' . $teacher->lname . ' ' ;
+           
+                
+            }
+    
         }
-
+       
         return $name;
     }
 }

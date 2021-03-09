@@ -60,9 +60,9 @@
                     {{\Request::getRequestUri() == '/tech24/public/?order=sell' ? 'پرفروش ترین ' : 'جدیدترین'}}
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a href="{{ route('baseurl') }}?order=latest">جدیدترین وبینار ها</a></li>
+                    <li class="dropdown-item"><a href="{{ url('webinars') }}?order=created_at">جدیدترین وبینار ها</a></li>
                     <div class="dropdown-divider"></div>
-                    <li class="dropdown-item"><a href="{{ route('baseurl') }}?order=sell">پرفروش ترین وبینار ها</a></li>
+                    <li class="dropdown-item"><a href="{{ url('webinars') }}?order=sell">پرفروش ترین وبینار ها</a></li>
                 </ul>
             </menu>
         </div>
