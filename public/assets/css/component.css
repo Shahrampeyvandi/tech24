@@ -241,6 +241,12 @@
     color: var(--secondary);
 }
 
+.font_size_0_6 {
+    font-size: .6rem;
+}
+.font_size_0_8 {
+    font-size: .8rem;
+}
 .font_size_1 {
     font-size: 1rem;
 }

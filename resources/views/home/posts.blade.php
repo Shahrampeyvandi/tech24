@@ -1,6 +1,6 @@
 @extends('layouts.home.master-home')
 
-@section('title') {{ $title }} @endsection
+@section('title') {{ $page_title }} @endsection
 
 @section('css')
 <link rel="stylesheet" href="{{ URL::asset('assets/css/style.css') }}">
@@ -38,7 +38,7 @@
                       <div class="col-xl-4 col-lg-12 col-sm-12 col-xs-12 product_img">
                           <img src="{{ asset($post->picture) }}" alt="{{ $post->title }}">
                       </div>
-                      @include('common-components.post-details',['post'=> $post])
+                      @include('common-components.post-details',['post'=> $post,'showbtn'=>true,'showmore'=>true])
                   </div>
                     @endforeach
 

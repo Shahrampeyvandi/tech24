@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\AdobeGroup;
 use App\Tag;
 use App\Post;
 use App\Quiz;
@@ -91,7 +92,7 @@ class PostController extends Controller
         if (isset($request->action) && $request->action == 'edit') {
 
             $post = Post::find($request->post_id);
-            $rules = ['title' => 'required|unique:posts,title,'.$post->id];
+            $rules = ['title' => 'required|unique:posts,title,' . $post->id];
             if ($request['post_type'] == 'podcast' && isset($request->file)) {
                 $post->files()->delete();
             }
@@ -107,6 +108,10 @@ class PostController extends Controller
             $mime = 'audio';
         } else {
             $mime = null;
+        }
+
+        if ($request['post_type'] == 'webinar') {
+            $rules['group_name'] = 'required';
         }
 
         $request->validate($rules);
@@ -136,7 +141,7 @@ class PostController extends Controller
             $post->views = 1;
             $post->teacher_id = $request->teachers;
             $post->group_id = $request->group;
-            $post->start_date =$request->date ? carbonDate($request->date) : '';
+            $post->start_date = $request->date ? carbonDate($request->date) : '';
             $post->private = $request->public_type == 'private' ? 1 : 0;
 
             if ($request->archive == 'yes') {
@@ -189,6 +194,9 @@ class PostController extends Controller
 
             if (isset($request->file) && $request->file) {
                 if (isset($request->action) && $request->action == 'edit') {
+                    foreach ($post->files as $key => $file) {
+                        $this->delete_with_ftp($file->file);
+                    }
                     $post->files()->delete();
                 }
                 $fileName =  $slug . '.' . $request->file->extension();
@@ -199,19 +207,31 @@ class PostController extends Controller
                 $url = $request->url;
             }
 
-            if (isset($url)) {
+            if (isset($url) && strpos($url, 'download.techone24.com/uploads') == true) {
                 $post->files()->create([
                     'file' => $url
                 ]);
             }
 
-
-
+            if (isset($request->action) && $request->action == 'edit') {
+            }else{
+                if ($request->group_name) {
+                    $response =  $this->create_group_adobe($post, $request->group_name);
+                    if ($response['status']['@attributes']['code'] == 'ok') {
+                        $group = new AdobeGroup;
+                        $group->principal_id = $response['principal']['@attributes']['principal-id'];
+                        $group->account_id = $response['principal']['@attributes']['account-id'];
+                        $group->name = $response['principal']['name'];
+                        $group->post_id = $post->id;
+                        $group->save();
+                    }
+                }
+            }
 
 
             $post->teachers()->sync($request->teachers);
         } catch (\Throwable $th) {
-            return Response::json(['errors' => ['خطای ثبت اطلاعات از سرور']], 422);
+            throw $th;
         }
         return Response::json(['status' => 'success', 'url' => url('admin-panel/posts') . '?post_type=' . $request['post_type'] . ''], 200);
     }
@@ -262,12 +282,25 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+
+        // $file = 'http://download.techone24.com/uploads/webinar/2021/وبینار-گذشته.mp4';
+        // $conn = ftp_connect(env('FTP_HOST'));
+        // $login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        // ftp_set_option($conn, FTP_USEPASVADDRESS, false);
+        // ftp_pasv($conn, true);
+        // dd(ftp_nlist($conn, 'course/2021'));
+        // // if (ftp_nlist($conn, $path) == true) {
+
+        // //     ftp_delete($conn, $path);
+        // // }
+        // ftp_close($conn);
+
         $post = Post::find($id);
         File::delete($post->picture);
         $post->tags()->detach();
         $post->quiz()->delete();
         $post->prerequisites()->detach();
-        $post->files()->delete();
+
 
         $group = Group::find($post->group_id);
         if ($group) {
@@ -275,7 +308,12 @@ class PostController extends Controller
             $group->members()->detach();
             Group::find($post->group_id)->delete();
         }
-        
+
+        foreach ($post->files as $key => $file) {
+            $this->delete_with_ftp(implode('/', array(explode('/', $file->file)[4], explode('/', $file->file)[5], explode('/', $file->file)[6])));
+        }
+        $post->files()->delete();
+
         $post->delete();
         return Redirect::back();
     }
@@ -307,5 +345,34 @@ class PostController extends Controller
 
         $request->picture->move(public_path('uploads/' . $date . '/' . $type), $imageName);
         return 'uploads/' . $date . '/' . $type . '/' . $imageName;
+    }
+
+    protected function create_group_adobe($groupname)
+    {
+
+
+
+        try {
+            $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=login&login=' . env('ADOBE_CONNECT_USER_NAME') . '&password=' . env('ADOBE_CONNECT_PASSWORD') . '');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+            $data = curl_exec($ch);
+            curl_close($ch);
+
+            $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=principal-update&has-children=1&type=group&name=' . $groupname . '');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $arr = json_decode(json_encode(simplexml_load_string($data)), true);
+        } catch (\Exception $th) {
+            throw $th;
+        }
     }
 }

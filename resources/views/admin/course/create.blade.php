@@ -50,6 +50,25 @@
                         </div>
                     </div>
 
+                   @if ($post_type == 'webinar')
+                   <div class="form-group row">
+                    <div class="col-md-8">
+                        <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
+                            نام گروه وبینار (لاتین)</label>
+                        <input class="form-control" type="text"
+                        pattern = "[A-Za-z]{2,}" title="تنها حروف لاتین"
+                        name="group_name" 
+                        @isset($post)
+                        value="{{$post->adobeGroup->name}}"
+                        @else 
+                        required
+                        @endisset
+                        
+                            id="example-text-input">
+                    </div>
+                </div>
+                   @endif
+
                     @isset($post)
                     <div class="row">
                         <div class="col-md-6">
@@ -193,7 +212,7 @@
                                     <option value=""></option>
                                     @foreach (\App\Quiz::orderBy('title')->get() as $item)
                                     <option value="{{$item->id}}"
-                                        {{isset($post) && $post->quiz->id == $item->id ? 'selected' : ''}}>
+                                        {{isset($post) && $post->quiz && $post->quiz->id == $item->id ? 'selected' : ''}}>
                                         {{$item->title}}</option>
                                     @endforeach
                                 </select>
@@ -266,7 +285,7 @@
                                 بله</option>
                         </select>
                     </div>
-                    @isset($post)
+                    @isset($post->file)
                     <div class="col-md-6">
                         <video width="320" height="240" controls>
                             <source src="{{$post->getFileUrl()}}" type="video/mp4">
@@ -380,10 +399,10 @@
             CKEDITOR.instances[instance].updateElement();
         }
         return true; 
-    },
-      beforeSend:function(){
-        $('#success').empty();
-        
+        },
+        beforeSend:function(){
+            $('#success').empty();
+            
       },
       uploadProgress:function(event, position, total, percentComplete)
       {
@@ -426,10 +445,12 @@
       },
 
       error:function(data){
-        
+        $("#errors").html('')
+          if(data.status == 500) {
+            $("#errors").append("<li class='alert alert-danger'>"+data.responseJSON.message+"</li>")
+          }
+    
           if(data.status == 422) {
-
-            $("#errors").html('')
               $.each(data.responseJSON.errors, function (key, item) 
                 {
                   $("#errors").append("<li class='alert alert-danger'>"+item+"</li>")
@@ -439,7 +460,7 @@
       
           $('.btn--wrapper button').html(`ارسال`)
           $('.btn--wrapper button').removeAttr('disabled');
-                  $('.progress-bar').css('width', '0%');
+        $('.progress-bar').css('width', '0%');
      
       }
     });

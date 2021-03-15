@@ -31,17 +31,21 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="example-text-input" class="col-md-2 col-form-label"> زمان پاسخگویی (دقیقه)</label>
-                        <div class="col-md-4">
-                            <input class="form-control" type="number" name="q_countdown" placeholder="برحسب دقیقه"
-                                value="{{$quiz->countdown ?? ''}}" id="example-text-input">
-                        </div>
+                       
+                            <label for="example-text-input" class="col-md-2 col-form-label"><span class="text-danger">*</span>
+                                (دقیقه)مدت زمان </label>
+                            <div class="col-md-4">
+                                <input id="input-date1" name="q_countdown" class="form-control input-mask"
+                                    data-inputmask="'mask': '99:99:99'" required value="{{$quiz->countdown ?? ''}}">
+                                <span class="text-muted">e.g "HH:MM"</span>
+                            </div>
+                        
                     </div>
                     <div class="form-group row">
                         <label for="example-text-input" class="col-md-2 col-form-label">تعداد سوالات آزمون </label>
                         <div class="col-md-4">
                             <input class="form-control" type="number" name="questionscount"
-                                value="{{$quiz->countdown ?? ''}}" id="example-text-input">
+                                value="{{$quiz->questionscount ?? ''}}" id="example-text-input">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -64,8 +68,15 @@
                         <label for="example-text-input" class="col-md-2 col-form-label">فایل اکسل بانک سوالات</label>
                         <div class="custom-file col-md-6">
                             <input type="file" class="custom-file-input" title="accept only xlsx file" accept=".xlsx"
-                                name="file" required id="customFile">
+                                name="file" {{isset($quiz) ? '': 'required'}} id="customFile">
                             <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <div>
+                            <a href="{{ url('admin-panel/question/excel/download') }}">دانلود فایل خام</a>
+                            {{-- <form action="{{ url('admin-panel/question/excel/download') }}" method="post">
+                                @csrf
+                                <button type="submit" class="text-primary mr-2">دانلود فایل خام</button>
+                            </form> --}}
                         </div>
                     </div>
 
@@ -262,7 +273,11 @@
 @endsection
 
 @section('script')
+<!-- form mask -->
+<script src="{{URL::asset('/libs/inputmask/inputmask.min.js')}}"></script>
 <script>
+       $(".input-mask").inputmask();
+
     $('.add-question').click(function(e){
             e.preventDefault()
             let id = Date.now()

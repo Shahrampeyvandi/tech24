@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -58,6 +58,11 @@ class Post extends Model
     public function registered()
     {
         return $this->belongsToMany(User::class,'post_user','post_id','user_id');
+    }
+
+    public function adobeGroup()
+    {
+        return $this->hasOne(AdobeGroup::class);
     }
 
      /**
@@ -118,6 +123,8 @@ class Post extends Model
      public function getPrice()
      {
          if($this->cash == 'money') {
+             if(Auth::check() && getCurrentUser()->posts->contains($this->id)) 
+               return 'شما این دوره را خریده اید';
             return number_format((int)$this->price) . ' تومان';
          }
          return 'رایگان';
@@ -128,10 +135,10 @@ class Post extends Model
 
         if(getCurrentUser()) {
             if(getCurrentUser()->posts->contains($this->id)) {
-                return '<a href="'.route('post.show',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">مشاهده</a>';  
-
+                return '<a href="'.route('play',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">مشاهده</a>';  
 
             }
+            if($this->cash == 'money')  return route('post.',$this->slug);
             return '<a href="'.route('post.register',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">ثبت نام</a>';  
 
         }

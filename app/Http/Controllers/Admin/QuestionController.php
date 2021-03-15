@@ -131,4 +131,23 @@ class QuestionController extends Controller
         $quiz->delete();
         return Redirect::back();
     }
+
+    
+    /**
+     * Download the Excel file.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+    public function download()
+    {
+        // dd('dd');
+      
+        $path = storage_path('app/public/questions.xlsx');
+        // dd($path);
+
+    // Download file with custom headers
+    return response()->download($path);
+    }
 }

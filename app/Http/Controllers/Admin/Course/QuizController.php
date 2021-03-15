@@ -49,6 +49,7 @@ class QuizController extends Controller
     public function store(Request $request)
     {
         
+        
         if(isset($request->action)){
             $q = Quiz::find($request->quiz_id);
         }else{
@@ -62,14 +63,18 @@ class QuizController extends Controller
         $q->questionscount = $request->questionscount;
         $q->save();
 
-        session()->put('quiz_id',$q->id);
+        
 
-        Excel::import(new QuestionsImport, $request->file);
+        if(isset($request->file) && $request->file) {
+            session()->put('quiz_id',$q->id);
+            Excel::import(new QuestionsImport, $request->file);
+            $request->file->storeAs('questions', $q->title.'.xlsx');
+        }
         // $this->upload($request , 'question',$q->title,'required|mimes:xlsx');
 
         // Storage::disk('local')->put('questions/'.$q->title.'.xlxs', $request->file);
         
-        $request->file->storeAs('questions', $q->title.'.xlsx');
+        
         // foreach ($request->q as $key => $item) {
         //     // dd($item);
         //     if(array_key_exists('id',$item)){

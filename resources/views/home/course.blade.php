@@ -17,20 +17,25 @@
         text-align: left;
     }
 
+    .lesson-content .links.disabled a {
+    color: #a0b9e5;
+    }
+
     .lesson-content .links a {
         color: #234175;
-        width: 30px;
-        /* height: 30px; */
-        background: #e6e9ef;
-        /* display: inline-block; */
-        text-align: center;
-        align-items: center;
-        vertical-align: middle;
-        padding: .5rem;
-        border-radius: 50%;
-        width: 40px;
-        margin-bottom: 1rem;
-        display: inline-block;
+    width: 30px;
+    background: #e6e9ef;
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+    padding: .5rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    }
+    .lesson-content .links a i{
+        font-size: 1.5rem;
     }
 </style>
 @endsection
@@ -55,7 +60,7 @@
             <div class="col-lg-4 col-md-4 col-sm-12 text-center product_img">
                 <img src="{{ URL::asset($post->picture) }}" class="w-100" alt="{{ $post->title }}">
             </div>
-            @include('common-components.post-details',['post'=>$post])
+            @include('common-components.post-details',['post'=>$post,'showbtn'=>true])
         </div>
     </div>
 </section>
@@ -68,21 +73,23 @@
     <div class="col-md-12">
         <div class="container">
             <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
-                <h1 class="section_heading font_size_2">ویدیوها</span></h1>
+                <h1 class="section_heading font_size_2">لیست درسهای دوره</span></h1>
               
             </div>
             @forelse ($post->lessons()->orderBy('number','asc')->get() as $lesson)
-            <div class="product_box product text-right row">
-                <div class="col-lg-6 col-sm-12 col-xs-12 product_img">
-                    <section id="play" class=" position-relative w-100">
+            <div class="product_box product text-right row mb-5">
+                <div class="col-lg-4 col-sm-12 col-xs-12 product_img">
+                    {{-- <section id="play" class=" position-relative w-100">
                         <video class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9" data-setup='{}' controls preload="auto"
                             id="player" controls>
 
-                            <source src="//vjs.zencdn.net/v/oceans.mp4" type='video/mp4' label='' />
+                            <source src="{{$lesson->getFileUrl()}}" type='video/mp4' label='' />
                         </video>
-                    </section>
+                    </section> --}}
+
+                    <img src="{{ $lesson->getPicture() }}" alt="{{ $lesson->title }}" class="img-fluid" style="height: 250px;object-fit: cover">
                 </div>
-                <div class=" col-lg-6 col-sm-12 col-xs-12 py-2 text-right product-content">
+                <div class=" col-lg-8 col-sm-12 col-xs-12 py-2 text-right product-content">
                     <div class="lesson-content">
                         <div>
                             <h3 class="product_heading">{{ $lesson->title }}</h3>
@@ -93,8 +100,9 @@
                             </p>
                         </div>
 
-                        <div class="links">
-                            <a href="#"><i class="icon-download"></i></a>
+                        <div class="links {{ Auth::check() && getCurrentUser()->checkAllowForSeeLesson($lesson->id) ? '' :' disabled'}}">
+                            <a href="#"><i class="icon-cloud_download"></i></a>
+                            <a href="{{ Auth::check() && getCurrentUser()->checkAllowForSeeLesson($lesson->id) ? ''.route('play',$post->slug).'?lesson='.$lesson->id.'' :'#'}}"><i class="icon-play_circle_outline"></i></a>
                         </div>
                     </div>
 

@@ -44,22 +44,24 @@
                                 </div>
                                 <div class="teacher-name">
                                     <img src="{{ asset('panel-assets/Images/Dashboard/course/time.png') }}" alt="">
-                                    طول دوره:
-                                    <span class="name">{{ $item->duration }} ساعت</span>
+                                    مدت زمان: 
+                                    <span class="name">{{ $item->duration }} </span>
                                 </div>
                             </div>
                             <p class="text">
-                                {!! Str::limit(strip_tags($item->description), 70, '...') !!}
+                                {!! Str::limit(strip_tags($item->description), 400, '...') !!}
                             </p>
                         </div>
                     </div>
+                    @if ($item->post_type == 'course')
                     <div class="col-12 col-lg-12 col-xl-3">
                         <div class="btn-place">
-                            <a href="#" class="btn--ripple">
+                            <a href="{{ route('member.course.lessons',['user'=>$user->username,'id'=>$item->id]) }}" class="btn--ripple">
                                 ورود به صفحه دوره
                             </a>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

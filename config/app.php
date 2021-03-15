@@ -164,6 +164,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Brian2694\Toastr\ToastrServiceProvider::class,
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
 
 
         /*

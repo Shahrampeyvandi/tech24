@@ -56,4 +56,9 @@ class Lesson extends Model
         }
         return '#';
     }
+
+    public function getPicture()
+    {
+        return $this->picture ? asset($this->picture) : asset('assets/imgs/Logo.png');
+    }
 }

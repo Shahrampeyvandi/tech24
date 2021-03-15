@@ -11,6 +11,7 @@
 
 @section('css')
 <link href="{{URL::asset('libs/select2/select2.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
 
 @endsection
 
@@ -58,6 +59,14 @@
                         </div>
                     </div>
 
+                    @isset($lesson)
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <img src="{{ asset($lesson->picture) }}" alt="">
+                        </div>
+                    </div>
+                    @endisset
+
                     <div class="form-group row">
                         <label for="" class="col-md-2 col-form-label">انتخاب تصویر</label>
                         <div class="custom-file row col-md-6">
@@ -70,7 +79,6 @@
                     @isset($lesson)
                     <video width="320" height="240" controls>
                         <source src="{{$lesson->getFileUrl()}}" type="video/mp4">
-                        <source src="movie.ogg" type="video/ogg">
                         Your browser does not support the video tag.
                       </video>
                     @endisset
@@ -97,7 +105,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات: </label>
-                            <textarea id="elm1" name="description">{!! $lesson->description ?? '' !!}</textarea>
+                            <textarea  name="desc">{!! $lesson->description ?? '' !!}</textarea>
                         </div>
                     </div>
 
@@ -117,10 +125,10 @@
                         <div class="col-md-4">
                             <label class="col-form-label">آزمون اتمام درس</label>
                             <select class="form-control" name="quiz" id="quiz">
-                                <option value="#">بدون آزمون</option>
+                                <option value="">بدون آزمون</option>
                                 @foreach (\App\Quiz::orderBy('title')->get() as $item)
                                 <option value="{{$item->id}}"
-                                    {{isset($lesson) && $lesson->quiz->id == $item->id ? 'selected' : ''}}>
+                                    {{isset($lesson) && $lesson->quiz && $lesson->quiz->id == $item->id ? 'selected' : ''}}>
                                     {{$item->title}}</option>
                                 @endforeach
                             </select>
@@ -137,14 +145,32 @@
 
                     </div>
 
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">
+                    <div class="col-md-12 my-3 btn--wrapper">
+
+                        <button type="submit" class="btn btn-primary waves-effect waves-light" >
                             @isset($lesson)
                             ویرایش
                             @else
                             ثبت
                             @endisset
                         </button>
+        
+        
+        
+                    </div>
+                    <div class="col-md-12">
+                        <div class="progress mt-2">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"
+                                style="width: 0%">
+                                0%
+                            </div>
+                        </div>
+                        <br />
+                        <div id="success">
+                        </div>
+                        <div id="errors">
+        
+                        </div>
                     </div>
                 </form>
             </div>
@@ -156,16 +182,20 @@
 
 @section('script')
 <script src="{{URL::asset('/libs/select2/select2.min.js')}}"></script>
-<!--tinymce js-->
-<script src="{{URL::asset('/libs/tinymce/tinymce.min.js')}}"></script>
-<!-- Summernote js -->
-<script src="{{URL::asset('/libs/summernote/summernote.min.js')}}"></script>
-<!-- init js -->
-<script src="{{URL::asset('/js/pages/form-editor.init.js')}}"></script>
+<script src="{{URL::asset('/libs/ckeditor/ckeditor.js')}}"></script>
+<!-- Sweet Alerts js -->
+<script src="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- form mask -->
 <script src="{{URL::asset('/libs/inputmask/inputmask.min.js')}}"></script>
 <!-- form mask init -->
+<script src="{{asset('assets/js/jquery.form.min.js')}}"></script>
+
 <script>
+      CKEDITOR.replace('desc',{
+            
+          
+            contentsLangDirection: 'rtl'
+        });
     $(".select2").select2({
         tags:false
     });
@@ -180,6 +210,78 @@
            $('#cash').removeClass('show').addClass('hidden')
        }
    })
+
+   $('form').ajaxForm({
+        beforeSerialize:function($Form, options){
+        /* Before serialize */
+        $("#errors").html('')
+        for ( instance in CKEDITOR.instances ) {
+            CKEDITOR.instances[instance].updateElement();
+        }
+        return true; 
+        },
+        beforeSend:function(){
+            $('#success').empty();
+            
+      },
+      uploadProgress:function(event, position, total, percentComplete)
+      {
+      
+        $('.btn--wrapper button').text(`در حال ارسال ...`)
+        $('.btn--wrapper button').attr('disabled','true')
+       
+        $('.progress-bar').text(percentComplete + '%');
+        $('.progress-bar').css('width', percentComplete + '%');
+      
+      
+      },
+     
+      success:function(data)
+      {
+
+          $('.btn--wrapper button').html(`ارسال`)
+          $('.btn--wrapper button').removeAttr('disabled');
+
+        if(data.status == 'success')
+        {
+            Swal.fire({
+            title: '',
+            text: 'پست با موفقیت آپلود شد',
+            type: 'success',
+            confirmButtonColor: '#3b5de7',
+            confirmButtonText: "مشاهده درس ها"
+            }).then(function (result) {
+        if (result.value) {
+          location.href = data.url
+        }
+      });
+        }
+        
+            $('.progress-bar').text('انجام شد');
+            $('.progress-bar').css('width', '0%');
+
+            
+         
+      },
+
+      error:function(data){
+        
+          if(data.status == 422) {
+
+            $("#errors").html('')
+              $.each(data.responseJSON.errors, function (key, item) 
+                {
+                  $("#errors").append("<li class='alert alert-danger'>"+item+"</li>")
+                });
+          } 
+
+      
+          $('.btn--wrapper button').html(`ارسال`)
+          $('.btn--wrapper button').removeAttr('disabled');
+                  $('.progress-bar').css('width', '0%');
+     
+      }
+    });
 </script>
 
 @endsection

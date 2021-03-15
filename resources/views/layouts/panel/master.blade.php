@@ -2,15 +2,25 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ asset('panel-assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('assets/css/toastr.min.css') }}"> 
     <link rel="stylesheet" href="{{ asset('panel-assets/css/Main.css') }}">
+    @yield('css')
     <script src="{{ asset('panel-assets/js/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('panel-assets/js/bootstrap.min.js') }}"></script>
+
+    @yield('scripts')
+
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <script>
+        token = $('meta[name="csrf-token"]').attr('content')
+        mainUrl = '{{route("baseurl")}}'
+</script>
     <script src="{{ asset('panel-assets/js/Main.js') }}"></script>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>@yield('title','تکوان | پنل کاربری')</title>
 </head>
 <body>
 <img class="panel-bg" src="{{ asset('panel-assets/Images/Dashboard/1.png') }}" alt="">
@@ -18,15 +28,15 @@
     <nav class="top-nav">
         <div class="top-menu">
             <div class="profile-user">
-                <img class="user-profile-img" src="{{ asset('panel-assets/Images/Dashboard/header/bg.png') }}" alt="">
-                <span id="userNameProfile">ابراهیم خالدی</span>
-                <img src="{{ asset('panel-assets/Images/Dashboard/header/icon.png') }}" alt="">
+                <img class="user-profile-img" src="{{ asset('images/avatar.jpg') }}" alt="user image">
+                <span id="userNameProfile">{{$user->username}}</span>
+                <img src="{{ asset('panel-assets/Images/Dashboard/header/icon.png') }}" alt="icon">
                 <div class="detail-profile">
                     <a href="#">
                         <img src="{{ asset('panel-assets/Images/Dashboard/header/user-profile.png') }}" alt="">
                         <span>ویرایش پـروفـایل </span>
                     </a>
-                    <a href="#">
+                    <a href="{{ url('/logout')}}">
                         <img src="{{ asset('panel-assets/Images/Dashboard/header/exit-profile.png') }}" alt="">
                         <span>خـروج </span>
                     </a>
@@ -65,14 +75,14 @@
                 </a>
             </li>
             <li class="right-Items">
-                <a href="#">
+                <a href="{{ route('member.posts',$user->username) }}?post_type=course">
                     <img class="img" src="{{ asset('panel-assets/Images/Dashboard/header/storytelling.png') }}" alt="">
                     <img class="hover" src="{{ asset('panel-assets/Images/Dashboard/header/storytelling-hover.png') }}" alt="">
                     <span>دوره ها</span>
                 </a>
             </li>
             <li class="right-Items">
-                <a href="#">
+                <a href="{{ route('member.posts',$user->username) }}?post_type=webinar">
                     <img class="img" src="{{ asset('panel-assets/Images/Dashboard/header/video.png') }}" alt="">
                     <img class="hover" src="{{ asset('panel-assets/Images/Dashboard/header/video-hover.png') }}" alt="">
                     <span>وبینار ها</span>
@@ -106,5 +116,7 @@
 @yield('content')
 
 
+<script src="{{ URL::asset('assets/js/toastr.min.js') }}"></script>
+{!! Toastr::message() !!}
 </body>
 </html>

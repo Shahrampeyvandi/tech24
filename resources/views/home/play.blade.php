@@ -6,7 +6,7 @@
     <meta name="_token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$post->title}}</title>
+    <title>{{$title}}</title>
 </head>
 
 <body>
@@ -76,9 +76,7 @@
 
         <section id="play" class=" position-relative">
             <video class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" id="player" controls>
-                @if (isset($post))
-                <source src="{{$post->files->first()->file}}" type='video/mp4' label='' />
-                @endif
+                <source src="{{$url}}" type='video/mp4' label='' />
             </video>
         </section>
     </body>

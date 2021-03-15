@@ -56,7 +56,7 @@ class LoginController extends Controller
 
             return redirect('/admin-panel/index');
         }
-        return redirect('/');
+        return redirect($this->redirectTo);
 
     }
 }

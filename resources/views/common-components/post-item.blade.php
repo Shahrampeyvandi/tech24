@@ -5,7 +5,7 @@
             <p class="box_overlay_item">شروع دوره :
                 {{ \Morilog\Jalali\Jalalian::forge($post->start_date)->ago() }}</p>
             <p class="box_overlay_item">زمان برگزاری : {{ jalaliDate($post->start_date) }}</p>
-            <a href="{{ $post->url() }}" class="box_overlay_item box_overlay_btn">مطالعه بیشتر</a>
+            <a href="{{ route('post.show',$post->slug) }}" class="box_overlay_item box_overlay_btn">مطالعه بیشتر</a>
         </div>
     </div>
     <div class="box_content">

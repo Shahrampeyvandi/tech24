@@ -1,6 +1,6 @@
 @extends('layouts.home.master-home')
 
-@section('title') {{ $title }} @endsection
+@section('title') {{ $page_title }} @endsection
 
 @section('css')
 <link rel="stylesheet" href="{{ URL::asset('assets/css/style.css') }}">

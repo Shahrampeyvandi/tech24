@@ -16,6 +16,7 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], f
     Route::resource('certificates', 'CertificateController')->except(['show', 'update']);
     Route::resource('notifications', 'NotificationController')->except(['show', 'update']);
     Route::resource('lessons', 'LessonController')->except(['show', 'update']);
+    Route::get('question/excel/download','QuestionController@download');
     Route::resource('blogs', 'BlogController')->except(['show', 'update']);
     Route::resource('sliders', 'SliderController')->except(['show', 'update']);
     Route::resource('settings', 'SettingController')->except(['show', 'update']);

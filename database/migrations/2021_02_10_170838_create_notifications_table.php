@@ -17,9 +17,11 @@ class CreateNotificationsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('text')->nullable();
-            $table->enum('for',['students','teachers','admins','all','define']);
-            $table->string('users')->nullable();
+            $table->enum('for',['students','teachers','admins','all','single'])->default('single');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('expire_date')->nullable();
+            $table->boolean('readed')->default(false);
             $table->timestamps();
         });
     }

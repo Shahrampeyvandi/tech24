@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Quiz;
 use App\Lesson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 
@@ -20,6 +22,7 @@ class LessonController extends Controller
      */
     public function index()
     {
+       
         $data = [
             'lessons' => Lesson::latest()->get(),
             'title' => $this->page_title
@@ -48,22 +51,41 @@ class LessonController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-            'url' => 'required_without:file',
-            'title' => 'required',
-            'file' => "required|mimes:mp4,3gp"
+        // $date = date('Y');
+        // $conn = ftp_connect(env('FTP_HOST'));
+        // $login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        // ftp_set_option($conn, FTP_USEPASVADDRESS, false);
+        // ftp_pasv($conn, true);
+        // if (ftp_nlist($conn, 'course' . '/' . $date) == false) {
+        //     ftp_mkdir($conn, 'course' . '/' . $date);
+        // }
+        // ftp_put($conn, 'course' . '/' . $date . '/' . 'jadid.mp4', $_FILES['file']['tmp_name'], FTP_BINARY);
+        // ftp_close($conn);
+        // dd('d');
 
-        ]);
+       
         // dd($request->all());
 
         $slug = SlugService::createSlug(Lesson::class, 'slug', $request->title);
         if (isset($request->action) && $request->action == 'edit') {
+            $request->validate([
+                'title' => 'required',
+    
+            ]);
             $lesson = Lesson::find($request->lesson_id);
+            // dd($lesson->quiz);
         } else {
+            $request->validate([
+                'url' => 'required_without:file',
+                'title' => 'required',
+                'file' => "required|mimes:mp4,3gp"
+    
+            ]);
+            
             $lesson = new Lesson;
         }
 
-        if ($request->has('picture')) {
+        if ($request->has('picture') && $request->picture ) {
             if (isset($request->action)) {
                 File::delete(public_path($lesson->picture));
             }
@@ -75,36 +97,59 @@ class LessonController extends Controller
 
 
         $lesson->title = $request->title;
-        $lesson->post_id = 1;
+        $lesson->post_id = $request->course;
         $lesson->duration = $request->duration;
-        $lesson->description = $request->description;
+        $lesson->description = $request->desc;
         $lesson->cash = $request->cash_type;
         $lesson->price = $request->cash;
         $lesson->number = $request->number;
 
         $lesson->save();
 
-        if ($request->has('file')) {
+        if ($request->has('file')  && $request->file) {
             if (isset($request->action) && $request->action == 'edit') {
-                File::delete(public_path($lesson->url));
+                // File::delete(public_path($lesson->url));
+                foreach ($lesson->files as $key => $file) {
+                    
+                    $this->delete_with_ftp($file->file);
+                }
                 $lesson->files()->delete();
             }
 
             // $fileName = $this->upload($request, 'lesson', $slug, "required|mimes:mp4,3gp");
 
             $fileName = $slug . '.' . $request->file->extension();
+            // dd($fileName);
             $url = $this->upload_with_ftp($fileName, 'course');
         } else {
-            $url = $request->url;
+            if($request->url) {
+                $url = $request->url;
+            }
         }
 
-        $lesson->files()->create([
-            'file' => $url
-        ]);
+        if(isset($url) && strpos($url,'download.techone24.com/uploads') == true) {
+            $lesson->files()->create([
+                'file' => $url
+            ]);
+        }
+
+        if ($request->has('quiz')&& $request->quiz) {
+            if($request->quiz){
+            $q = Quiz::find($request->quiz);
+            $q->quizable_id = $lesson->id;
+            $q->quizable_type = 'App\Lesson';
+            $q->save();
+            }else{
+               $q = $lesson->quiz;
+               $q->quizable_id = null;
+               $q->quizable_type = null;
+               $q->save();
+            }
+        }
 
 
+        return Response::json(['status' => 'success', 'url' => route('lessons.index')], 200);
 
-        return Redirect::route('lessons.index');
     }
 
     /**
@@ -168,4 +213,6 @@ class LessonController extends Controller
         $request->picture->move(public_path('uploads/' . $date . '/' . $type), $imageName);
         return 'uploads/' . $date . '/' . $type . '/' . $imageName;
     }
+
+    
 }

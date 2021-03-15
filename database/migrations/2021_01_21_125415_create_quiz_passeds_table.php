@@ -15,6 +15,11 @@ class CreateQuizPassedsTable extends Migration
     {
         Schema::create('quiz_passeds', function (Blueprint $table) {
             $table->id();
+            $table->string('score')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('quiz_id');
+            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->timestamps();
         });
     }
