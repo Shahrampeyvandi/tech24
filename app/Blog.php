@@ -83,15 +83,12 @@ class Blog extends Model
         return $name;
     }
 
-    public function get_image()
+   
+    public function getPicture()
     {
-        $data = @unserialize($this->poster);
-        if ($data !== false) {
-            return asset(unserialize($this->poster)['resize']);
-        } else {
-            return asset($this->poster);
-        }
+        return $this->picture ? asset($this->picture) : asset('assets/imgs/Logo.png');
     }
+    
 
     public function remove_image_from_desc()
     {

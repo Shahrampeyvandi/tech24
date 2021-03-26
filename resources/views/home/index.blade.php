@@ -15,9 +15,9 @@
                     <h1 class="banner_title">{{$slider->title}}</h1>
                     <div class="banner_border"></div>
                     <p class="banner_desc">
-                        {!! Str::limit($slider->description, 100, '...') !!}</p>
-                    <a href="#" class="banner_btn btn_orange btn btn-lg mb-2">مشاهده ادامه مطالب</a>
-                    <a href="#" class="banner_btn btn btn-lg">ثبت نام در وبینار</a>
+                        {!! Str::limit($slider->description, 300, '...') !!}</p>
+                    <a href="{{ route('post.show',$slider->post->slug) }}" class="banner_btn btn_orange btn btn-lg mb-2">مشاهده ادامه مطالب</a>
+                    {{-- <a href="#" class="banner_btn btn btn-lg">ثبت نام در وبینار</a> --}}
                 </div>
                 <img src="{{ asset($slider->image) }}" alt="{{ $slider->title }}">
                 <div

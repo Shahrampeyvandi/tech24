@@ -2,3 +2,18 @@
 @import "navbar.css";
 @import "component.css";
 @import "block.css";
+
+
+
+
+label.error {
+    font-size: .7rem;
+    color: red;
+}
+
+.blogs-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+    
+}

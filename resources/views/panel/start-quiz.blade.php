@@ -275,4 +275,7 @@
 @section('scripts')
 <!-- Sweet Alerts js -->
 <script src="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.js')}}"></script>
+<script>
+   timer(new Date($('input[name="time"]').val()));
+</script>
 @endsection

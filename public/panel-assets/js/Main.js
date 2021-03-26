@@ -195,5 +195,5 @@ $(document).ready(function () {
     }
 
 
-    timer(new Date($('input[name="time"]').val()));
+   
 })

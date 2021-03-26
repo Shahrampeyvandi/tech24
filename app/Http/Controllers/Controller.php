@@ -69,4 +69,96 @@ class Controller extends BaseController
             return  true;
        
     }
+
+    public function sendSMS($patterncode, $phone, $data)
+    {
+        // $patterncode = '4ex85b2su5';
+
+        // برای پیامک هنگام ثبت نام
+        //$patterncode="g0mj7wtqv3";
+        // $data = array("name" => "shahramp");
+        //------------------------------
+        // برای ارسال پیامک ثبت خرید اشتراک
+        //$patterncode="97b8c9m9a5";
+        //$data = array("name" => "نام طرف", "number" => "نام اشتراک");
+        //-------------------------------
+        // ویرایش اطلاعات پروفایل
+        //$patterncode="nj36jd5q3c";
+        //$data = array("name" => "نام طرف");
+        //-------------------------------
+
+
+        //$username = "khosravanihadi";
+        //$password = 'Hk129837';
+        $datas = array(
+            "pattern_code" => $patterncode,
+            "originator" => "+983000505",
+            "recipient" => '+98' . substr($phone, 1),
+            "values" => $data
+        );
+        $url = "http://rest.ippanel.com/v1/messages/patterns/send";
+        $handler = curl_init($url);
+        curl_setopt($handler, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($handler, CURLOPT_POSTFIELDS, json_encode($datas));
+        curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($handler, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Authorization: AccessKey -0E7gN8QTAM9VhfM5Vin5wCjpX5AHYn2a8P-J5Y4T5k='
+        ));
+        $response = curl_exec($handler);
+    }
+
+    protected function add_user_to_adobegroup($user_id, $group_id)
+    {
+
+        try {
+            $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=login&login=' . env('ADOBE_CONNECT_USER_NAME') . '&password=' . env('ADOBE_CONNECT_PASSWORD') . '');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+            $data = curl_exec($ch);
+            curl_close($ch);
+
+            $ch = curl_init('http://online.techone24.com/api/xml?action=group-membership-update&group-id=' . $group_id . '&principal-id=' . $user_id . '&is-member=1');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $arr = json_decode(json_encode(simplexml_load_string($data)), true);
+        } catch (\Exception $th) {
+            throw $th;
+        }
+    }
+    protected function create_user_in_adobe()
+    {
+
+        try {
+            $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=login&login=' . env('ADOBE_CONNECT_USER_NAME') . '&password=' . env('ADOBE_CONNECT_PASSWORD') . '');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+            $data = curl_exec($ch);
+            curl_close($ch);
+
+            $ch = curl_init('http://online.techone24.com/api/xml?action=principal-update&first-name=' . str_replace(' ', '', getCurrentUser()->fname) . '&last-name=' . str_replace(' ', '', getCurrentUser()->lname) . '&has-children=0&login=' . getCurrentUser()->email . '&type=user');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+            $data = curl_exec($ch);
+            curl_close($ch);
+
+            return $arr = json_decode(json_encode(simplexml_load_string($data)), true);
+        } catch (\Exception $th) {
+            return $th->getMessage();
+        }
+    }
 }

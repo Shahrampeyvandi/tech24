@@ -2,24 +2,20 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Discount;
-use App\Plan;
-use App\User;
-use App\Payment;
-use Carbon\Carbon;
-use App\Notification;
-use App\Mail\SendMail;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Post;
-use Illuminate\Support\Facades\Mail;
+use App\Payment;
+use App\AdobeGroup;
+use App\AdobeUsers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
+use Toastr;
 
 class PayController extends Controller
 {
     public function pay(Request $request)
     {
-       
+
         $post = Post::findOrFail($request->id);
 
 
@@ -33,8 +29,8 @@ class PayController extends Controller
         $payment = new Payment;
         $payment->user_id = $user->id;
         $payment->post_id = $post->id;
-      
-       
+
+
         $payment->amount =  $post->price;
         $payment->save();
 
@@ -128,16 +124,62 @@ class PayController extends Controller
                 $payment->update();
 
                 $post = Post::find($payment->post_id);
-                if(! $post) abort(404);
-                getCurrentUser()->posts()->attach($post->id);
+                if (!$post) abort(404);
+                // getCurrentUser()->posts()->attach($post->id);
 
-                // برای ارسال پیامک ثبت خرید اشتراک
-                // $patterncode = "w2z4s4pd1e";
-                // $data = array("name" => auth()->user()->first_name, "day" => $plan->days);
-                // $this->sendSMS($patterncode, auth()->user()->mobile, $data);
+                if ($post->post_type == 'webinar') {
+                    $name = 'وبینار';
+        
+                    if (!AdobeUsers::where('user_id', getCurrentUser()->id)->first()) {
+                        $response =  $this->create_user_in_adobe();
+                        if (is_array($response) && $response['status']['@attributes']['code'] == 'ok') {
+                            $userobj = new AdobeUsers;
+                            $userobj->principal_id = $response['principal']['@attributes']['principal-id'];
+                            $userobj->account_id = $response['principal']['@attributes']['account-id'];
+                            $userobj->user_id = getCurrentUser()->id;
+                            $userobj->save();
+                        } else {
+                            Toastr::info('خطایی در روند ثبت نام رخ داد!', ' پیغام');
+                            return Redirect::route('post.show', $post->slug);
+                        }
+                    } else {
+                        $userobj = AdobeUsers::where('user_id', getCurrentUser()->id)->first();
+                    }
+        
+                    // dd($response);
+        
+        
+                    $group = AdobeGroup::where('post_id', $post->id)->first();
+                    if ($group) {
+                        $res = $this->add_user_to_adobegroup($userobj->principal_id, $group->principal_id);
+                        if ($res['status']['@attributes']['code'] == 'ok') {
+                            $group->users()->attach($userobj->id);
+                            getCurrentUser()->posts()->attach($post->id);
+        
+        
+                            //------ ارسال پیامک ثبت نام در وبینار
+                            $patterncode = "q9uaxab7bs";
+                            $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
+                            $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
+                            
+                        } else {
+                        }
+                    }
+                } else {
+                    $name = 'دوره';
+        
+                    getCurrentUser()->posts()->attach($post->id);
+        
+                    //------ ارسال پیامک ثبت نام در دوره
+                    $patterncode = "ts5qit1pfb";
+                    $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
+                    $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
+                }
 
 
-                return redirect()->route('member.posts',getCurrentUser()->username);
+
+                Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
+                return redirect()->route('member.posts', ['user'=>getCurrentUser()->username,'post_type' => $post->post_type]);
             } else {
 
                 // تراکنش ناموفق بوده

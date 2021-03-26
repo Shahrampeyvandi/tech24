@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\AdobeGroup;
 use App\AdobeUsers;
-use App\Post;
-use App\Category;
+use App\Blog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Toastr;
 
-class PostController extends Controller
+class BlogController extends Controller
 {
     public function show($slug = null)
     {
@@ -33,53 +32,25 @@ class PostController extends Controller
 
     public function posts(Request $request, $category = null)
     {
-        if (\Request::path() == 'courses') {
-            $page_title =  'تکوان | دوره ها';
-            $title = 'دوره';
-            $post_type = 'course';
-        } elseif (\Request::path() == 'podcasts') {
-            $page_title =  'تکوان | پادکست ها';
-            $title = 'پادکست';
-            $post_type = 'podcast';
-        } else {
-            $page_title =  'تکوان | وبینار ها';
-            $post_type = 'webinar';
-            $title = isset($request->q) && $request->q == 'archive' ? 'وبینارهای گذشته' : 'وبینار';
-        }
+        
+            $page_title =  'تکوان | وبلاگ ها';
+           
 
 
         $order = isset($request->order) ? $request->order : 'created_at';
-        $data['posts'] = Post::where(function ($q) use ($category, $post_type, $request) {
+        $data['blogs'] = Blog::where(function ($q)  {
 
-            if ($category) {
-                $q->whereHas('category', function ($q) use ($category, $post_type) {
-                    $q->whereSlug($category);
-                });
-            }
-
-
-
-            if ($post_type == 'webinar' && isset($request->q) && $request->q == 'archive') {
-                $q->where('archive', 1);
-            } elseif ($post_type == 'podcast') {
-            } else {
-                $q->where('archive', 0)->where('start_date', '>=', Carbon::now());
-            }
-
-            $q->where('post_type', $post_type);
         })->orderByDesc($order)->paginate(6);
+        
+        $data['page_title'] = $page_title;
+        $data['title'] =   'وبلاگ';
+        
+        
+        $data['latest_blogs'] = Blog::latest()->take(5)->get();
+        $data['post_type'] = 'blog';
         // dd($data);
 
-        $data['page_title'] = $page_title;
-        $data['title'] =   $title;
-        $data['post_type'] = $post_type;
-
-        $data['latest_posts'] = Post::where('post_type', $post_type)->latest()->take(5)->get();
-
-        if ($data['post_type'] == 'podcast') {
-            return view('home.podcasts', $data);
-        }
-        return view('home.posts', $data);
+        return view('home.blogs', $data);
     }
     public function courses(Request $request)
     {

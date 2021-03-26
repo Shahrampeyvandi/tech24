@@ -52,6 +52,7 @@
     -webkit-transform: translate(15%, -50%);
     transform: translate(15%, -50%);
     font-family: 'Yekan';
+    text-align: justify;
 }
 
 .banner_carousel .carousel-item .banner_content .banner_border {

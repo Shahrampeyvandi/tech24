@@ -123,6 +123,17 @@ class PostController extends Controller
         try {
             $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
 
+            // $res =   $this->getInfoSCO($request->sco_id);
+            
+            // if (is_array($res) && isset($res['status']['@attributes']['code']) && $res['status']['@attributes']['code'] == 'ok') {
+            // $post->sco_id = $request->sco_id;
+            // dd($res);
+            // // 50422
+            // }else{
+            //     return Response::json(['message'=>'احتمالا کد sco وارد شده اشتباه است'],500);
+            // }
+
+
             if ($request->has('picture') && $request->picture) {
                 if (isset($request->action) && $request->action == 'edit') {
                     File::delete(public_path($post->picture));
@@ -131,7 +142,7 @@ class PostController extends Controller
                 $post->picture = $fileName;
             }
             $post->title = $request->title;
-
+            $post->sco_url = isset($request->sco_id) && $request->sco_id ? $request->sco_id : null;
             $post->description = $request->desc;
             $post->media = $mime ? 'audio' : 'video';
             $post->post_type = $this->post_type;
@@ -214,7 +225,7 @@ class PostController extends Controller
             }
 
             if (isset($request->action) && $request->action == 'edit') {
-            }else{
+            } else {
                 if ($request->group_name) {
                     $response =  $this->create_group_adobe($post, $request->group_name);
                     if ($response['status']['@attributes']['code'] == 'ok') {
@@ -374,5 +385,31 @@ class PostController extends Controller
         } catch (\Exception $th) {
             throw $th;
         }
+    }
+
+    public function getInfoSCO($sco_id)
+    {
+
+        $ch = curl_init('http://online.techone24.com/api/xml?action=login&login=test@gmail.com&password=123456');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+        curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+        $data = curl_exec($ch);
+        // dd($data);
+        curl_close($ch);
+
+        $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=sco-info&sco-id=' . $sco_id . '');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+        curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+        $data = curl_exec($ch);
+        // echo '<pre>';
+        // var_dump($data);
+        // echo '</pre>';
+        return json_decode(json_encode(simplexml_load_string($data)), true);
     }
 }

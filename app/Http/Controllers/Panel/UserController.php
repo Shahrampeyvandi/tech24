@@ -7,12 +7,13 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Notification;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 class UserController extends Controller
 {
 
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -21,30 +22,67 @@ class UserController extends Controller
     public function index($slug = null)
     {
         // dd($slug);
-       
-        if(isset(request()->action) && request()->action == 'read_notification' && is_numeric(request()->q)) {
-           $notif =  Notification::find(request()->q);
-            if($notif) {
-                $notif->readed = true;
-                $notif->save();
-            }
-        }
 
-        $data['user'] = User::where('username',$slug)->firstOrFail();
 
-        if(! getCurrentUser()->hasRole('admin') || $data['user']->id !== getCurrentUser()->id) abort(403);
- 
-        if($data['user']->hasRole('teacher')) {
+
+
+        $data['user'] = User::where('username', $slug)->firstOrFail();
+     
+        // if(getCurrentUser()->hasRole('admin')){
+
+        // }
+        if (!getCurrentUser()->hasRole('admin') && $data['user']->id !== getCurrentUser()->id) abort(403);
+
+        if ($data['user']->hasRole('teacher')) {
             $for = 'teachers';
-        }else{
+        } else {
             $for = 'students';
         }
 
-        $data['notifications'] = Notification::whereIn('for',[$for,'all'])->where('readed',0)->latest()->get();
-        
+        if (request()->action) {
+            if (request()->action == 'read_notification' && is_numeric(request()->id)) {
 
-        return view('panel.dashboard',$data);
-        
+
+                $notif =  Notification::find(request()->id);
+                if ($notif) {
+                    // dd('d');
+                   $data['user']->readedNotifications()->attach($notif->id);
+                }
+            }
+        }
+
+        $all_notif =  Notification::whereIn('for', [$for, 'all'])->latest()->get();
+        $unreaded  =Notification::whereIn('for', [$for, 'all'])->whereNotIn('id',$data['user']->readedNotifications()->pluck('id')->toArray())->latest()->get();
+        $readed = $data['user']->readedNotifications;
+        if (request()->q) {
+            if (request()->q == 'unread_notifications') {
+
+                $data['notifications'] =  $unreaded;
+            }
+            elseif (request()->q == 'readed_notifications') {
+                $data['notifications'] =   $readed;
+                // $data['notifications'] = Notification::whereIn('for', [$for, 'all'])->where('readed', 1)->latest()->get();
+            }else{
+                $data['notifications'] = $all_notif;
+            }
+        } else {
+
+            $data['notifications'] = $all_notif;
+        }
+
+        $data['notifCounts'] = [
+            'readed' => count($readed),
+            'unreaded' => count($unreaded),
+            'all' => count($all_notif),
+        ];
+
+
+
+
+
+
+
+        return view('panel.dashboard', $data);
     }
 
     /**
@@ -54,19 +92,19 @@ class UserController extends Controller
      */
     public function posts($slug = null)
     {
-        
-        $data['user'] = User::where('username',$slug)->first();
 
-        if(! getCurrentUser()->hasRole('admin') || $data['user']->id !== getCurrentUser()->id) abort(403);
-       
-        if(!isset(request()->post_type) || request()->post_type == '') {
+        $data['user'] = User::where('username', $slug)->first();
+
+        if (!getCurrentUser()->hasRole('admin') && $data['user']->id !== getCurrentUser()->id) abort(403);
+
+        if (!isset(request()->post_type) || request()->post_type == '') {
             request()->post_type = 'course';
-        } 
-        
+        }
+
         $data['title'] =  request()->post_type == 'course' ? 'دوره ها' : 'وبینارها';
-        $data['posts'] = getCurrentUser()->posts()->where('post_type',request()->post_type)->latest()->get();
-        
-        return view('panel.posts',$data);
+        $data['posts'] = getCurrentUser()->posts()->where('post_type', request()->post_type)->latest()->get();
+
+        return view('panel.posts', $data);
     }
 
     /**
@@ -125,18 +163,52 @@ class UserController extends Controller
         //
     }
 
-    public function show_post_lessons($user,$id)
-    {   
+    public function show_post_lessons($user, $id)
+    {
         $data['post'] = Post::findOrFail($id);
 
-        $data['user'] = User::where('username',$user)->firstOrFail();
+        $data['user'] = User::where('username', $user)->firstOrFail();
 
-        if(! getCurrentUser()->hasRole('admin') || $data['user']->id !== getCurrentUser()->id) abort(403);
+        if (!getCurrentUser()->hasRole('admin') && $data['user']->id !== getCurrentUser()->id) abort(403);
         // if(! $data['user']->posts->contains($id)) abort(403);
         $data['title'] =  $data['post']->title;
-        $data['lessons'] = $data['post']->lessons()->orderBy('number','asc')->get();
+        $data['lessons'] = $data['post']->lessons()->orderBy('number', 'asc')->get();
+
+        return view('panel.show-course', $data);
+    }
+
+    
+    public function profile($username)
+    {
+        $data['user'] = User::where('username', $username)->firstOrFail();
+        return view('panel.profile',$data);
+    }
+    public function updateProfile($username)
+    {
+        // dd($username);
+        $user= User::where('username', $username)->firstOrFail();
+        $user->fname = request()->firstname;
+        $user->lname = request()->lastname;
+        // $user->lname = request()->email;
+        if(request()->avatar) 
+        {
+            $name = $this->upload_avatar($username,request()->avatar);
+            $user->avatar = $name;
+        }
+
+        $user->save();
         
-        return view('panel.show-course',$data);
-      
+        return Redirect::route('member.profile',$username);
+    }
+
+    public function upload_avatar($username,$file)
+    {
+        $date = date('Y');
+       
+
+        $imageName = $username . '.' . $file->extension();
+
+        $file->move(public_path('uploads/' . $date . '/photos'), $imageName);
+        return 'uploads/' . $date . '/photos/' . $imageName;
     }
 }

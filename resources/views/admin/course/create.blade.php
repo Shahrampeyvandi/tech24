@@ -54,6 +54,14 @@
                    <div class="form-group row">
                     <div class="col-md-8">
                         <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
+                          SCO ID</label>
+                        <input class="form-control" type="text" name="sco_id" value="" required
+                            id="example-text-input">
+                    </div>
+                </div>
+                   <div class="form-group row">
+                    <div class="col-md-8">
+                        <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
                             نام گروه وبینار (لاتین)</label>
                         <input class="form-control" type="text"
                         pattern = "[A-Za-z]{2,}" title="تنها حروف لاتین"
@@ -358,7 +366,6 @@
 <script src="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- form mask -->
 <script src="{{URL::asset('/libs/inputmask/inputmask.min.js')}}"></script>
-<!-- form mask init -->
 
 <script src="{{asset('assets/js/jquery.form.min.js')}}"></script>
 

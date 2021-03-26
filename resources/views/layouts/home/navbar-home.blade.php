@@ -24,7 +24,7 @@
                 </li>
 
                 <li class="nav_item">
-                    <a href="#" class="nav_link">بلاگ</a>
+                    <a href="{{ url('blogs') }}" class="nav_link">بلاگ</a>
                 </li>
                 <li class="nav_item">
                     <a href="{{ URL::route('aboutus') }}" class="nav_link">درباره ما</a>

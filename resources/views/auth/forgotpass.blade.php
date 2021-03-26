@@ -1,6 +1,6 @@
 @extends('layouts.home.master-home')
 
-@section('title') تکوان | ورود @endsection
+@section('title') تکوان | بازیابی رمز عبور @endsection
 
 @section('body')
 
@@ -17,19 +17,19 @@
                         <div class="bg-login text-center">
                             <div class="bg-login-overlay"></div>
                             <div class="position-relative">
-                                <h5 class="mt-2 font-size-20">اطلاعات حساب خود را وارد کنید</h5>
+                                <h5 class="mt-2 font-size-20">موبایل خود را جهت ارسال کد یکبار مصرف وارد نمایید</h5>
 
                             </div>
                         </div>
                         <div class="card-body text-right">
                             <div class="p-2">
-                                <form method="POST" action="{{ route('login') }}" id="form">
+                                <form method="POST" action="{{ route('password.update') }}" id="form">
                                     @csrf
                                     <div class="form-group">
                                         <label for="mobile">شماره موبایل</label>
                                         <input type="mobile" required class="form-control 
                                         @error('mobile') is-invalid @enderror" name="mobile"
-                                            value="{{ old('mobile') }}" id="mobile" autofocus autocomplete="mobile">
+                                            value="" id="mobile" autofocus autocomplete="mobile">
                                         @error('mobile')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -37,28 +37,12 @@
                                         @enderror
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="userpassword">پسورد</label>
-                                        <input type="password"
-                                            class="form-control @error('password') is-invalid @enderror" name="password"
-                                            required autocomplete="new-password" id="userpassword">
-                                        @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="remember"
-                                            id="customControlInline" {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="custom-control-label"
-                                            for="customControlInline">{{ __('به خاطر بسپار') }}</label>
-                                    </div>
+                                 
+                                
 
                                     <div class="mt-3">
                                         <button class="btn btn-primary btn-block waves-effect waves-light" id="login"
-                                            type="submit">ورود</button>
+                                            type="submit">ارسال پیامک بازیابی رمز عبور</button>
                                     </div>
 
                                     {{-- <div class="mt-4 text-center">
@@ -105,16 +89,10 @@
                 required: true,
                 regex: /^[0][1-9]\d{9}$|^[1-9]\d{9}$/
 			},
-			password: {
-				required: true,
-			
-			},
+		
 		},
 		messages: {
-            password: {
-                required: "رمز عبور خود را وارد نمایید",
-              
-            },
+         
             mobile:{
                 required:"شماره موبایل خود را وارد نمایید",
                 regex:"موبایل دارای فرمت نامعتبر می باشد"

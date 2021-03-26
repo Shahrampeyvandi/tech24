@@ -7,5 +7,5 @@
   @endif
 
     <br><br>
-    @include('common-components.latest-posts',['posts'=>$latest_posts,'title' => 'وبینارهای اخیر'])
+    @include('common-components.latest-posts',['posts'=>$latest_posts,'title' => 'وبلاگ های اخیر'])
 </div>

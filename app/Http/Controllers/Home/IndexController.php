@@ -19,6 +19,7 @@ class IndexController extends Controller
     public function index()
     {
 
+        // try {
      
         // $ch = curl_init('http://online.techone24.com/api/xml?action=login&login=test@gmail.com&password=123456');
         // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
@@ -71,6 +72,27 @@ class IndexController extends Controller
 // $data = curl_exec($ch);
 // var_dump($data);
 // curl_close($ch);
+
+
+// $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=sco-info&sco-id=50422');
+// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+// curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+// $data = curl_exec($ch);
+// // echo '<pre>';
+// // var_dump($data);
+// // echo '</pre>';
+// return json_decode(json_encode(simplexml_load_string($data)), true)['sco']['url-path'];
+// } catch (\Throwable $th) {
+//   return $th->getMessage();
+// }
+
+
+// curl_close($ch);
+
+
    
         // dd(public_path());
         // dd(\Request::getRequestUri());

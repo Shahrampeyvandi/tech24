@@ -40,8 +40,9 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function logout(){
-        
+    public function logout()
+    {
+
         Auth::logout();
         return redirect('/login');
     }
@@ -52,11 +53,15 @@ class LoginController extends Controller
         //     return redirect()->route('dashboard');
         // }
 
-        if(Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole('admin')) {
 
             return redirect('/admin-panel/index');
         }
         return redirect($this->redirectTo);
+    }
 
+    public function username()
+    {
+        return 'mobile';
     }
 }

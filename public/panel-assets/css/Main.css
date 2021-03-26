@@ -669,6 +669,12 @@ header .right-nav .right-menu .right-Items a span {
     padding: 1rem 0.5rem;
     display: inline-block;
 }
+.card-dashboard.notification-place .top-content .notification-nav .notification-item a{
+    cursor: pointer;
+    position: relative;
+    padding: 1rem 0.5rem;
+    display: inline-block;
+}
 
 .card-dashboard.notification-place .top-content .notification-nav .notification-item:last-child {
     margin-left: 0;
