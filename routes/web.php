@@ -13,21 +13,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return redirect('/index');
-// });
 
-Auth::routes();
-
-
+// Authentication Routes...
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('logout', 'Auth\LoginController@logout');
-// Route::post('forgotpass/sendsms','Auth\LoginController@sendsms');
+
+// Registration Routes...
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@register');
+
+
+
+
+Route::get('password/reset','Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/reset','Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/confirm-code','Auth\ForgotPasswordController@SendCode')->name('password.sendcode');
+Route::post('password/confirm-code','Auth\ResetPasswordController@reset')->name('password.sendcode');
+
 Route::get('/','Home\IndexController@index')->name('baseurl');
 Route::get('/aboutus','Home\IndexController@aboutus')->name('aboutus');
 Route::get('/contactus','Home\IndexController@contactus')->name('contactus');
 Route::get('/webinars/{category?}','Home\PostController@posts');
 Route::get('/courses/{category?}','Home\PostController@posts');
 Route::get('/blogs/{category?}','Home\BlogController@posts');
+Route::get('/blog/{slug}','Home\BlogController@show');
 Route::get('/podcasts/{category?}','Home\PostController@posts');
 Route::get('/category/{slug}','Home\CategoryController@posts');
 Route::get('/pay','Home\PayController@pay')->name('pay')->middleware('auth');
@@ -38,19 +49,7 @@ Route::get('/{post}','Home\PostController@show')->name('post.show');
 Route::get('/{post}/register','Home\PostController@register')->name('post.register')->middleware('auth');
 
 
-Route::get('pages-login', 'QovexController@index');
-Route::get('pages-login-2', 'QovexController@index');
-Route::get('pages-register', 'QovexController@index');
-Route::get('pages-register-2', 'QovexController@index');
-Route::get('pages-recoverpw', 'QovexController@index');
-Route::get('pages-recoverpw-2', 'QovexController@index');
-Route::get('pages-lock-screen', 'QovexController@index');
-Route::get('pages-lock-screen-2', 'QovexController@index');
-Route::get('pages-404', 'QovexController@index');
-Route::get('pages-500', 'QovexController@index');
-Route::get('pages-maintenance', 'QovexController@index');
-Route::get('pages-comingsoon', 'QovexController@index');
-Route::post('login-status', 'QovexController@checkStatus');
+
 
 
 // You can also use auth middleware to prevent unauthenticated users

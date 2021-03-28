@@ -57,12 +57,12 @@
             <div class="divider"></div>
             <menu class="dropdown">
                 <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown">
-                    {{\Request::getRequestUri() == '/tech24/public/?order=sell' ? 'پرفروش ترین ' : 'جدیدترین'}}
+                لیست
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a href="{{ url('webinars') }}?order=created_at">جدیدترین وبینار ها</a></li>
+                    <li class="dropdown-item"><a href="{{ url('webinars') }}">جدیدترین وبینار ها</a></li>
                     <div class="dropdown-divider"></div>
-                    <li class="dropdown-item"><a href="{{ url('webinars') }}?order=sell">پرفروش ترین وبینار ها</a></li>
+                    <li class="dropdown-item"><a href="{{ url('webinars') }}">پرفروش ترین وبینار ها</a></li>
                 </ul>
             </menu>
         </div>
@@ -180,12 +180,12 @@
             <div class="divider"></div>
             <menu class="dropdown">
                 <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown">
-                    {{\Request::getRequestUri() == '/tech24/public/?order=sell' ? 'پرفروش ترین ' : 'جدیدترین'}}
+                    لیست
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a href="{{ route('baseurl') }}?order=latest">جدیدترین وبینار ها</a></li>
+                    <li class="dropdown-item"><a href="{{ route('baseurl') }}">جدیدترین دوره ها</a></li>
                     <div class="dropdown-divider"></div>
-                    <li class="dropdown-item"><a href="{{ route('baseurl') }}?order=sell">پرفروش ترین وبینار ها</a></li>
+                    <li class="dropdown-item"><a href="{{ route('baseurl') }}">پرفروش ترین دوره ها</a></li>
                 </ul>
             </menu>
         </div>
@@ -236,7 +236,7 @@
         <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
             <h1 class="section_heading">آخرین اخبار وبلاگ</h1>
             <div class="divider"></div>
-            <a class="btn btn-md btn-gray">مشاهده همه موارد</a>
+            <a href="{{ url('blogs') }}" class="btn btn-md btn-gray">مشاهده همه موارد</a>
         </div>
         <div class="posts_row">
             @foreach ($blogs as $blog)

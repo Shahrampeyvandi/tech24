@@ -109,12 +109,14 @@ class LessonController extends Controller
         if ($request->has('file')  && $request->file) {
             if (isset($request->action) && $request->action == 'edit') {
                 // File::delete(public_path($lesson->url));
+                // dd($lesson,$lesson->files);
                 foreach ($lesson->files as $key => $file) {
-                    
+                    // dd('d');
                     $this->delete_with_ftp($file->file);
                 }
                 $lesson->files()->delete();
             }
+            // dd('ss');
 
             // $fileName = $this->upload($request, 'lesson', $slug, "required|mimes:mp4,3gp");
 
@@ -127,7 +129,7 @@ class LessonController extends Controller
             }
         }
 
-        if(isset($url) && strpos($url,'download.techone24.com/uploads') == true) {
+        if(isset($url)) {
             $lesson->files()->create([
                 'file' => $url
             ]);
@@ -197,7 +199,13 @@ class LessonController extends Controller
      */
     public function destroy($id)
     {
-        Lesson::find($id)->delete();
+        $lesson = Lesson::findOrFail($id);
+        foreach ($lesson->files as $key => $file) {
+            // dd('d');
+            $this->delete_with_ftp($file->file);
+        }
+        $lesson->files()->delete();
+        $lesson->delete();
         return Redirect::route('lessons.index');
     }
 

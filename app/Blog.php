@@ -67,7 +67,7 @@ class Blog extends Model
 
     public function url()
     {
-        return route('Blog.show', ['category' => $this->category->name, 'slug' => $this->slug]);
+        return url('/blog',['slug'=>$this->slug]);
     }
 
     public function tag_names()

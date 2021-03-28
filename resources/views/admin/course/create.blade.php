@@ -54,7 +54,7 @@
                    <div class="form-group row">
                     <div class="col-md-8">
                         <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
-                          SCO ID</label>
+                          SCO Url (آدرس وبینار ایجاد شده در ادوبی)</label>
                         <input class="form-control" type="text" name="sco_id" value="" required
                             id="example-text-input">
                     </div>
@@ -67,7 +67,7 @@
                         pattern = "[A-Za-z]{2,}" title="تنها حروف لاتین"
                         name="group_name" 
                         @isset($post)
-                        value="{{$post->adobeGroup->name}}"
+                        value="{{$post->adobeGroup->name ?? ''}}"
                         @else 
                         required
                         @endisset

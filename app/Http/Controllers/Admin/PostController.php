@@ -218,7 +218,7 @@ class PostController extends Controller
                 $url = $request->url;
             }
 
-            if (isset($url) && strpos($url, 'download.techone24.com/uploads') == true) {
+            if(isset($url) && strpos($url,env('DL_HOST_URL')) == true) {
                 $post->files()->create([
                     'file' => $url
                 ]);

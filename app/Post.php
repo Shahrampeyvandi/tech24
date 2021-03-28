@@ -124,10 +124,24 @@ class Post extends Model
      {
          if($this->cash == 'money') {
              if(Auth::check() && getCurrentUser()->posts->contains($this->id)) 
-               return 'شما این دوره را خریده اید';
+               return 'شما این '.$this->getPostType('fa').' را خریده اید';
             return number_format((int)$this->price) . ' تومان';
          }
          return 'رایگان';
+     }
+
+     public function getPostType($ln = 'en')
+     {
+         $type = $this->post_type;
+         if($type == 'course') {
+             return $ln == 'en' ? 'course' : 'دوره';
+         }
+         if($type == 'webinar') {
+            return $ln == 'en' ? 'webinar' : 'وبینار';
+        }
+        if($type == 'podcast') {
+            return $ln == 'en' ? 'podcast' : 'پادکست';
+        }
      }
 
      public function url()

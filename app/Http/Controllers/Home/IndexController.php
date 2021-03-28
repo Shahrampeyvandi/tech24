@@ -19,6 +19,11 @@ class IndexController extends Controller
     public function index()
     {
 
+        // $conn = ftp_connect(env('FTP_HOST'));
+        // dd($login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD')));
+        // ftp_set_option($conn, FTP_USEPASVADDRESS, false);
+        // ftp_pasv($conn, true);
+
         // try {
      
         // $ch = curl_init('http://online.techone24.com/api/xml?action=login&login=test@gmail.com&password=123456');

@@ -27,9 +27,7 @@ class Controller extends BaseController
 
     public function upload_with_ftp($fileName, $type)
     {
-        // dd($_FILES['file']['tmp_name']);
-        // dd($fileName,$type);
-        
+       
         try {
             $date = date('Y');
 
@@ -38,15 +36,15 @@ class Controller extends BaseController
             ftp_set_option($conn, FTP_USEPASVADDRESS, false);
             ftp_pasv($conn, true);
 
-            if (ftp_nlist($conn, $type . '/' . $date) == false) {
-                ftp_mkdir($conn, $type . '/' . $date);
+            if (ftp_nlist($conn, 'public_html/uploads/' . $type . '/' . $date) == false) {
+                ftp_mkdir($conn, 'public_html/uploads/' . $type . '/' . $date);
             }
 
-            if(in_array($fileName,ftp_nlist($conn,$type . '/' . $date ))){
-                $this->delete_with_ftp( $type . '/' . $date . '/' . $fileName);
-            }
+            // if (in_array($fileName, ftp_nlist($conn, 'public_html/uploads/' . $type . '/' . $date))) {
+            //     $this->delete_with_ftp('public_html/uploads/' . $type . '/' . $date . '/' . $fileName);
+            // }
 
-            ftp_put($conn, $type . '/' . $date . '/' . $fileName, $_FILES['file']['tmp_name'], FTP_BINARY);
+            ftp_put($conn, 'public_html/uploads/' . $type . '/' . $date . '/' . $fileName, $_FILES['file']['tmp_name'], FTP_BINARY);
             ftp_close($conn);
             return  env('DL_HOST_URL') . '/uploads/' . $type . '/' . $date . '/' . $fileName;
         } catch (\Throwable $th) {
@@ -55,19 +53,17 @@ class Controller extends BaseController
     }
     public function delete_with_ftp($path)
     {
-        // dd($path);
-        // dd(implode('/',[explode('/',$path)[0],explode('/',$path)[1]]));
-            $conn = ftp_connect(env('FTP_HOST'));
-            $login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD'));
-            ftp_set_option($conn, FTP_USEPASVADDRESS, false);
-            ftp_pasv($conn, true);
-            if (in_array(explode('/',$path)[2],ftp_nlist($conn, implode('/',[explode('/',$path)[0],explode('/',$path)[1]])))) {
-                ftp_delete($conn, $path);
-            }
-            
-            ftp_close($conn);
-            return  true;
-       
+        
+        $conn = ftp_connect(env('FTP_HOST'));
+        $login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD'));
+        ftp_set_option($conn, FTP_USEPASVADDRESS, false);
+        ftp_pasv($conn, true);
+        if (in_array(explode('/', $path)[6], ftp_nlist($conn, 'public_html/' . implode('/', [explode('/', $path)[3], explode('/', $path)[4],explode('/', $path)[5]])))) {
+            ftp_delete($conn, $path);
+        }
+
+        ftp_close($conn);
+        return  true;
     }
 
     public function sendSMS($patterncode, $phone, $data)

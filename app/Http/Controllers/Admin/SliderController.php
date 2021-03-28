@@ -46,7 +46,7 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
 
         if (isset($request->action)) {
             $slider = Slider::find($request->slider_id);

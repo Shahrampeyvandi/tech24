@@ -33,7 +33,7 @@
                     <a href="{{ URL::route('contactus') }}" class="nav_link">تماس با ما</a>
                 </li>
             </ul>
-            <a href="{{ URL::route('baseurl') }}" class="navbar_logo"><img src="assets/imgs/Logo.png" alt="Tech-one"></a>
+            <a href="{{ URL::route('baseurl') }}" class="navbar_logo"><img src="{{ URL::asset('assets/imgs/Logo.png') }}" alt="Tech-one"></a>
         </div>
     </nav>
     <!--end nvabar-->

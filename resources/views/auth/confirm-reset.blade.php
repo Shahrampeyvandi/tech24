@@ -17,25 +17,46 @@
                         <div class="bg-login text-center">
                             <div class="bg-login-overlay"></div>
                             <div class="position-relative">
-                                <h5 class="mt-2 font-size-20">موبایل خود را جهت ارسال کد یکبار مصرف وارد نمایید</h5>
+                                <h5 class="mt-2 font-size-20">رمز عبور جدید خود را وارد نمایید</h5>
 
                             </div>
                         </div>
                         <div class="card-body text-right">
                             <div class="p-2">
-                                <form method="POST" action="{{ route('password.email') }}" id="form">
+                                <form method="POST" action="{{ route('password.sendcode') }}" id="form">
                                     @csrf
+                                    <input type="hidden" name="mobile" value="{{ $mobile }}">
                                     <div class="form-group">
-                                        <label for="mobile">شماره موبایل</label>
-                                        <input type="mobile" required class="form-control 
-                                        @error('mobile') is-invalid @enderror" name="mobile"
-                                            value="" id="mobile" autofocus autocomplete="mobile">
-                                        @error('mobile')
+                                        <label for="password">پسورد</label>
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            required autocomplete="new-password" id="password">
+                                        @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                         @enderror
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="userpassword">تایید پسورد</label>
+                                        <input type="password" required name="password_confirmation"
+                                            class="form-control" id="userconfirmpassword">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="">کد ارسالی به شماره موبایل</label>
+                                        <input type="text" required name="code"
+                                        class="form-control @error('code') is-invalid @enderror" >
+                                            @error('code')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                    </div>
+
+
+
 
                                  
                                 
@@ -55,7 +76,6 @@
                     </div>
                 </div>
                 <div class="mt-5 text-center">
-                    <p>حساب کاربری ندارید؟<a href="register" class="font-weight-medium text-primary"> ثبت نام</a> </p>
                     <p>© <script>
                             document.write(new Date().getFullYear()) 
                         </script> تکوان</p>
@@ -85,18 +105,32 @@
 );
     $("#form").validate({
 		rules: {
-            mobile: {
-                required: true,
-                regex: /^[0][1-9]\d{9}$|^[1-9]\d{9}$/
+            code: {
+				required: true,
+			
+			},
+            password: {
+				required: true,
+				minlength: 6
+			},
+			password_confirmation: {
+				required: true,
+				equalTo: "#password"
 			},
 		
 		},
 		messages: {
-         
-            mobile:{
-                required:"شماره موبایل خود را وارد نمایید",
-                regex:"موبایل دارای فرمت نامعتبر می باشد"
-            }
+            code: {
+				required: "کد ارسالی را وارد نمایید",
+			},
+            password: {
+				required: "رمز عبور دا وارد نمایید",
+				minlength: "رمز عبور بایستی حداقل 6 کاراکتر باشد"
+			},
+			password_confirmation: {
+				required: "رمز عبور را وارد نمایید",
+				equalTo: "رمز عبور وارد شده مطابقت ندارد"
+			}
 		}
 	});
     </script>

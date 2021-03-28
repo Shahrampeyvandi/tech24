@@ -51,7 +51,7 @@ class UserController extends Controller
             }
         }
 
-        $all_notif =  Notification::whereIn('for', [$for, 'all'])->latest()->get();
+        $all_notif =  Notification::whereIn('for', [$for, 'all'])->orWhere('user_id',getCurrentUser()->id)->latest()->get();
         $unreaded  =Notification::whereIn('for', [$for, 'all'])->whereNotIn('id',$data['user']->readedNotifications()->pluck('id')->toArray())->latest()->get();
         $readed = $data['user']->readedNotifications;
         if (request()->q) {

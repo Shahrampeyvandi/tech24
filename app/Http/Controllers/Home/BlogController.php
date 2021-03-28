@@ -18,16 +18,14 @@ class BlogController extends Controller
     public function show($slug = null)
     {
         // dd($slug);
-        $data['post'] = Post::whereSlug($slug)->first();
-        if (!$data['post']) abort(404);
-        $data['related_posts'] = Post::where('post_type', $data['post']->post_type)
-            ->where('start_date', '>=', Carbon::now())
-            ->where('id', '!=', $data['post']->id)
-            ->latest()->take(8)->get();
+        $data['blog'] = Blog::whereSlug($slug)->first();
+        if (!$data['blog']) abort(404);
+        $data['related_blogs'] = Blog::where('id', '!=', $data['blog']->id)
+            ->latest()->take(3)->get();
 
-        $data['title'] = 'تکوان | ' . $data['post']->title;
+        $data['title'] = 'تکوان | ' . $data['blog']->title;
 
-        return view('home.' . $data['post']->post_type, $data);
+        return view('home.show-blog', $data);
     }
 
     public function posts(Request $request, $category = null)

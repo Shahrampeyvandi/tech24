@@ -58,7 +58,7 @@ class RegisterController extends Controller
             'lname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'username' => ['required', 'unique:users', 'string', 'regex:/^[a-zA-Z]+$/u', 'max:255'],
+            'username' => ['required', 'unique:users', 'string', 'regex:/^[a-zA-Z]+$/u', 'max:30'],
             'mobile' => ['required', 'regex:/(09)[0-9]{9}/']
 
         ]);
@@ -96,6 +96,7 @@ class RegisterController extends Controller
         $notification = new Notification;
         $notification->title = 'به تکوان خوش آمدید';
         $notification->text = "کاربر عزیز \n ورورد شما را به سایت آموزشی تکوان تبریک میگوییم";
+        $notification->user_id = $user->id;
         $notification->save();
 
             //------ ارسال پیامک ثبت نام کاربر جدید
