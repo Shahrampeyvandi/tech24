@@ -26,6 +26,7 @@ class UserController extends Controller
 
 
 
+
         $data['user'] = User::where('username', $slug)->firstOrFail();
      
         // if(getCurrentUser()->hasRole('admin')){
@@ -52,7 +53,7 @@ class UserController extends Controller
         }
 
         $all_notif =  Notification::whereIn('for', [$for, 'all'])->orWhere('user_id',getCurrentUser()->id)->latest()->get();
-        $unreaded  =Notification::whereIn('for', [$for, 'all'])->whereNotIn('id',$data['user']->readedNotifications()->pluck('id')->toArray())->latest()->get();
+        $unreaded  =Notification::whereIn('for', [$for, 'all'])->orWhere('user_id',getCurrentUser()->id)->whereNotIn('id',$data['user']->readedNotifications()->pluck('id')->toArray())->latest()->get();
         $readed = $data['user']->readedNotifications;
         if (request()->q) {
             if (request()->q == 'unread_notifications') {
@@ -69,6 +70,7 @@ class UserController extends Controller
 
             $data['notifications'] = $all_notif;
         }
+       
 
         $data['notifCounts'] = [
             'readed' => count($readed),

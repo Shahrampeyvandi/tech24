@@ -276,6 +276,113 @@
 <!-- Sweet Alerts js -->
 <script src="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <script>
-   timer(new Date($('input[name="time"]').val()));
+  
+  $('.next-question').click(function (e) {
+        e.preventDefault()
+        let answer = $('input[name="question"]:checked').val()
+        let question = $('input[name="id"]').val()
+        // console.log(question)
+        if (answer != undefined) {
+            $('.preloader').removeClass('hidden').addClass('show')
+            var request = $.post(mainUrl + '/panel/quiz/answer/submit', { question: question, answer: answer, _token: token });
+            request.done(function (res) {
+
+                $('.preloader').removeClass('show').addClass('hidden')
+
+                if(res.ended) {
+                    Swal.fire({
+                        title: '',
+                        text: res.message,
+                        type: res.success,
+                        confirmButtonColor: '#3b5de7',
+                        confirmButtonText: "تایید"
+                    });
+                   setTimeout(function() {
+                        window.location.href = res.url;
+                   },500)
+                    return;
+                }
+
+                if (res.timeover == true) {
+                    Swal.fire({
+                        title: '',
+                        text: res.message,
+                        type: res.success,
+                        confirmButtonColor: '#3b5de7',
+                        confirmButtonText: "تایید"
+                    });
+                   setTimeout(function() {
+                        window.location.href = res.url;
+                   },500)
+                    return;
+                }
+
+                $('.question-item').find('.question-title').text(res.question.title)
+                var answers = '';
+                arr = [res.question.option_one,res.question.option_two,res.question.option_three,res.question.option_four]
+                val = ['option_one','option_two','option_three','option_four']
+                for (let index = 0; index < arr.length; index++) {
+                    answers += `<div class="row">
+                    <div  class="col-md-4">گزینه </div>
+                    <div class="col-md-12">
+                        <h4>${arr[index]}</h4>
+                    </div>
+                    <div class="form-check col-md-2">
+                        <input class="form-check-input" type="radio" required name="question" id="exampleRadios2"
+                            value="${val[index]}">
+                        <label class="form-check-label mr-3" for="exampleRadios2">
+                            پاسخ درست
+                        </label>
+                    </div>
+                </div>`;
+
+                    
+                }
+                $('.question-item').find('.answers').html(answers)
+
+                // console.log(res.question.id)
+                $('input[name="id"]').val(res.question.id)
+
+            })
+        }
+    })
+
+    let timer = function (date) {
+
+        let mm = date.getMinutes();
+        let ss = date.getSeconds();
+
+        var interval = setInterval(function () {
+            if (mm == 0 && ss == 0) {
+
+                clearInterval(interval);
+                Swal.fire({
+                    title: '',
+                    text: 'زمان شما به پایان رسیده است',
+                    type: 'error',
+                    confirmButtonColor: '#3b5de7',
+                    confirmButtonText: "پایان"
+                })
+
+            }
+            if (ss == 0) {
+                ss = 59;
+                mm--;
+                if (mm == 0) {
+                    mm = 59;
+                    hr--;
+                }
+            }
+            ss--;
+            if (mm.toString().length < 2) mm = "0" + mm;
+            if (ss.toString().length < 2) ss = "0" + ss;
+            document.getElementById('cd-minutes').innerHTML = mm;
+            document.getElementById('cd-seconds').innerHTML = ss;
+
+        }, 1000)
+    }
+
+
+    timer(new Date($('input[name="time"]').val()));
 </script>
 @endsection

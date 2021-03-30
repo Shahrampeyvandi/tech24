@@ -144,6 +144,7 @@ class PostController extends Controller
             $post->title = $request->title;
             $post->sco_url = isset($request->sco_id) && $request->sco_id ? $request->sco_id : null;
             $post->description = $request->desc;
+            $post->short_description = $request->short_description ? $request->short_description : null;
             $post->media = $mime ? 'audio' : 'video';
             $post->post_type = $this->post_type;
             $post->duration = $request->duration;
@@ -218,7 +219,7 @@ class PostController extends Controller
                 $url = $request->url;
             }
 
-            if(isset($url) && strpos($url,env('DL_HOST_URL')) == true) {
+            if(isset($url)) {
                 $post->files()->create([
                     'file' => $url
                 ]);

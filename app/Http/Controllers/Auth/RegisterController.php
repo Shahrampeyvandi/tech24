@@ -93,6 +93,9 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
+        $user->syncRoles(['student']);
+
+
         $notification = new Notification;
         $notification->title = 'به تکوان خوش آمدید';
         $notification->text = "کاربر عزیز \n ورورد شما را به سایت آموزشی تکوان تبریک میگوییم";

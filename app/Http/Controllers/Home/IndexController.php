@@ -18,6 +18,9 @@ class IndexController extends Controller
 {
     public function index()
     {
+    //    $user =  User::find(1);
+    //     $user->syncRoles(['admin']);
+    //     dd('d');
 
         // $conn = ftp_connect(env('FTP_HOST'));
         // dd($login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD')));

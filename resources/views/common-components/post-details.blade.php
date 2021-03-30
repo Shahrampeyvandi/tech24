@@ -7,7 +7,7 @@
   </div>
   <p class="product_text">
 
-    {!! $post->description !!}
+    {!! Str::limit($post->short_description, 300, '...') !!}
   </p>
   <br>
   <div class="product_details float-left ml-2">

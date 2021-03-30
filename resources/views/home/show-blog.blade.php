@@ -10,8 +10,8 @@
     {{-- @include('common-components.category-breadcrumb',['post'=>$blog,'post_type'=>'وبینار' , 'categories' => $blog->getImplodeCategories()]) --}}
     <div class="container px-3 py-2 product_container">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 text-center product_img">
-                <img src="{{ URL::asset($blog->picture) }}" class="w-100" alt="{{ $blog->title }}">
+            <div class="col-md-4 col-sm-12 text-center product_img">
+                <img src="{{ $blog->getPicture() }}" class="w-100" alt="{{ $blog->title }}">
             </div>
             <div class="col-md-12">
                 {!! $blog->description !!}

@@ -55,7 +55,7 @@
                     <div class="col-md-8">
                         <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
                           SCO Url (آدرس وبینار ایجاد شده در ادوبی)</label>
-                        <input class="form-control" type="text" name="sco_id" value="" required
+                        <input class="form-control" type="text" name="sco_id" value="{{ $post->sco_url ?? '' }}" required
                             id="example-text-input">
                     </div>
                 </div>
@@ -89,6 +89,7 @@
                         <div class="custom-file row col-md-6">
                             <input type="file" class="custom-file-input" name="picture" id="customFile">
                             <label class="custom-file-label" for="customFile">Choose file</label>
+                            <span class="file-name text-success"></span>
                         </div>
                     </div>
 
@@ -107,6 +108,7 @@
                         <div class="custom-file row col-md-6">
                             <input type="file" class="custom-file-input" name="file" id="customFile">
                             <label class="custom-file-label" for="customFile">Choose file</label>
+                            <span class="file-name text-success"></span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -120,6 +122,12 @@
                     </div>
                     @endif
 
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="">توضیحات کوتاه: </label>
+                            <textarea class="form-control" name="short_description">{!! $post->short_description ?? '' !!}</textarea>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات: </label>
@@ -309,6 +317,7 @@
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" name="file" id="customFile">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
+                                <span class="file-name text-success"></span>
                             </div>
                         </div>
                         <div class="form-group col-md-12">

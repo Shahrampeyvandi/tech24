@@ -50,6 +50,7 @@ class CourseController extends Controller
     public function start_quiz($user, $lessonId)
     {
         // dd(session()->get('old-questions'));
+        // dd(session()->get('questions-count'));
 
         $data['lesson'] = Lesson::findOrFail($lessonId);
 
@@ -71,8 +72,8 @@ class CourseController extends Controller
         $now = time();
         $end = $now + ($minutes * 60) + $seconds;
 
-        session()->put('start', date('m-d-Y H:i:s', $now));
-        session()->put('end', date('m-d-Y H:i:s', $end));
+        session()->put('start', date('m/d/Y H:i:s', $now));
+        session()->put('end', date('m/d/Y H:i:s', $end));
 
         session()->put('correct-answers', 0);
         session()->put('incorrect-answers', 0);
@@ -94,8 +95,10 @@ class CourseController extends Controller
     public function submit_answer(Request $request)
     {
 
-        // dd(getCurrentUser()->id);
-        // dd($request->all());
+       
+
+        // dd(Carbon::now(),session()->get('end'));
+        
         $question = Question::findOrFail($request->question);
         $quiz = $question->quiz;
         if (strtotime(session()->get('end')) > strtotime(date('m-d-Y H:i:s', time()))) {
@@ -136,7 +139,7 @@ class CourseController extends Controller
                         'message' => 'تبریک ! شما در آزمون قبول شدید',
                         'question' => null,
                         'ended' => true,
-                        'url' => route('member.course.lessons', ['user' => getCurrentUser()->id, 'id' => $quiz->quizable->id])
+                        'url' => route('member.course.lessons', ['user' => getCurrentUser()->username, 'id' => $quiz->quizable->post_id])
                     ], 200);
                 }
                 return Response::json([
@@ -145,7 +148,7 @@ class CourseController extends Controller
                     'message' => 'متاسفانه شما نتوانستید در آزمون قبول شوید :/',
                     'question' => null,
                     'ended' => true,
-                    'url' => route('member.course.lessons', ['user' => getCurrentUser()->id, 'id' => $quiz->quizable->id])
+                    'url' => route('member.course.lessons', ['user' => getCurrentUser()->username, 'id' => $quiz->quizable->post_id])
                 ], 200);
             }
 
@@ -167,7 +170,7 @@ class CourseController extends Controller
                 'message' => 'متاسفانه شما نتوانستید در آزمون قبول شوید :/',
                 'score' => 20,
                 'question' => null,
-                'url' => route('member.course.lessons', ['user' => getCurrentUser()->id, 'id' => $quiz->quizable->id])
+                'url' => route('member.course.lessons', ['user' => getCurrentUser()->username, 'id' => $quiz->quizable->post_id])
             ], 200);
         }
     }

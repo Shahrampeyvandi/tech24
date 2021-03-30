@@ -56,7 +56,12 @@
                             <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="">توضیحات کوتاه: </label>
+                            <textarea class="form-control" name="short_description">{!! $blog->short_description ?? '' !!}</textarea>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات: </label>

@@ -20,6 +20,7 @@ class CreateBlogsTable extends Migration
             $table->string('url')->nullable();
             $table->string('picture')->nullable();
             $table->longText('description')->nullable();
+            $table->text('short_description')->nullable();
             $table->unsignedBigInteger('views')->default(0);
             $table->text('video_frame')->nullable();
             $table->integer('category_id');

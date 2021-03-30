@@ -65,6 +65,7 @@
     </div>
 </section>
 <!--end product section-->
+
 <br>
 @include('common-components.cta-section')
 <br><br>

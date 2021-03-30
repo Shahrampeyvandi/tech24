@@ -47,10 +47,15 @@
                                 <td>{{$user->mobile}}</td>
                                 <td>{{$user->email}}</td>
                                 <td>
-                                    <a href="#" onclick="changeAbility(event,'{{$user->id}}')" 
+                                    @if ($user->hasRole('admin'))
+                                        ADMIN
+                                    @else
+                                        
+                                    <a href="#" onclick="changeAbility(event,'{{$user->id}}')" title="تغییر نقش"
                                         class="btn btn-{{$user->group == 'teacher' ? 'success':'light'}} waves-effect group">
                                         {{$user->group}}
                                     </a>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="d-flex">

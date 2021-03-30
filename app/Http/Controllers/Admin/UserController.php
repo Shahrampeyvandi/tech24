@@ -85,7 +85,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
        
-        // dd($request->avatar);
+        // dd($request->all());
         if(isset($request['action']) && $request['action'] == 'edit') {
             $user = User::find($request['user_id']);
             $data = [
@@ -97,7 +97,7 @@ class UserController extends Controller
                 'mobile' => 'required|regex:/(09)[0-9]{9}/|unique:users,mobile,'.$user->id,
                 'group' => 'required',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'ability' => 'string'
+               
             ];
             
 
@@ -112,7 +112,7 @@ class UserController extends Controller
                 'mobile' => 'required|unique:users|regex:/(09)[0-9]{9}/',
                 'group' => 'required',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'ability' => 'string'
+            
             ];
             $user = new User;
         }

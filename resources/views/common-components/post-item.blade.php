@@ -11,7 +11,7 @@
     <div class="box_content">
         <h2 class="box_title black-text text-bold font_size_2">
             <a href="#">{{ $post->title }}</a></h2>
-        <a href="#" class="box_desc">{!! Str::limit(strip_tags($post->description), 70, '...') !!}</a>
+        <a href="#" class="box_desc">{!! Str::limit($post->short_description, 100, '...') !!}</a>
         <small class="box_subtext"><i class="icon-user-o"></i> مدرس : {{ $post->getTeacher() }}</small>
     </div>
 </div>
