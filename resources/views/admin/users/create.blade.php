@@ -36,6 +36,15 @@
                                 id="example-text-input">
                         </div>
                     </div>
+
+                    @isset($user)
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="{{ $user->getPicture() }}" alt="" class="w-100">
+                        </div>
+                    </div>
+                    @endisset
+
                     <div class="form-group row">
                         <label for="" class="col-md-3 col-form-label">انتخاب تصویر (1:1)</label>
                         <div class="custom-file row col-md-6">
@@ -72,12 +81,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="example-text-input" class="col-md-2 col-form-label">رمز عبور</label>
+                        <label for="example-text-input" class="col-md-2 col-form-label">رمز عبور جدید</label>
                         <div class="col-md-4">
                             <input class="form-control" type="text"
                             pattern=".{6,}"
                             title="رمز عبور حداقل شامل 6 کاراکتر میباشد"
-                            name="password" value="{{$user->password ?? ''}}"
+                            name="password" value=""
                                 id="example-text-input">
                         </div>
                     </div>

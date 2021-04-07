@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Home;
 use App\AdobeGroup;
 use App\AdobeUsers;
 use App\Blog;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Lesson;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Toastr;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\TwitterCard;
 
 class BlogController extends Controller
 {
@@ -24,6 +26,19 @@ class BlogController extends Controller
             ->latest()->take(3)->get();
 
         $data['title'] = 'تکوان | ' . $data['blog']->title;
+
+         /* Seo Tools */
+         SEOMeta::setTitle($data['blog']->seo_title);
+         SEOMeta::setDescription($data['blog']->seo_description);
+         SEOMeta::setCanonical($data['blog']->seo_canonical);
+         OpenGraph::setTitle($data['blog']->seo_title);
+         OpenGraph::setDescription($data['blog']->seo_description);
+         OpenGraph::setUrl($data['blog']->seo_canonical);
+         OpenGraph::addImage(asset('assets/imgs/Logo.png'));
+         TwitterCard::setTitle($data['blog']->seo_title);
+         TwitterCard::setDescription($data['blog']->seo_description);
+         TwitterCard::setUrl($data['blog']->seo_canonical);
+         TwitterCard::addImage(asset('assets/imgs/Logo.png'));
 
         return view('home.show-blog', $data);
     }

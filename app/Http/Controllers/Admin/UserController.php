@@ -87,7 +87,7 @@ class UserController extends Controller
        
         // dd($request->all());
         if(isset($request['action']) && $request['action'] == 'edit') {
-            $user = User::find($request['user_id']);
+            $user = User::find($request['uid']);
             $data = [
                 'fname' => 'required',
                 'lname' => 'required',

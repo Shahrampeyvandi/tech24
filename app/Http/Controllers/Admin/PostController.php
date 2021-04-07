@@ -114,6 +114,12 @@ class PostController extends Controller
             $rules['group_name'] = 'required';
         }
 
+
+        $rules['seo_title'] = 'required';
+        $rules['seo_description'] = 'required';
+        $rules['seo_canonical'] = 'required';
+
+
         $request->validate($rules);
         // dd($request->all());
 
@@ -124,7 +130,7 @@ class PostController extends Controller
             $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
 
             // $res =   $this->getInfoSCO($request->sco_id);
-            
+
             // if (is_array($res) && isset($res['status']['@attributes']['code']) && $res['status']['@attributes']['code'] == 'ok') {
             // $post->sco_id = $request->sco_id;
             // dd($res);
@@ -152,9 +158,14 @@ class PostController extends Controller
             $post->price = $request->price;
             $post->views = 1;
             $post->teacher_id = $request->teachers;
-            $post->group_id = $request->group;
             $post->start_date = $request->date ? carbonDate($request->date) : '';
             $post->private = $request->public_type == 'private' ? 1 : 0;
+
+
+            $post->seo_title = $request->seo_title;
+            $post->seo_description = $request->seo_description;
+            $post->seo_canonical = $request->seo_canonical;
+
 
             if ($request->archive == 'yes') {
                 $post->archive = 1;
@@ -166,6 +177,7 @@ class PostController extends Controller
             ], [
                 'slug' => SlugService::createSlug(Category::class, 'slug', $request->category),
             ]);
+
             $post->category_id = $cat->id;
             $post->save();
 
@@ -219,7 +231,7 @@ class PostController extends Controller
                 $url = $request->url;
             }
 
-            if(isset($url)) {
+            if (isset($url)) {
                 $post->files()->create([
                     'file' => $url
                 ]);
@@ -227,7 +239,8 @@ class PostController extends Controller
 
             if (isset($request->action) && $request->action == 'edit') {
             } else {
-                if ($request->group_name) {
+                if ($request->group_name && $request['post_type'] == 'webinar') {
+                   
                     $response =  $this->create_group_adobe($post, $request->group_name);
                     if ($response['status']['@attributes']['code'] == 'ok') {
                         $group = new AdobeGroup;
@@ -242,6 +255,7 @@ class PostController extends Controller
 
 
             $post->teachers()->sync($request->teachers);
+
         } catch (\Throwable $th) {
             throw $th;
         }

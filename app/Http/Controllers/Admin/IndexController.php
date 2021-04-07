@@ -9,7 +9,7 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $notifications = \App\Notification::latest()->paginate(5);
+        $notifications = \App\Notification::where('user_id',null)->latest()->paginate(5);
         return view('admin.index',['notifications'=>$notifications]);
     }
 }

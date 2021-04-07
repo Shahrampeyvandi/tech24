@@ -100,6 +100,31 @@
                             </select>
                           </div>
                         </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="" class="col-form-label">عنوان سئو</label>
+                            <div class="custom-file">
+                                <input type="text" name="seo_title" id="seo_title" 
+                                    class="form-control" required value="{{ $blog->seo_title ?? '' }}">
+    
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="" class="col-form-label">توضیحات سئو</label>
+                            <div class="custom-file">
+                                <input type="text" name="seo_description" id="seo_description" 
+                                    class="form-control" required value="{{ $blog->seo_description ?? '' }}">
+    
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="" class="col-form-label">canonical url</label>
+                            <div class="custom-file">
+                                <input type="text" name="seo_canonical" id="seo_canonical" 
+                                    class="form-control" required value="{{ $blog->seo_canonical ?? '' }}">
+    
+                            </div>
+                        </div>
                        
                   
 

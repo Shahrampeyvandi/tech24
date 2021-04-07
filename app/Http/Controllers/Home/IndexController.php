@@ -11,16 +11,18 @@ use App\Quiz;
 use App\Slider;
 use App\User;
 use Carbon\Carbon;
-use Soheilrt\AdobeConnectClient\Facades\Client;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\TwitterCard;
 
 
 class IndexController extends Controller
 {
     public function index()
     {
-    //    $user =  User::find(1);
-    //     $user->syncRoles(['admin']);
-    //     dd('d');
+        //    $user =  User::find(1);
+        //     $user->syncRoles(['admin']);
+        //     dd('d');
 
         // $conn = ftp_connect(env('FTP_HOST'));
         // dd($login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD')));
@@ -28,7 +30,7 @@ class IndexController extends Controller
         // ftp_pasv($conn, true);
 
         // try {
-     
+
         // $ch = curl_init('http://online.techone24.com/api/xml?action=login&login=test@gmail.com&password=123456');
         // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
         // curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
@@ -39,97 +41,108 @@ class IndexController extends Controller
         // // dd($data);
         // curl_close($ch);
         // Query.
-// $ch = curl_init('http://online.techone24.com/api/xml?action=principal-list&filter-type=group');
-// curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
-// curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
-// curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
-// curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
-// curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
-// $data = curl_exec($ch);
-// var_dump($data);
-// curl_close($ch);
+        // $ch = curl_init('http://online.techone24.com/api/xml?action=principal-list&filter-type=group');
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
+        // curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
+        // $data = curl_exec($ch);
+        // var_dump($data);
+        // curl_close($ch);
 
-// Query.
-// $ch = curl_init('http://online.techone24.com/api/xml?action=principal-update&first-name=tests&last-name=tesss&has-children=0&login=test@example.com&type=user');
-// curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
-// curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
-// curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
-// curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
-// curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
-// $data = curl_exec($ch);
-// var_dump($data);
-// curl_close($ch);
+        // Query.
+        // $ch = curl_init('http://online.techone24.com/api/xml?action=principal-update&first-name=tests&last-name=tesss&has-children=0&login=test@example.com&type=user');
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
+        // curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
+        // $data = curl_exec($ch);
+        // var_dump($data);
+        // curl_close($ch);
 
-// Query.
-// $ch = curl_init('http://online.techone24.com/api/xml?action=principal-update&has-children=1&type=group&name=testwithcurl');
-// curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
-// curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
-// curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
-// curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
-// curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
-// $data = curl_exec($ch);
-// var_dump($data);
-// curl_close($ch);
+        // Query.
+        // $ch = curl_init('http://online.techone24.com/api/xml?action=principal-update&has-children=1&type=group&name=testwithcurl');
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
+        // curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
+        // $data = curl_exec($ch);
+        // var_dump($data);
+        // curl_close($ch);
 
-// $ch = curl_init('http://online.techone24.com/api/xml?action=group-membership-update&group-id=51275&principal-id=49195&is-member=1');
-// curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
-// curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
-// curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
-// curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
-// curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
-// $data = curl_exec($ch);
-// var_dump($data);
-// curl_close($ch);
-
-
-// $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=sco-info&sco-id=50422');
-// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
-// curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
-// $data = curl_exec($ch);
-// // echo '<pre>';
-// // var_dump($data);
-// // echo '</pre>';
-// return json_decode(json_encode(simplexml_load_string($data)), true)['sco']['url-path'];
-// } catch (\Throwable $th) {
-//   return $th->getMessage();
-// }
+        // $ch = curl_init('http://online.techone24.com/api/xml?action=group-membership-update&group-id=51275&principal-id=49195&is-member=1');
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
+        // curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch,CURLOPT_COOKIEFILE, __DIR__.'/cookies');
+        // curl_setopt($ch,CURLOPT_COOKIEJAR, __DIR__.'/cookies');
+        // $data = curl_exec($ch);
+        // var_dump($data);
+        // curl_close($ch);
 
 
-// curl_close($ch);
+        // $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=sco-info&sco-id=50422');
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
+        // curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
+        // $data = curl_exec($ch);
+        // // echo '<pre>';
+        // // var_dump($data);
+        // // echo '</pre>';
+        // return json_decode(json_encode(simplexml_load_string($data)), true)['sco']['url-path'];
+        // } catch (\Throwable $th) {
+        //   return $th->getMessage();
+        // }
 
 
-   
+        // curl_close($ch);
+
+
+
         // dd(public_path());
         // dd(\Request::getRequestUri());
 
 
-        if(isset(request()->order)) {
-            if(request()->order == 'latest') {
+        if (isset(request()->order)) {
+            if (request()->order == 'latest') {
                 $order = 'created_at';
-            }
-            
-            elseif(request()->order == 'sell') {
+            } elseif (request()->order == 'sell') {
                 $order = 'sell_count';
-            }
-            else{
+            } else {
                 abort(404);
             }
-        }else{
+        } else {
             $order = 'created_at';
         }
         $data = [
-            'webinars' => Post::where('post_type','webinar')->where('start_date','>=' , Carbon::now())->orderBy($order,'DESC')->take(8)->get(),
-            'courses' => Post::where('post_type','course')->orderBy($order,'DESC')->take(4)->get(),
+            'webinars' => Post::where('post_type', 'webinar')->where('start_date', '>=', Carbon::now())->orderBy($order, 'DESC')->take(8)->get(),
+            'courses' => Post::where('post_type', 'course')->where('private',0)->orderBy($order, 'DESC')->take(8)->get(),
             'teachers' => User::role('teacher')->take(4)->get(),
             'blogs' => Blog::latest()->take(3)->get(),
-            'sliders' => Slider::where('active',1)->latest()->take(4)->get()
+            'sliders' => Slider::where('active', 1)->latest()->take(4)->get()
         ];
-       
 
-        return view('home.index',$data);
+        /* Seo Tools */
+        SEOMeta::setTitle('تکوان 24 | آموزش امنیت اطلاعات');
+        SEOMeta::setDescription('تکوان 24 , آموزش , امنیت , آموزش برنامه نویسی , جرم شناسی در زمینه امنیت اطلاعات , ...');
+        SEOMeta::setCanonical('https://techone24.com');
+        OpenGraph::setTitle('تکوان 24 | آموزش امنیت اطلاعات');
+        OpenGraph::setDescription('تکوان 24 , آموزش , امنیت , آموزش برنامه نویسی , جرم شناسی در زمینه امنیت اطلاعات , ...');
+        OpenGraph::setUrl('https://techone24.com');
+        OpenGraph::addImage(asset('assets/imgs/Logo.png'));
+        OpenGraph::setType('website');
+        TwitterCard::setTitle('تکوان 24 | آموزش امنیت اطلاعات');
+        TwitterCard::setDescription('تکوان 24 , آموزش , امنیت , آموزش برنامه نویسی , جرم شناسی در زمینه امنیت اطلاعات , ...');
+        TwitterCard::setUrl('https://techone24.com');
+        TwitterCard::addImage(asset('assets/imgs/Logo.png'));
+
+
+        return view('home.index', $data);
     }
 
     /**
@@ -142,7 +155,7 @@ class IndexController extends Controller
     {
         return view('home.aboutus');
     }
-     /**
+    /**
      * 
      * contact us page
      * @return \Illuminate\Http\Response
@@ -152,6 +165,4 @@ class IndexController extends Controller
     {
         return view('home.contactus');
     }
-
-
 }

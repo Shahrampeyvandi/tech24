@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 {!! $blog->description !!}
             </div>
-           
+
         </div>
     </div>
 </section>
@@ -24,8 +24,14 @@
 <br>
 @include('common-components.cta-section')
 <br><br>
+@if (count($related_blogs))
 
-@foreach ($related_blogs as $item)
-    @include('common-components.blog-item',['blog'=>$item])
-@endforeach
+<div class="container">
+    <div class="posts_row">
+        @foreach ($related_blogs as $item)
+        @include('common-components.blog-item',['blog'=>$item])
+        @endforeach
+    </div>
+</div>
+@endif
 @endsection

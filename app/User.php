@@ -49,6 +49,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class,'post_user','user_id','post_id');
     }
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class,'group_user','user_id','group_id')->withPivot('leader');
+    }
 
      public function readedNotifications()
     {
@@ -100,6 +104,7 @@ class User extends Authenticatable
             if($prev && $prev->quiz && Passed::where(['quiz_id'=>$prev->quiz->id,'user_id'=>$this->id])) {
                 return true;
             }
+            if($prev && !$prev->quiz) return true;
             return false;
         }
         return false;

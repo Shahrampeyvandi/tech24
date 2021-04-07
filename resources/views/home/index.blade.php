@@ -85,17 +85,19 @@
                 <img src="assets/imgs/suggestion_man.jpg" alt="">
             </div>
             <div class="col-lg-8 col-md-8 col-sm-12 text-right sg-content">
-                <h2 class="sg_heading">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
+                {{-- <h2 class="sg_heading">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ
                 </h2>
                 <div class="sg_sub_heading">
                     <small><i class="icon-user"></i> مدرس : ابراهیم خالدی</small>
                     <small><i class="icon-calander"></i> زمان برگزاری : 1399/10/30</small>
                     <small><i class="icon-clock"></i>طول دوره : 52 ساعت</small>
-                </div>
-                <p class="sg_text">
-                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-                </p>
-                <div class="sg_details row">
+                </div> --}}
+        <div style="display: flex;align-items: center;height: 100%;">
+            <p class="sg_text" style="line-height: 2.3rem;text-align: justify;">
+                سایت آموزشی تک وان 24 با هدف ارتقاء سطح علمی در زمینه امنیت اطلاعات راه اندازی شده است و در این سایت قصد داریم تا شما را با جدیدترین آسیب پذیری ها و روش های دفاعی مربوط به این آسیب پذیری ها و نیز روش های جرم شناسی در زمینه امنیت اطلاعات آشنا کنیم در این راستا با برگزاری وبینارهای آموزشی و نیز مقالات و پادکست ها و فیلم های آموزشی کنار شما خواهیم بود و برای رسیدن به این هدف  از امکانات آموزشی لازم و مدرسین مجرب که چندین سال در زمینه امنیت سابقه دارند استفاده شده است .               
+                 </p>
+        </div>
+                {{-- <div class="sg_details row">
                     <div class="col-6 col-xs-12">
                         <ul>
                             <li class="orange_list"> این یک تن نمونه می باشد و با متن اصلی جایگزین میشود.</li>
@@ -110,9 +112,9 @@
                             <li class="orange_list"> این یک تن نمونه می باشد و با متن اصلی جایگزین میشود.</li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
                 <br>
-                <div class="sg_details float-left">
+                {{-- <div class="sg_details float-left">
                     <div class="cost d-flex align-items-center">
                         <div class="cost_icon">
                             <img src="assets/imgs/wallet.png" alt="">
@@ -123,7 +125,7 @@
                         </div>
                         <a href="#" class="btn btn-lg btn_orange mr-4 mt-2">ثبت نام در دوره</a>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -143,24 +145,16 @@
             <div class="course-item">
                 <img src="assets/imgs/microsoft_b.png" class="dark_img" alt="linux">
             </div>
-            <div class="course-item">
-                <img src="assets/imgs/mikrotik_b.png" class="dark_img" alt="linux">
-            </div>
+        
             <div class="course-item">
                 <img src="assets/imgs/sans_black.png" class="dark_img" alt="linux">
             </div>
-            <div class="course-item">
-                <img src="assets/imgs/packages_0-1.png" class="dark_img" alt="linux">
-            </div>
-            <div class="course-item">
-                <img src="assets/imgs/vmware.png" class="dark_img" alt="linux">
-            </div>
+           
+           
             <div class="course-item">
                 <img src="assets/imgs/cisco_black_0.png" class="dark_img" alt="linux">
             </div>
-            <div class="course-item">
-                <img src="assets/imgs/comptia_b.png" class="dark_img" alt="linux">
-            </div>
+          
         </div>
     </div>
 </section>
@@ -178,9 +172,9 @@
                     لیست
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a href="{{ route('baseurl') }}">جدیدترین دوره ها</a></li>
+                    <li class="dropdown-item"><a href="{{ url('courses') }}">جدیدترین دوره ها</a></li>
                     <div class="dropdown-divider"></div>
-                    <li class="dropdown-item"><a href="{{ route('baseurl') }}">پرفروش ترین دوره ها</a></li>
+                    <li class="dropdown-item"><a href="{{ url('courses') }}?order=sell_count">پرفروش ترین دوره ها</a></li>
                 </ul>
             </menu>
         </div>

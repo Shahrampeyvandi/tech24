@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/panel/{user}/lesson/{id}/start-quiz', 'Panel\CourseController@start_quiz')->name('member.course.quiz.start');
     Route::post('/panel/quiz/answer/submit', 'Panel\CourseController@submit_answer');
     Route::get('/panel/{user}', 'Panel\UserController@index')->name('member.dashboard');
+    Route::get('/panel/chat/{group}', 'Panel\UserController@chat')->name('member.chat');
 
     // Route::get('{any}', 'QovexController@index');
 });

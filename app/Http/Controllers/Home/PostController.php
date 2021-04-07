@@ -13,6 +13,9 @@ use App\Lesson;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Toastr;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\TwitterCard;
 
 class PostController extends Controller
 {
@@ -27,25 +30,55 @@ class PostController extends Controller
             ->latest()->take(8)->get();
 
         $data['title'] = 'تکوان | ' . $data['post']->title;
+        /* Seo Tools */
+        SEOMeta::setTitle($data['post']->seo_title);
+        SEOMeta::setDescription($data['post']->seo_description);
+        SEOMeta::setCanonical($data['post']->seo_canonical);
+        OpenGraph::setTitle($data['post']->seo_title);
+        OpenGraph::setDescription($data['post']->seo_description);
+        OpenGraph::setUrl($data['post']->seo_canonical);
+        OpenGraph::addImage(asset($data['post']->picture));
+        TwitterCard::setTitle($data['post']->seo_title);
+        TwitterCard::setDescription($data['post']->seo_description);
+        TwitterCard::setUrl($data['post']->seo_canonical);
+        TwitterCard::addImage(asset($data['post']->picture));
 
         return view('home.' . $data['post']->post_type, $data);
     }
 
     public function posts(Request $request, $category = null)
     {
+
         if (\Request::path() == 'courses') {
             $page_title =  'تکوان | دوره ها';
             $title = 'دوره';
             $post_type = 'course';
+            $data['latest_posts'] = Post::where('post_type', $post_type)->where('private', 0)->latest()->take(5)->get();
         } elseif (\Request::path() == 'podcasts') {
             $page_title =  'تکوان | پادکست ها';
             $title = 'پادکست';
             $post_type = 'podcast';
+            $data['latest_posts'] = Post::where('post_type', $post_type)->latest()->take(5)->get();
         } else {
             $page_title =  'تکوان | وبینار ها';
             $post_type = 'webinar';
             $title = isset($request->q) && $request->q == 'archive' ? 'وبینارهای گذشته' : 'وبینار';
+            $data['latest_posts'] = Post::where('post_type', $post_type)->where('start_date', '>', Carbon::now())->latest()->take(5)->get();
         }
+        $seo_description = 'تکوان 24 , آموزش , امنیت , آموزش برنامه نویسی , جرم شناسی در زمینه امنیت اطلاعات , ...';
+
+        /* Seo Tools */
+        SEOMeta::setTitle($page_title);
+        SEOMeta::setDescription($seo_description);
+        SEOMeta::setCanonical(\Request::url());
+        OpenGraph::setTitle($page_title);
+        OpenGraph::setDescription($seo_description);
+        OpenGraph::setUrl(\Request::url());
+        OpenGraph::addImage(asset('assets/imgs/Logo.png'));
+        TwitterCard::setTitle($page_title);
+        TwitterCard::setDescription($seo_description);
+        TwitterCard::setUrl(\Request::url());
+        TwitterCard::addImage(asset('assets/imgs/Logo.png'));
 
 
         $order = isset($request->order) ? $request->order : 'created_at';
@@ -56,29 +89,26 @@ class PostController extends Controller
                     $q->whereSlug($category);
                 });
             }
-
-
-
             if ($post_type == 'webinar' && isset($request->q) && $request->q == 'archive') {
                 $q->where('archive', 1);
             } elseif ($post_type == 'podcast') {
-            } else {
-                $q->where('archive', 0)->where('start_date', '>=', Carbon::now());
+            } elseif ($post_type == 'course') {
+                $q->where('private', 0);
             }
 
             $q->where('post_type', $post_type);
-        })->orderByDesc($order)->paginate(6);
+        })->orderByDesc($order)->paginate(4);
         // dd($data);
 
         $data['page_title'] = $page_title;
         $data['title'] =   $title;
         $data['post_type'] = $post_type;
 
-        $data['latest_posts'] = Post::where('post_type', $post_type)->latest()->take(5)->get();
 
         if ($data['post_type'] == 'podcast') {
             return view('home.podcasts', $data);
         }
+
         return view('home.posts', $data);
     }
     public function courses(Request $request)
@@ -172,7 +202,6 @@ class PostController extends Controller
                     $patterncode = "q9uaxab7bs";
                     $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
                     $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
-                    
                 } else {
                 }
             }
@@ -190,6 +219,4 @@ class PostController extends Controller
         Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
         return Redirect::route('member.posts', ['user' => getCurrentUser()->username, 'post_type' => $post->post_type]);
     }
-
-   
 }

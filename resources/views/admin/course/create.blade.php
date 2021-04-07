@@ -196,7 +196,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 <label class="col-form-label">گروه</label>
                                 <select class="form-control select2" name="group">
@@ -208,7 +208,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         @if ($post_type == 'course')
                         <div class="col-md-4">
                             <div class="form-group">
@@ -329,8 +329,34 @@
 
                             </div>
                         </div>
+
+                       
                     </div>
                     @endif
+                    <div class="form-group col-md-12">
+                        <label for="" class="col-form-label">عنوان سئو</label>
+                        <div class="custom-file">
+                            <input type="text" name="seo_title" id="seo_title" 
+                                class="form-control" required value="{{ $post->seo_title ?? '' }}">
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="" class="col-form-label">توضیحات سئو</label>
+                        <div class="custom-file">
+                            <input type="text" name="seo_description" id="seo_description" 
+                                class="form-control" required value="{{ $post->seo_description ?? '' }}">
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="" class="col-form-label">canonical url</label>
+                        <div class="custom-file">
+                            <input type="text" name="seo_canonical" id="seo_canonical" 
+                                class="form-control" required value="{{ $post->seo_canonical ?? '' }}">
+
+                        </div>
+                    </div>
             </div>
             <div class="col-md-12 my-3 btn--wrapper">
 

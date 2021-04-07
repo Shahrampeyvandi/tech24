@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Group;
 use App\Http\Controllers\Controller;
+use App\Post;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
@@ -32,7 +34,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-      
+
 
         $data['page_title'] = $this->page_title;
         return view('admin.group.create', $data);
@@ -70,6 +72,12 @@ class GroupController extends Controller
         $group->type = $request->type;
         $group->save();
 
+        $post = Post::find($request->post_id);
+        if($post) {
+            $post->group_id = $group->id;
+            $post->save();
+        }
+
 
         foreach ($request->members as $key => $member) {
             $members_arr[$member] = ['leader' => 0];
@@ -77,10 +85,27 @@ class GroupController extends Controller
         foreach ($request->leaders as $key => $leader) {
             $members_arr[$leader] = ['leader' => 1];
         }
-        // dd($members_arr);
+        // dd($members_arr,array_keys($members_arr));
+        if (isset($request->action)) {
+            foreach ($group->members as $key => $val) {
+                if (!in_array($val->id, array_keys($members_arr))) {
+                    $val->posts()->detach($request->post_id);
+                }
+            }
+        }
+
 
 
         $group->members()->sync($members_arr);
+
+        foreach ($members_arr as $key => $val) {
+            $member = User::find($key);
+            // dd($member,$member->posts);
+            if (! $member->posts->contains($request->post_id)) {
+                $member->posts()->attach($request->post_id);
+            }
+        }
+
         return Redirect::route('groups.index');
     }
 

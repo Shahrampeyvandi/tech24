@@ -27,4 +27,8 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], f
     Route::post('/changeusergroup', 'UserController@changegroup')->name('users.changegroup');
     Route::post('ajax/parent-category', 'PostController@parent_category');
 
+    Route::get('/upload/media','SettingController@uploadMedia')->name('upload.media');
+    Route::post('/upload/media','SettingController@submitUploadMedia')->name('upload.media');
+    Route::get('/uploaded/index','SettingController@mediaIndex')->name('media.index');
+
 });

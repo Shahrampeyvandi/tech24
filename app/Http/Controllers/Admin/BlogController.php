@@ -117,6 +117,9 @@ class BlogController extends Controller
         $cat = BlogCategory::firstOrCreate(['name' => $request->category]);
         $blog->category_id = $cat->id;
         $blog->video_frame = $request->video_frame;
+        $blog->seo_title = $request->seo_title;
+        $blog->seo_description = $request->seo_description;
+        $blog->seo_canonical = $request->seo_canonical;
 
         $blog->save();
 

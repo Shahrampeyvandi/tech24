@@ -21,10 +21,16 @@
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title">منو</li>
-
+                <li>
+                    <a href="{{URL::route('baseurl')}}" target="_blank" class="waves-effect">
+                        <i class="mdi mdi-airplay"></i>
+                        <span>مشاهده سایت</span>
+                    </a>
+                   
+                </li>
                 <li>
                     <a href="{{URL::route('admin.index')}}" class="waves-effect">
-                        <i class="mdi mdi-airplay"></i>
+                        <i class="mdi mdi-view-dashboard"></i>
                         <span>داشبورد</span>
                     </a>
                    
@@ -99,6 +105,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{URL::route('sliders.index')}}">اسلایدر</a></li>
+                        <li><a href="{{URL::route('upload.media')}}">رسانه</a></li>
                         <li><a href="{{URL::route('settings.index')}}">تنظیمات</a></li>
                  
                     </ul>

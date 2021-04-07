@@ -35,6 +35,21 @@
                                 required id="example-text-input">
                         </div>
                     </div>
+                   
+                        <div class="form-group row">
+                           <div class="col-12">
+                            <label class="col-form-label">دوره مربوطه</label>
+                            <select class="form-control select2" 
+                                name="post_id">
+                                @foreach (\App\Post::where('post_type','course')->orderBy('title')->get() as $item)
+                                <option value="{{$item->id}}"
+                                    {{isset($group) && $group->post->id == $item->id ? 'selected' : ''}}>
+                                    {{Str::limit($item->title,30,'...')}}</option>
+                                @endforeach
+                            </select>
+                           </div>
+                        </div>
+                   
 
                     <div class="form-group row">
                         <label for="" class="col-md-2 col-form-label">انتخاب تصویر</label>

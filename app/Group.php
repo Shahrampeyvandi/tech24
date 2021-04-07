@@ -10,4 +10,8 @@ class Group extends Model
     {
         return $this->belongsToMany(User::class,'group_user','group_id','user_id')->withPivot('leader');
     }
+    public function post()
+    {
+        return $this->hasOne(Post::class);
+    }
 }

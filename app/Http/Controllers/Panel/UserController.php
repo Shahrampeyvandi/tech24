@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use App\Group;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
@@ -51,10 +52,12 @@ class UserController extends Controller
                 }
             }
         }
-
-        $all_notif =  Notification::whereIn('for', [$for, 'all'])->orWhere('user_id',getCurrentUser()->id)->latest()->get();
-        $unreaded  =Notification::whereIn('for', [$for, 'all'])->orWhere('user_id',getCurrentUser()->id)->whereNotIn('id',$data['user']->readedNotifications()->pluck('id')->toArray())->latest()->get();
+        $all_notif =  Notification::whereIn('for', [$for, 'all'])->orWhere('user_id',$data['user']->id)->latest()->get();
+        $unreaded  = Notification::whereIn('for', [$for, 'all'])->orWhere('user_id',$data['user']->id)->latest()->get();
+        $unreaded = collect($unreaded)->whereNotIn('id',$data['user']->readedNotifications()->pluck('id')->toArray());
+        
         $readed = $data['user']->readedNotifications;
+        
         if (request()->q) {
             if (request()->q == 'unread_notifications') {
 
@@ -80,10 +83,6 @@ class UserController extends Controller
 
 
 
-
-
-
-
         return view('panel.dashboard', $data);
     }
 
@@ -104,7 +103,7 @@ class UserController extends Controller
         }
 
         $data['title'] =  request()->post_type == 'course' ? 'دوره ها' : 'وبینارها';
-        $data['posts'] = getCurrentUser()->posts()->where('post_type', request()->post_type)->latest()->get();
+        $data['posts'] = $data['user']->posts()->where('post_type', request()->post_type)->latest()->get();
 
         return view('panel.posts', $data);
     }
@@ -203,6 +202,11 @@ class UserController extends Controller
         return Redirect::route('member.profile',$username);
     }
 
+    public function chat(Group $group)
+    {
+        dd($group);
+        return view('panel.chat');
+    }
     public function upload_avatar($username,$file)
     {
         $date = date('Y');
