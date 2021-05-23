@@ -24,6 +24,7 @@ class PostController extends Controller
         // dd($slug);
         $data['post'] = Post::whereSlug($slug)->first();
         if (!$data['post']) abort(404);
+        $data['post']->increment('views');
         $data['related_posts'] = Post::where('post_type', $data['post']->post_type)
             ->where('start_date', '>=', Carbon::now())
             ->where('id', '!=', $data['post']->id)

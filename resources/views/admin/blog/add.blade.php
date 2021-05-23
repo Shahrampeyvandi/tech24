@@ -11,6 +11,7 @@
 
 @section('css')
 <link href="{{URL::asset('libs/select2/select2.min.css')}}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{{ URL::asset('libs/prism/prism.css') }}">
 
 @endsection
 
@@ -62,6 +63,16 @@
                             <textarea class="form-control" name="short_description">{!! $blog->short_description ?? '' !!}</textarea>
                         </div>
                     </div>
+                    @isset($blog)
+                    <div class="form-group row">
+                        <div class="col-md-8 pl-5">
+                            <input class="form-check-input" type="checkbox" name="change_desc" value="1" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                              ویرایش توضیحات 
+                            </label>
+                        </div>
+                    </div>
+                    @endisset
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات: </label>
@@ -148,6 +159,7 @@
 @section('script')
 <script src="{{URL::asset('/libs/select2/select2.min.js')}}"></script>
 <!--tinymce js-->
+<script src="{{URL::asset('/libs/prism/prism.js')}}" data-manual></script>
 <script src="{{URL::asset('/libs/tinymce/tinymce.min.js')}}"></script>
 <!-- Summernote js -->
 <script src="{{URL::asset('/libs/summernote/summernote.min.js')}}"></script>
@@ -157,6 +169,23 @@
 <script src="{{URL::asset('/libs/inputmask/inputmask.min.js')}}"></script>
 <!-- form mask init -->
 <script>
+//       $('textarea#elm1').tinymce({  
+//   plugins: 'codesample',
+  
+//   codesample_languages: [
+//     { text: 'HTML/XML', value: 'markup' },
+//     { text: 'JavaScript', value: 'javascript' },
+//     { text: 'CSS', value: 'css' },
+//     { text: 'PHP', value: 'php' },
+//     { text: 'Ruby', value: 'ruby' },
+//     { text: 'Python', value: 'python' },
+//     { text: 'Java', value: 'java' },
+//     { text: 'C', value: 'c' },
+//     { text: 'C#', value: 'csharp' },
+//     { text: 'C++', value: 'cpp' }
+//   ],
+//   toolbar: 'codesample' });
+ 
     $(".select2").select2({
         tags:false
     });

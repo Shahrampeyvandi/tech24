@@ -25,4 +25,9 @@ class Category extends Model
         ];
 
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(static::class,'id','parent_id');
+    }
 }

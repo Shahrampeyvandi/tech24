@@ -79,16 +79,16 @@ return [
     'max' => [
         'numeric' => ':attribute نمیتواند بیشتر از :max باشد.',
         'file' => 'The :attribute may not be greater than :max kilobytes.',
-        'string' => 'The :attribute may not be greater than :max characters.',
+        'string' => ':attribute بایستی حداکثر :max کاراکتر باشد',
         'array' => 'The :attribute may not have more than :max items.',
     ],
     'mimes' => ':attribute باید نوعی از :values باشد',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
         'numeric' => ':attribute باید حداقل :min کاراکتر باشد',
-        
+
         'file' => 'The :attribute must be at least :min kilobytes.',
-        'string' => 'The :attribute must be at least :min characters.',
+        'string' => ':attribute بایستی حداقل :min کاراکتر باشد',
         'array' => 'The :attribute must have at least :min items.',
     ],
     'not_in' => 'The selected :attribute is invalid.',
@@ -135,7 +135,7 @@ return [
             'rule-name' => 'custom-message',
             'required' => ':attribute یک فیلد اجباری است'
         ],
-        
+
     ],
 
     /*
@@ -149,6 +149,17 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'mobile' => 'موبایل',
+        'email' => 'ایمیل' ,
+        'password' => 'پسورد',
+        'max' => 'حداکثر',
+        'min' => 'حداقل',
+        'regex' => 'الگو',
+        'unique' => 'یکتا',
+        'fname' => 'نام',
+        'lname' => 'نام خانوادگی',
+
+    ],
 
 ];

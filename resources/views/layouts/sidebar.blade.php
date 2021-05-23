@@ -49,6 +49,17 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-format-list-checks"></i>
+                        <span>دسته بندی </span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{URL::route('categories.index')}}">لیست</a></li>
+                        <li><a href="{{URL::route('categories.create')}}">جدید</a></li>
+                 
+                    </ul>
+                </li>
               
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">

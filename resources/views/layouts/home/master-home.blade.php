@@ -2,6 +2,8 @@
 <html lang="fa">
 
 <head>
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="{{URL::asset('/assets/imgs/cropped-Favicon-2-32x32.png')}}" sizes="32x32" />
@@ -27,6 +29,7 @@
 
   @include('layouts.home.footer-home')
   
+ 
   @include('layouts.home.footer-script-home')
 
   <section class="prevloader"><div class="preloader"></div></section>

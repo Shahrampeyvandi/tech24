@@ -12,7 +12,7 @@
                 <div class="cta_sign">
                     <i class="icon-check-square-o"></i>
                 </div>
-                <p class="cta_title">نقشه راه</p>
+                <p class="cta_title">نقشه راه امنیت</p>
             </div>
             <div class="col-xl-3 col-md-3 col-sm-6 col-xs-6 d-flex align-items-center">
                 <div class="cta_sign">

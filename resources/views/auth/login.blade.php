@@ -18,16 +18,15 @@
                             <div class="bg-login-overlay"></div>
                             <div class="position-relative">
                                 <h5 class="mt-2 font-size-20">اطلاعات حساب خود را وارد کنید</h5>
-
                             </div>
                         </div>
                         <div class="card-body text-right">
                             <div class="p-2">
-                                <form method="POST" action="{{ route('login') }}" id="form">
+                                <form method="POST" action="{{ route('login') }}" id="form" class="login--form">
                                     @csrf
                                     <div class="form-group">
                                         <label for="mobile">شماره موبایل</label>
-                                        <input type="mobile" required class="form-control 
+                                        <input type="mobile" required class="form-control
                                         @error('mobile') is-invalid @enderror" name="mobile"
                                             value="{{ old('mobile') }}" id="mobile" autofocus autocomplete="mobile">
                                         @error('mobile')
@@ -48,8 +47,15 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                                    <div class="g-recaptcha" id="feedback-recaptcha" data-sitekey="6Le8Z-QaAAAAAImvSEAtV6Disqxo3f-h5ev0vKqI"></div>
+                                    @error('g-recaptcha-response')
+                                    <span class="invalid-feedback" style="display: block" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
 
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="custom-control custom-checkbox mt-5">
                                         <input type="checkbox" class="custom-control-input" name="remember"
                                             id="customControlInline" {{ old('remember') ? 'checked' : '' }}>
                                         <label class="custom-control-label"
@@ -73,7 +79,7 @@
                 <div class="mt-5 text-center">
                     <p>حساب کاربری ندارید؟<a href="register" class="font-weight-medium text-primary"> ثبت نام</a> </p>
                     <p>© <script>
-                            document.write(new Date().getFullYear()) 
+                            document.write(new Date().getFullYear())
                         </script> تکوان</p>
                 </div>
 
@@ -85,42 +91,10 @@
     @endsection
 
     @section('scripts')
-        
     <!-- JAVASCRIPT -->
     <script src="{{ URL::asset('libs/jquery/jquery.min.js')}}"></script>
 
     <script src="{{ URL::asset('libs/jquery-validate/jquery.validate.js')}}"></script>
 
-    <script>
-        $.validator.addMethod(
-    "regex",
-    function(value, element, regexp) {
-        return this.optional(element) || regexp.test(value);
-    },
-    "Please check your input."
-);
-    $("#form").validate({
-		rules: {
-            mobile: {
-                required: true,
-                regex: /^[0][1-9]\d{9}$|^[1-9]\d{9}$/
-			},
-			password: {
-				required: true,
-			
-			},
-		},
-		messages: {
-            password: {
-                required: "رمز عبور خود را وارد نمایید",
-              
-            },
-            mobile:{
-                required:"شماره موبایل خود را وارد نمایید",
-                regex:"موبایل دارای فرمت نامعتبر می باشد"
-            }
-		}
-	});
-    </script>
-
+    <script src="{{ URL::asset('assets/js/auth.js')}}"></script>
     @endsection

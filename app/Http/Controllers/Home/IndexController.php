@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Home;
 
 use App\Blog;
 use App\Post;
+use App\Quiz;
+use App\User;
+use App\Slider;
+use Carbon\Carbon;
+use App\TokenReset;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use App\Http\Controllers\Controller;
-use App\Quiz;
-use App\Slider;
-use App\User;
-use Carbon\Carbon;
-use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
 
 
@@ -20,6 +21,27 @@ class IndexController extends Controller
 {
     public function index()
     {
+        // $patterncode = '6onq2eu1g2';
+        // // validate mobile
+        // // $request->validate([
+        // //     'mobile' => 'required|regex:/(09)[0-9]{9}/'
+        // // ]);
+
+        // $passreset = TokenReset::where('mobile','09911041242')->first();
+        // if($passreset) {
+        // }else{
+        //     $passreset = new TokenReset;
+        //     $passreset->mobile = '09911041242';
+            
+        // }
+        // $passreset->code = mt_rand(100000, 999999);
+        // $passreset->save();
+
+
+        // // send sms 
+        // $this->sendSMS($patterncode,'09911041242',array('code'=>strval($passreset->code)));
+
+        // dd(date('Y/m/d H:i:s',strtotime('00:02:00')));
         //    $user =  User::find(1);
         //     $user->syncRoles(['admin']);
         //     dd('d');

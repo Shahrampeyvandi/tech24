@@ -24,6 +24,7 @@ class CreateBlogsTable extends Migration
             $table->unsignedBigInteger('views')->default(0);
             $table->text('video_frame')->nullable();
             $table->integer('category_id');
+          
             $table->timestamps();
         });
     }

@@ -58,9 +58,9 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-form-label">وبینار مربوطه: </label>
-                                <select class="form-control select2 " name="post">
-                                    @foreach (\App\Post::where('post_type','webinar')->orderBy('title')->get() as $item)
+                                <label class="col-form-label">وبینار یا دوره را برای لینک شدن انتخاب کنید</label>
+                                <select class="form-control select2 " name="post" required>
+                                    @foreach (\App\Post::whereIn('post_type',['webinar','course'])->orderBy('title')->get() as $item)
                                     <option value="{{$item->id}}"
                                         {{isset($slider) && $slider->post_id == $item->id ? 'selected' : ''}}>
                                         {{Str::limit($item->title,30,'...')}}</option>

@@ -92,6 +92,7 @@ class Controller extends BaseController
             "recipient" => '+98' . substr($phone, 1),
             "values" => $data
         );
+        // dd($datas);
         $url = "http://rest.ippanel.com/v1/messages/patterns/send";
         $handler = curl_init($url);
         curl_setopt($handler, CURLOPT_CUSTOMREQUEST, "POST");
@@ -102,6 +103,7 @@ class Controller extends BaseController
             'Authorization: AccessKey -0E7gN8QTAM9VhfM5Vin5wCjpX5AHYn2a8P-J5Y4T5k='
         ));
         $response = curl_exec($handler);
+        // dd($response);
     }
 
     protected function add_user_to_adobegroup($user_id, $group_id)

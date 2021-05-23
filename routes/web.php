@@ -24,6 +24,9 @@ Route::get('logout', 'Auth\LoginController@logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
+Route::post('/check-mobile', 'Auth\RegisterController@checkMobile');
+
+
 
 
 

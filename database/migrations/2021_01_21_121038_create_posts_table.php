@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('slug');
             $table->string('latin')->nullable();
             
-            $table->integer('parent_id')->default(0);
+            $table->integer('parent_id')->nullable()->default(0);
             $table->string('picture')->nullable();
             $table->timestamps();
         });

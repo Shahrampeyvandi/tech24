@@ -18,10 +18,10 @@
                 <li class="nav_item">
                     <a href="{{ url('webinars') }}" class="nav_link">وبینار های پیشرو</a>
                 </li>
-                <li class=" nav_item">
+                {{-- <li class=" nav_item">
                     <a href="{{ url('courses') }}" class="nav_link">دوره ها </a>
                  
-                </li>
+                </li> --}}
 
                 <li class="nav_item">
                     <a href="{{ url('blogs') }}" class="nav_link">بلاگ</a>
@@ -32,6 +32,15 @@
                 <li class="nav_item">
                     <a href="{{ URL::route('contactus') }}" class="nav_link">تماس با ما</a>
                 </li>
+                @if (Auth::check())
+                <li class="nav_item d-block d-md-none">
+                    <a href="{{ URL::route('member.dashboard',Auth::user()->username) }}" class="nav_link">پنل کاربری</a>
+                </li>
+                 @else   
+                 <li class="nav_item d-block d-md-none">
+                     <a href="{{ URL::route('login') }}" class="nav_link">ورود</a>
+                 </li>
+                @endif
             </ul>
             <a href="{{ URL::route('baseurl') }}" class="navbar_logo"><img src="{{ URL::asset('assets/imgs/Logo.png') }}" alt="Tech-one"></a>
         </div>

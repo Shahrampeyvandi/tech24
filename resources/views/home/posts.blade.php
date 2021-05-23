@@ -15,20 +15,19 @@
         <div class="col-lg-9">
             <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
                 <h1 class="section_heading font_size_2">{{$title}} های <span>تک وان 24</span></h1>
-                <div class="archive_options">
-                    <a class="cats_group_link" href="archive.html"><i class="icon-view_comfy"></i></a>
-                    <a class="cats_group_link active" href="products.html"><i class="icon-view_list"></i></a>
-                    <menu class="dropdown mr-2">
-                        <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown"> جدیدترین {{$title}} ها
-                        </button>
-                        <ul class="dropdown-menu">
-                            <div class="dropdown-divider"></div>
-                            <li class="dropdown-item" onclick="showCategory('new')">جدیدترین {{$title}} ها</li>
-                            <div class="dropdown-divider"></div>
-                            <li class="dropdown-item" onclick="showCategory('popular')">پرفروش ترین ها</li>
-                        </ul>
-                    </menu>
-                </div>
+                    <div class="archive_options">
+                        {{-- <a class="cats_group_link" href="archive.html"><i class="icon-view_comfy"></i></a>
+                        <a class="cats_group_link active" href="products.html"><i class="icon-view_list"></i></a> --}}
+                        <menu class="dropdown mr-2">
+                            <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown"> جدیدترین {{$title}} ها </button>
+                            <ul class="dropdown-menu">
+                                <div class="dropdown-divider"></div>
+                                <li class="dropdown-item" ><a href="{{ url($post_type . 's') }}">جدیدترین {{$title}} ها</a></li>
+                                <div class="dropdown-divider"></div>
+                                <li class="dropdown-item" ><a href="{{ url($post_type . 's') }}?order=views">پربازدید {{$title}} ها</a></li>
+                            </ul>
+                        </menu>
+                    </div>
             </div>
             <!--PRODUCT BOX-->
             <div class="row mr-1">

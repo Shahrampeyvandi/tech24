@@ -12,23 +12,22 @@
         <div class="row text-right">
     
             <div class="col-lg-12">
-                <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
+               <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
                     <h1 class="section_heading font_size_2">{{$title}} های <span>تک وان 24</span></h1>
                     <div class="archive_options">
-                        <a class="cats_group_link" href="archive.html"><i class="icon-view_comfy"></i></a>
-                        <a class="cats_group_link active" href="products.html"><i class="icon-view_list"></i></a>
+                        {{-- <a class="cats_group_link" href="archive.html"><i class="icon-view_comfy"></i></a>
+                        <a class="cats_group_link active" href="products.html"><i class="icon-view_list"></i></a> --}}
                         <menu class="dropdown mr-2">
                             <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown"> جدیدترین {{$title}} ها </button>
                             <ul class="dropdown-menu">
                                 <div class="dropdown-divider"></div>
-                                <li class="dropdown-item" onclick="showCategory('new')">جدیدترین {{$title}} ها</li>
+                                <li class="dropdown-item" ><a href="{{ url('podcasts') }}">جدیدترین {{$title}} ها</a></li>
                                 <div class="dropdown-divider"></div>
-                                <li class="dropdown-item" onclick="showCategory('popular')">پربازدیدترین {{$title}} ها</li>
+                                <li class="dropdown-item" ><a href="{{ url('podcasts') }}?order=views">پربازدید {{$title}} ها</a></li>
                             </ul>
                         </menu>
                     </div>
                 </div>
-                <!--PRODUCT BOX-->
                 
                 
                     @foreach ($posts as $post)

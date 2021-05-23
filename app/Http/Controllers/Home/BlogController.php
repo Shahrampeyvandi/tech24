@@ -22,6 +22,7 @@ class BlogController extends Controller
         // dd($slug);
         $data['blog'] = Blog::whereSlug($slug)->first();
         if (!$data['blog']) abort(404);
+        $data['blog']->increment('views');
         $data['related_blogs'] = Blog::where('id', '!=', $data['blog']->id)
             ->latest()->take(3)->get();
 

@@ -90,7 +90,7 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        // dd($request->change_desc);
 
         $slug = SlugService::createSlug(Blog::class, 'slug', $request->title);
 
@@ -111,7 +111,12 @@ class BlogController extends Controller
 
         $blog->title = $request->title;
         $blog->url = $request->url;
-        $blog->description = $request->description ? $request->description : '';
+        if (isset($request->action) && $request->action == 'edit' && $request->change_desc ) {
+            $blog->description = $request->description; 
+        }else{
+
+            $blog->description = $request->description ? $request->description : '';
+        }
         $blog->short_description = $request->short_description ? $request->short_description : '';
         $blog->views = 10;
         $cat = BlogCategory::firstOrCreate(['name' => $request->category]);

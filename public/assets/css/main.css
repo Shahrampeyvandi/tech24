@@ -7,13 +7,48 @@
 
 
 label.error {
-    font-size: .7rem;
+    font-size: .7rem !important;
     color: red;
+}
+input{
+    font-family: inherit;
 }
 
 .blogs-wrapper{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 30px;
-    
+
+}
+.blog-description img{
+    max-width: 100%;
+}
+.blog-description span{
+    max-width: 100%;
+}
+
+
+.form-group {
+    margin-bottom: .8rem !important;
+}
+label {
+    font-size: .85rem !important;
+}
+.card{
+     border:none !important;
+    border-radius: .5rem !important;
+    box-shadow: 0px 5px 11px -3px rgb(0 0 0 / 29%) !important;
+    -webkit-box-shadow: 0px 5px 11px -3px rgb(0 0 0 / 51%) !important;
+    -moz-box-shadow: 0px 5px 11px -3px rgba(0,0,0,0.82) !important;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #469af4 !important;
+    border-color: #007bff !important;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #3ec9df !important;
+    border-color: #3c7b85 !important;
 }
