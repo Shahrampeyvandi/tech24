@@ -57,16 +57,23 @@ Route::get('/{post}/register','Home\PostController@register')->name('post.regist
 
 // You can also use auth middleware to prevent unauthenticated users
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/panel/{user}/posts', 'Panel\UserController@posts')->name('member.posts');
-    Route::get('/panel/{user}/profile', 'Panel\UserController@profile')->name('member.profile');
-    Route::post('/panel/{user}/profile', 'Panel\UserController@updateProfile')->name('member.profile');
-    
-    Route::get('/panel/{user}/post/{id}', 'Panel\UserController@show_post_lessons')->name('member.course.lessons');
-    Route::get('/panel/{user}/lesson/{id}/quiz', 'Panel\CourseController@show_quiz')->name('member.course.quiz.show');
-    Route::get('/panel/{user}/lesson/{id}/start-quiz', 'Panel\CourseController@start_quiz')->name('member.course.quiz.start');
-    Route::post('/panel/quiz/answer/submit', 'Panel\CourseController@submit_answer');
-    Route::get('/panel/{user}', 'Panel\UserController@index')->name('member.dashboard');
-    Route::get('/panel/chat/{group}', 'Panel\UserController@chat')->name('member.chat');
+    Route::post('comment/create','Controller@createComment')->name('comment.insert');
+
+    Route::group([
+        'prefix'=>'panel',
+        'as' => 'member.'
+    ],function (){
+        Route::get('/{user}/posts', 'Panel\UserController@posts')->name('posts');
+        Route::get('/{user}/profile', 'Panel\UserController@profile')->name('profile');
+        Route::post('/{user}/profile', 'Panel\UserController@updateProfile')->name('profile');
+
+        Route::get('/{user}/post/{id}', 'Panel\UserController@show_post_lessons')->name('course.lessons');
+        Route::get('/{user}/lesson/{id}/quiz', 'Panel\CourseController@show_quiz')->name('course.quiz.show');
+        Route::get('/{user}/lesson/{id}/start-quiz', 'Panel\CourseController@start_quiz')->name('course.quiz.start');
+        Route::post('/quiz/answer/submit', 'Panel\CourseController@submit_answer');
+        Route::get('/{user}', 'Panel\UserController@index')->name('dashboard');
+        Route::get('/chat/{group}', 'Panel\UserController@chat')->name('chat');
+    });
 
     // Route::get('{any}', 'QovexController@index');
 });

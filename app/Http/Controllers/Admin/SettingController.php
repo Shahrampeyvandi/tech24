@@ -10,15 +10,13 @@ use App\Http\Controllers\Controller;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
     public $page_title = 'تنظیمات';
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function index()
     {
         $data = [
@@ -28,11 +26,7 @@ class SettingController extends Controller
         return view('admin.setting.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         $data['page_title'] = $this->page_title;
@@ -42,7 +36,7 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,7 +51,6 @@ class SettingController extends Controller
         }
 
 
-
         $setting->key = $request->key;
         $setting->value = $request->value;
         $setting->save();
@@ -68,7 +61,7 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -79,7 +72,7 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -93,8 +86,8 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -105,7 +98,7 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -133,7 +126,8 @@ class SettingController extends Controller
         $data['page_title'] = 'رسانه';
         return view('admin.media.add', $data);
     }
-    public function submitUploadMedia(Request $request)
+
+    public function submitUploadMedia(Request $request): \Illuminate\Http\RedirectResponse
     {
 
         $media = new Media;
@@ -141,19 +135,21 @@ class SettingController extends Controller
         $fileName = $slug . '.' . $request->file->extension();
         // dd($request->file->extension());
         $date = date('Y');
+        $path = 'public_html/image/' . $date . '/' . $fileName;
 
         $conn = ftp_connect(env('FTP_HOST'));
         $login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD'));
         ftp_set_option($conn, FTP_USEPASVADDRESS, false);
         ftp_pasv($conn, true);
 
+
         if (ftp_nlist($conn, 'public_html/image/' . $date) == false) {
             ftp_mkdir($conn, 'public_html/image/' . $date);
         }
 
-        // if (in_array($slug, ftp_nlist($conn, 'public_html/image/' . $date))) {
-        //     $this->delete_with_ftp('public_html/image/' . $date . '/' . $slug);
-        // }
+        if (in_array($path, ftp_nlist($conn, 'public_html/image/' . $date))) {
+            $fileName = $slug . '-' . Str::random() . '.' . $request->file->extension();
+        }
 
         ftp_put($conn, 'public_html/image/' . $date . '/' . $fileName, $_FILES['file']['tmp_name'], FTP_BINARY);
         ftp_close($conn);
@@ -172,6 +168,6 @@ class SettingController extends Controller
             'medias' => Media::latest()->get(),
             'title' => 'رسانه'
         ];
-        return view('admin.media.index',$data);
+        return view('admin.media.index', $data);
     }
 }

@@ -79,12 +79,12 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
 
-        // dd($request->all());
+//         dd($request->all());
 
         // dd($_FILES['picture']['tmp_name']);
 
@@ -106,25 +106,24 @@ class PostController extends Controller
             $rules['file'] =  'mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav';
             $rules['url'] = 'required_without:file';
             $mime = 'audio';
+            if($request->post_id) {
+                $rules['file'] =  'nullable|mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav';
+                $rules['url'] = 'nullable';
+            }
         } else {
             $mime = null;
         }
+
 
         if ($request['post_type'] == 'webinar') {
             $rules['group_name'] = 'required';
         }
 
-
         $rules['seo_title'] = 'required';
         $rules['seo_description'] = 'required';
-        $rules['seo_canonical'] = 'required';
-
 
         $request->validate($rules);
         // dd($request->all());
-
-
-
 
         try {
             $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
@@ -147,18 +146,19 @@ class PostController extends Controller
                 $fileName = $this->upload_picture($request, $this->post_type, $slug);
                 $post->picture = $fileName;
             }
+
             $post->title = $request->title;
             $post->sco_url = isset($request->sco_id) && $request->sco_id ? $request->sco_id : null;
             $post->description = $request->desc;
             $post->short_description = $request->short_description ? $request->short_description : null;
             $post->media = $mime ? 'audio' : 'video';
             $post->post_type = $this->post_type;
-            $post->duration = $request->duration;
+            $post->duration = $request->duration ?? null;
             $post->cash = $request->cash_type;
             $post->price = $request->price;
             $post->views = 1;
             $post->teacher_id = $request->teachers;
-            $post->start_date = $request->date ? carbonDate($request->date) : '';
+            $post->start_date = $request->date ? carbonDate($request->date) : null;
             $post->private = $request->public_type == 'private' ? 1 : 0;
 
 
@@ -240,7 +240,7 @@ class PostController extends Controller
             if (isset($request->action) && $request->action == 'edit') {
             } else {
                 if ($request->group_name && $request['post_type'] == 'webinar') {
-                   
+
                     $response =  $this->create_group_adobe($post, $request->group_name);
                     if ($response['status']['@attributes']['code'] == 'ok') {
                         $group = new AdobeGroup;
@@ -256,8 +256,8 @@ class PostController extends Controller
 
             $post->teachers()->sync($request->teachers);
 
-        } catch (\Throwable $th) {
-            throw $th;
+        } catch (\Exception $th) {
+            return $th->getMessage();
         }
         return Response::json(['status' => 'success', 'url' => url('admin-panel/posts') . '?post_type=' . $request['post_type'] . ''], 200);
     }

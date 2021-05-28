@@ -68,7 +68,7 @@
                         <div class="col-md-8 pl-5">
                             <input class="form-check-input" type="checkbox" name="change_desc" value="1" id="defaultCheck1">
                             <label class="form-check-label" for="defaultCheck1">
-                              ویرایش توضیحات 
+                              ویرایش توضیحات
                             </label>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label class="col-form-label">دسته بندی</label>
-                            <select class="form-control select2 enable-tag" name="category" required>
+                            <select class="form-control select2 enable-tag" name="category" >
                                 @foreach (\App\BlogCategory::orderBy('name')->get() as $item)
                                 <option value="{{$item->name}}"
                                     {{isset($blog) && $blog->category_id == $item->id ? 'selected' : ''}}>
@@ -97,7 +97,7 @@
                             </select>
                         </div>
                       </div>
-                   
+
                         <div class="form-group row">
                           <div class="col-md-6">
                             <label class="col-form-label">تگ ها</label>
@@ -115,29 +115,29 @@
                         <div class="form-group col-md-12">
                             <label for="" class="col-form-label">عنوان سئو</label>
                             <div class="custom-file">
-                                <input type="text" name="seo_title" id="seo_title" 
+                                <input type="text" name="seo_title" id="seo_title"
                                     class="form-control" required value="{{ $blog->seo_title ?? '' }}">
-    
+
                             </div>
                         </div>
                         <div class="form-group col-md-12">
                             <label for="" class="col-form-label">توضیحات سئو</label>
                             <div class="custom-file">
-                                <input type="text" name="seo_description" id="seo_description" 
+                                <input type="text" name="seo_description" id="seo_description"
                                     class="form-control" required value="{{ $blog->seo_description ?? '' }}">
-    
+
                             </div>
                         </div>
                         <div class="form-group col-md-12">
                             <label for="" class="col-form-label">canonical url</label>
                             <div class="custom-file">
-                                <input type="text" name="seo_canonical" id="seo_canonical" 
-                                    class="form-control" required value="{{ $blog->seo_canonical ?? '' }}">
-    
+                                <input type="text" name="seo_canonical" id="seo_canonical"
+                                    class="form-control"  value="{{ $blog->seo_canonical ?? '' }}">
+
                             </div>
                         </div>
-                       
-                  
+
+
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary waves-effect waves-light">
@@ -169,9 +169,9 @@
 <script src="{{URL::asset('/libs/inputmask/inputmask.min.js')}}"></script>
 <!-- form mask init -->
 <script>
-//       $('textarea#elm1').tinymce({  
+//       $('textarea#elm1').tinymce({
 //   plugins: 'codesample',
-  
+
 //   codesample_languages: [
 //     { text: 'HTML/XML', value: 'markup' },
 //     { text: 'JavaScript', value: 'javascript' },
@@ -185,7 +185,7 @@
 //     { text: 'C++', value: 'cpp' }
 //   ],
 //   toolbar: 'codesample' });
- 
+
     $(".select2").select2({
         tags:false
     });

@@ -44,6 +44,7 @@ class BlogController extends Controller
                 $allowedfileExtensions = array('jpg', 'jpeg', 'gif', 'png', 'pdf', 'doc', 'docx');
             }
 
+
             //contrinue only if file is allowed
             if (in_array($fileExtension, $allowedfileExtensions)) {
 
@@ -90,16 +91,15 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->change_desc);
 
         $slug = SlugService::createSlug(Blog::class, 'slug', $request->title);
 
         if (isset($request->action) && $request->action == 'edit') {
             $blog = Blog::find($request->blog_id);
         }else{
-
             $blog = new Blog;
         }
+
         if ($request->has('picture')) {
             if (isset($request->action) && $request->action == 'edit') {
                 File::delete(public_path($blog->picture));
@@ -112,16 +112,20 @@ class BlogController extends Controller
         $blog->title = $request->title;
         $blog->url = $request->url;
         if (isset($request->action) && $request->action == 'edit' && $request->change_desc ) {
-            $blog->description = $request->description; 
+            $blog->description = $request->description;
         }else{
 
             $blog->description = $request->description ? $request->description : '';
         }
         $blog->short_description = $request->short_description ? $request->short_description : '';
         $blog->views = 10;
-        $cat = BlogCategory::firstOrCreate(['name' => $request->category]);
-        $blog->category_id = $cat->id;
+
+        if($request->category) {
+            $cat = BlogCategory::firstOrCreate(['name' => $request->category]);
+            $blog->category_id = $cat->id ?? null;
+        }
         $blog->video_frame = $request->video_frame;
+
         $blog->seo_title = $request->seo_title;
         $blog->seo_description = $request->seo_description;
         $blog->seo_canonical = $request->seo_canonical;
@@ -129,6 +133,7 @@ class BlogController extends Controller
         $blog->save();
 
         if ($request->has('tags')) {
+            $tag_ids = [];
             foreach ($request->tags as $key => $item) {
                 $tag  = Tag::firstOrCreate(['tagname' => $item]);
                 $tag_ids[] = $tag->id;
@@ -167,7 +172,7 @@ class BlogController extends Controller
 
     public function Edit(Blog $blog)
     {
-      
+
         $data['page_title'] = $this->page_title;
         $data['blog'] = $blog;
         return view('admin.blog.add', $data);

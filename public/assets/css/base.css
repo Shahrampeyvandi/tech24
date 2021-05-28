@@ -74,6 +74,7 @@ body {
     overflow-x: hidden;
     background-color: #fcfdfd;
 }
+p{margin: 0;}
 
 button {
     cursor: pointer;

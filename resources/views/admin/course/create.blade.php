@@ -65,13 +65,13 @@
                             نام گروه وبینار (لاتین)</label>
                         <input class="form-control" type="text"
                         pattern = "[A-Za-z]{2,}" title="تنها حروف لاتین"
-                        name="group_name" 
+                        name="group_name"
                         @isset($post)
                         value="{{$post->adobeGroup->name ?? ''}}"
-                        @else 
+                        @else
                         required
                         @endisset
-                        
+
                             id="example-text-input">
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                     @isset($post)
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="{{ asset($post->picture) }}" alt="">
+                            <img src="{{ asset($post->picture) }}" class="w-100" alt="">
                         </div>
                     </div>
                     @endisset
@@ -94,13 +94,13 @@
                     </div>
 
                     @if ($post_type == 'podcast')
-                    @isset($post)
-                    <h5>فایل پادکست </h5>
-                    <audio controls>
-                        <source src="{{$post->getFileUrl()}}" type="audio/mpeg">
-                        Your browser does not support the audio tag.
-                    </audio>
-                    @endisset
+                        @isset($post)
+                        <h5>فایل پادکست </h5>
+                        <audio controls>
+                            <source src="{{$post->getFileUrl()}}" type="audio/mpeg">
+                            Your browser does not support the audio tag.
+                        </audio>
+                        @endisset
 
                     <h5>فایل پادکست را به یکی از دو روش زیر وارد نمایید:</h5>
                     <div class="form-group row">
@@ -120,8 +120,9 @@
 
                         </div>
                     </div>
-                    @endif
 
+
+                    @endif
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات کوتاه: </label>
@@ -145,14 +146,17 @@
                                 <span class="text-muted">e.g "HH:MM"</span>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="input-date1" class="col-form-label"><span class="text-danger">*</span> تاریخ
-                            </label>
-                            <input id="input-date1" name="date" class="form-control input-mask" @isset($post)
+                        @if($post_type == 'webinar')
+                            <div class="col-md-4">
+                                <label for="input-date1" class="col-form-label"><span class="text-danger">*</span> تاریخ
+                                </label>
+                                <input id="input-date1" name="date" class="form-control input-mask" @isset($post)
                                 value="{{jalaliDate($post->start_date)}}" @endisset data-inputmask="'alias': 'datetime'"
-                                data-inputmask-inputformat="dd/mm/yyyy" required>
-                            <span class="text-muted">e.g "dd/mm/yyyy"</span>
-                        </div>
+                                       data-inputmask-inputformat="dd/mm/yyyy" required>
+                                <span class="text-muted">e.g "dd/mm/yyyy"</span>
+                            </div>
+                        @endif
+
                         @if ($post_type !== 'podcast')
                         <div class="col-md-4">
                             <div class="form-group">
@@ -330,13 +334,13 @@
                             </div>
                         </div>
 
-                       
+
                     </div>
                     @endif
                     <div class="form-group col-md-12">
                         <label for="" class="col-form-label">عنوان سئو</label>
                         <div class="custom-file">
-                            <input type="text" name="seo_title" id="seo_title" 
+                            <input type="text" name="seo_title" id="seo_title"
                                 class="form-control" required value="{{ $post->seo_title ?? '' }}">
 
                         </div>
@@ -344,7 +348,7 @@
                     <div class="form-group col-md-12">
                         <label for="" class="col-form-label">توضیحات سئو</label>
                         <div class="custom-file">
-                            <input type="text" name="seo_description" id="seo_description" 
+                            <input type="text" name="seo_description" id="seo_description"
                                 class="form-control" required value="{{ $post->seo_description ?? '' }}">
 
                         </div>
@@ -352,7 +356,7 @@
                     <div class="form-group col-md-12">
                         <label for="" class="col-form-label">canonical url</label>
                         <div class="custom-file">
-                            <input type="text" name="seo_canonical" id="seo_canonical" 
+                            <input type="text" name="seo_canonical" id="seo_canonical"
                                 class="form-control" required value="{{ $post->seo_canonical ?? '' }}">
 
                         </div>
@@ -406,8 +410,8 @@
 
 <script>
     CKEDITOR.replace('desc',{
-            
-          
+
+
             contentsLangDirection: 'rtl'
         });
     $(".select2").select2({
@@ -440,24 +444,24 @@
         for ( instance in CKEDITOR.instances ) {
             CKEDITOR.instances[instance].updateElement();
         }
-        return true; 
+        return true;
         },
         beforeSend:function(){
             $('#success').empty();
-            
+
       },
       uploadProgress:function(event, position, total, percentComplete)
       {
-      
+
         $('.btn--wrapper button').text(`در حال ارسال ...`)
         $('.btn--wrapper button').attr('disabled','true')
-       
+
         $('.progress-bar').text(percentComplete + '%');
         $('.progress-bar').css('width', percentComplete + '%');
-      
-      
+
+
       },
-     
+
       success:function(data)
       {
 
@@ -478,12 +482,12 @@
         }
       });
         }
-        
+
             $('.progress-bar').text('انجام شد');
             $('.progress-bar').css('width', '0%');
 
-            
-         
+
+
       },
 
       error:function(data){
@@ -491,22 +495,22 @@
           if(data.status == 500) {
             $("#errors").append("<li class='alert alert-danger'>"+data.responseJSON.message+"</li>")
           }
-    
+
           if(data.status == 422) {
-              $.each(data.responseJSON.errors, function (key, item) 
+              $.each(data.responseJSON.errors, function (key, item)
                 {
                   $("#errors").append("<li class='alert alert-danger'>"+item+"</li>")
                 });
-          } 
+          }
 
-      
+
           $('.btn--wrapper button').html(`ارسال`)
           $('.btn--wrapper button').removeAttr('disabled');
         $('.progress-bar').css('width', '0%');
-     
+
       }
     });
-   
+
 </script>
 
 @endsection

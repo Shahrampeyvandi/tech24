@@ -5,11 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Support\Facades\Auth;
+use  Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Post extends Model
 {
      use Sluggable;
 
+       public const PODCASTS_COUNT=6;
+       public const COURSES_COUNT=4;
+       public const WEBINARS_COUNT=4;
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -37,7 +41,7 @@ class Post extends Model
     {
         return $this->belongsTo(Group::class);
     }
-    
+
     public function quiz()
     {
         return $this->morphOne(Quiz::class, 'quizable');
@@ -65,18 +69,25 @@ class Post extends Model
         return $this->hasOne(AdobeGroup::class);
     }
 
-     /**
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+
+    /**
      * Get the post's files.
      */
     public function files()
     {
         return $this->morphMany(File::class, 'filable');
     }
+
     /**
      * Get post file url
      */
 
-     public function getFileUrl()
+     public function getFileUrl():string
      {
          $file = $this->files->first();
          if($file) {
@@ -86,44 +97,43 @@ class Post extends Model
          return '#';
      }
 
-     public function getPicture()
+     public function getPicture():string
      {
          return $this->picture ? asset($this->picture) : asset('assets/imgs/Logo.png');
      }
 
-     public function getImplodeCategories()
+     public function getImplodeCategories():string
      {
-
         $category_id = $this->category_id;
-         
-         
-        
          do {
 
             $cat = Category::find($category_id);
             $arr[] = $cat->title;
             $category_id = $cat->parent_id;
             // dd($category_id);
-             
+
          } while ($category_id !== 0);
-         
-        
+
         //  dd($arr);
-        
-         return implode('> ',array_reverse($arr)); 
+         $string = '';
+        foreach ($arr as $item) {
+            $string .= $item . ' <i class="icon-caret-left mx-2"></i> ';
+        }
+
+         return  $string;
 
      }
      public function getTeacher()
      {
          $teacher = $this->teachers->first();
          if(! $teacher) return '#';
-         return $teacher->fname . ' ' . $teacher->lname; 
+         return $teacher->fname . ' ' . $teacher->lname;
      }
 
      public function getPrice()
      {
          if($this->cash == 'money') {
-             if(Auth::check() && getCurrentUser()->posts->contains($this->id)) 
+             if(Auth::check() && getCurrentUser()->posts->contains($this->id))
                return 'شما این '.$this->getPostType('fa').' را خریده اید';
             return number_format((int)$this->price) . ' تومان';
          }
@@ -149,33 +159,33 @@ class Post extends Model
 
         if(getCurrentUser()) {
             if(getCurrentUser()->posts->contains($this->id)) {
-                return '<a href="'.route('play',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">مشاهده</a>';  
+                return '<a href="'.route('play',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">مشاهده</a>';
 
             }
             if($this->cash == 'money')  return route('post.',$this->slug);
-            return '<a href="'.route('post.register',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">ثبت نام</a>';  
+            return '<a href="'.route('post.register',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">ثبت نام</a>';
 
         }
-        return '<a href="'.route('post.register',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">ثبت نام</a>';  
+        return '<a href="'.route('post.register',$this->slug) .'" class="py-2 px-5 btn_orange mr-4 mt-2">ثبت نام</a>';
     }
 
-    
+
 
 
     public function teacher_name()
     {
         $teachers = $this->teachers;
-       
+
         $name = '';
         if(count($teachers)) {
             foreach ($teachers as $key => $teacher) {
                 $name .= $teacher->fname . ' ' . $teacher->lname . ' ' ;
-           
-                
+
+
             }
-    
+
         }
-       
+
         return $name;
     }
 }

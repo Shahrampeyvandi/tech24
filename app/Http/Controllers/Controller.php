@@ -2,15 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Redirect;
+use Toastr;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function createComment(Request $request)
+    {
+
+        $post = Post::findOrFail($request->post('post_id'));
+
+        $post->comments()->create([
+           'user_id' => getCurrentUser()->id,
+           'comment' => $request->post('comment'),
+            'parent_id' => $request->post('parent_id')
+        ]);
+        Toastr::info('نظر شما با موفقیت ارسال شد و پس از تایید در سایت قابل مشاهده خواهد بود', ' پیغام');
+        return Redirect::back();
+
+    }
 
     public function upload(Request $request, $type, $name, $rules)
     {
@@ -25,9 +43,9 @@ class Controller extends BaseController
         return 'uploads/' . $date . '/' . $type . '/' . $imageName;
     }
 
-    public function upload_with_ftp($fileName, $type)
+    public function upload_with_ftp($fileName, $type):string
     {
-       
+
         try {
             $date = date('Y');
 
@@ -48,12 +66,12 @@ class Controller extends BaseController
             ftp_close($conn);
             return  env('DL_HOST_URL') . '/uploads/' . $type . '/' . $date . '/' . $fileName;
         } catch (\Throwable $th) {
-            return false;
+            return '';
         }
     }
     public function delete_with_ftp($path)
     {
-        
+
         $conn = ftp_connect(env('FTP_HOST'));
         $login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD'));
         ftp_set_option($conn, FTP_USEPASVADDRESS, false);

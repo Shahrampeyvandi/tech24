@@ -21,7 +21,7 @@ class PostController extends Controller
 {
     public function show($slug = null)
     {
-        // dd($slug);
+//         dd($slug);
         $data['post'] = Post::whereSlug($slug)->first();
         if (!$data['post']) abort(404);
         $data['post']->increment('views');
@@ -55,14 +55,17 @@ class PostController extends Controller
             $title = 'دوره';
             $post_type = 'course';
             $data['latest_posts'] = Post::where('post_type', $post_type)->where('private', 0)->latest()->take(5)->get();
+            $paginate = Post::COURSES_COUNT;
         } elseif (\Request::path() == 'podcasts') {
             $page_title =  'تکوان | پادکست ها';
             $title = 'پادکست';
             $post_type = 'podcast';
+            $paginate = Post::PODCASTS_COUNT;
             $data['latest_posts'] = Post::where('post_type', $post_type)->latest()->take(5)->get();
         } else {
             $page_title =  'تکوان | وبینار ها';
             $post_type = 'webinar';
+            $paginate = Post::WEBINARS_COUNT;
             $title = isset($request->q) && $request->q == 'archive' ? 'وبینارهای گذشته' : 'وبینار';
             $data['latest_posts'] = Post::where('post_type', $post_type)->where('start_date', '>', Carbon::now())->latest()->take(5)->get();
         }
@@ -82,7 +85,8 @@ class PostController extends Controller
         TwitterCard::addImage(asset('assets/imgs/Logo.png'));
 
 
-        $order = isset($request->order) ? $request->order : 'created_at';
+        $order =  $request->order ?? 'created_at';
+
         $data['posts'] = Post::where(function ($q) use ($category, $post_type, $request) {
 
             if ($category) {
@@ -98,7 +102,8 @@ class PostController extends Controller
             }
 
             $q->where('post_type', $post_type);
-        })->orderByDesc($order)->paginate(4);
+
+        })->orderByDesc($order)->paginate($paginate);
         // dd($data);
 
         $data['page_title'] = $page_title;
@@ -107,6 +112,7 @@ class PostController extends Controller
 
 
         if ($data['post_type'] == 'podcast') {
+//            dd(strip_tags($data['posts']->first()->description));
             return view('home.podcasts', $data);
         }
 

@@ -81,3 +81,13 @@ CategoryBoxBtns.forEach(CategoryBoxBtn => {
         CategoryBoxBtn.classList.toggle("active");
     })
 })
+
+let addComment = event => {
+    let commentId = $(event.target).data('id')
+    if (commentId) {
+        $('form').find('input[name="parent_id"]').val(commentId)
+    }
+    $('form').slideDown()
+    $('form textarea').focus()
+    $("html, body").animate({ scrollTop: $("form textarea").scrollTop() + 250 }, 1000);
+}

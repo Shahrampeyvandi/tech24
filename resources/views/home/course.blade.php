@@ -44,9 +44,9 @@
 <script>
     // var video = videojs('player');
     // video.responsive(true);
-    
-  
-    
+
+
+
 </script>
 
 @endsection
@@ -67,6 +67,17 @@
 <!--end product section-->
 
 <br>
+<div class="container">
+
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="description">
+            {!! $post->description !!}
+        </div>
+    </div>
+</div>
+
+</div>
 @include('common-components.cta-section')
 <br><br>
 <!--start lessons section-->
@@ -75,7 +86,7 @@
         <div class="container">
             <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
                 <h1 class="section_heading font_size_2">لیست درسهای دوره</span></h1>
-              
+
             </div>
             @forelse ($post->lessons()->orderBy('number','asc')->get() as $lesson)
             <div class="product_box product text-right row mb-5">
@@ -114,8 +125,8 @@
                 <h4 class="font_size_2 text-right">هیچ درسی یافت نشد</h4>
             </div>
             @endforelse
-            
-          
+
+
         </div>
     </div>
 </div>

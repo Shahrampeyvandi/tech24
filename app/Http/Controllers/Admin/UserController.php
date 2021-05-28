@@ -80,12 +80,12 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-       
-        // dd($request->all());
+
+//         dd($request->all());
         if(isset($request['action']) && $request['action'] == 'edit') {
             $user = User::find($request['uid']);
             $data = [
@@ -93,13 +93,11 @@ class UserController extends Controller
                 'lname' => 'required',
                 'username' => 'required|regex:/(^([a-zA-Z]+)(\d+)?$)/u|unique:users,username,'.$user->id,
                 'email' => 'required|email|unique:users,email,'.$user->id,
-                'password' => 'min:6',
+                'password' => 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
                 'mobile' => 'required|regex:/(09)[0-9]{9}/|unique:users,mobile,'.$user->id,
                 'group' => 'required',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
-               
             ];
-            
 
         }else{
 
@@ -108,29 +106,29 @@ class UserController extends Controller
                 'lname' => 'required',
                 'username' => 'required|unique:users|regex:/(^([a-zA-Z]+)(\d+)?$)/u',
                 'email' => 'required|email|unique:users',
-                'password' => 'min:6',
+                'password' => 'required|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
                 'mobile' => 'required|unique:users|regex:/(09)[0-9]{9}/',
                 'group' => 'required',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
-            
+
             ];
             $user = new User;
         }
-     
-        $inputs = $request->validate($data);
+        $messages = [
+            'password.regex' => 'رمز عبور باستی حداقل 8 کاراکتر و شامل حداقل یک حرف کوچک یک حرف بزرگ و یک عدد و یک کاراکتر خاص باشد',
+        ];
 
+        $request->validate($data,$messages);
 
-        
         $user->fname = $request['fname'];
         $user->lname = $request['lname'];
         $user->username = $request['username'];
         $user->email = $request['email'];
-        $user->password = $request['password'];
+       if($request['password'])  $user->password = $request['password'];
         $user->mobile = $request['mobile'];
         $user->group = $request['group'];
         $user->ability = $request['ability'];
         $user->save();
-
 
         if ($request->has('avatar')) {
             $avatar = $this->upload_picture($request, 'user', $request->mobile);

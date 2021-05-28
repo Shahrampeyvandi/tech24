@@ -63,15 +63,17 @@ class RegisterController extends Controller
             'fname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u'],
             'lname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'],
             'username' => ['required', 'unique:users', 'string', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u','min:5', 'max:15'],
             'mobile' => ['required', 'regex:/(09)[0-9]{9}/', 'unique:users'],
             'code' => ['required',new ExistCode($data)]
 
         ],[
+
             'fname.regex' => 'نام شما باید تنها شامل حروف لاتین باشد',
             'lname.regex' => 'نام خانوادگی شما باید تنها شامل حروف لاتین باشد',
-            'code' => 'کد ارسالی شما مطابقت ندارد لطفا لحظاتی دیگر مجددا تلاش کنید'
+            'code' => 'کد ارسالی شما مطابقت ندارد لطفا لحظاتی دیگر مجددا تلاش کنید',
+            'password.regex' => 'رمز عبور باستی حداقل 8 کاراکتر و شامل حداقل یک حرف کوچک یک حرف بزرگ و یک عدد و یک کاراکتر خاص باشد',
         ]);
     }
 

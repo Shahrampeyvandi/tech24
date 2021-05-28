@@ -36,9 +36,9 @@
                         <tr>
                             <td>{{($key+1)}}</td>
                             <td>{{$blog->title}}</td>
-                            <td>{{$blog->category->name}}</td> 
-                            <td>{{$blog->tag_names()}}</td> 
-                         
+                            <td>{{$blog->category->name ?? '--'}}</td>
+                            <td>{{$blog->tag_names()}}</td>
+
 
                             <td>
                                 <div class="d-flex">

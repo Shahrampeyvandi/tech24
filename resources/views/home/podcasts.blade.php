@@ -8,55 +8,67 @@
 
 @section('content')
     <!--start prodocts section-->
-    <section class="container product my-5">
+    <section class="container archive my-5">
         <div class="row text-right">
-    
+
             <div class="col-lg-12">
-               <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
-                    <h1 class="section_heading font_size_2">{{$title}} های <span>تک وان 24</span></h1>
-                    <div class="archive_options">
-                        {{-- <a class="cats_group_link" href="archive.html"><i class="icon-view_comfy"></i></a>
-                        <a class="cats_group_link active" href="products.html"><i class="icon-view_list"></i></a> --}}
-                        <menu class="dropdown mr-2">
-                            <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown"> جدیدترین {{$title}} ها </button>
+                <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
+                    <h1 class="section_heading font_size_3">پادکست های <span>تک وان 24</span></h1>
+                    <div class="d-flex justify-content-center">
+                        <button class="all-cats" onclick="showCategory('all')"><i class="icon-view_comfy"></i></button>
+                        <menu class="dropdown mr-3">
+                            <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown"> جدیدترین پادکست ها </button>
                             <ul class="dropdown-menu">
                                 <div class="dropdown-divider"></div>
-                                <li class="dropdown-item" ><a href="{{ url('podcasts') }}">جدیدترین {{$title}} ها</a></li>
+                                <li class="dropdown-item" onclick="showCategory('new')">جدیدترین پادکست ها</li>
                                 <div class="dropdown-divider"></div>
-                                <li class="dropdown-item" ><a href="{{ url('podcasts') }}?order=views">پربازدید {{$title}} ها</a></li>
+                                <li class="dropdown-item" onclick="showCategory('popular')">پربازدیدترین پادکست ها</li>
                             </ul>
                         </menu>
                     </div>
                 </div>
-                
-                
-                    @foreach ($posts as $post)
-                        <!--PRODUCT BOX-->
-                    <div class="product_box product text-right row">
-                      <div class="col-xl-2 col-lg-12 col-sm-12 col-xs-12 product_img">
-                          <img src="{{ asset($post->picture) }}" alt="{{ $post->title }}">
-                      </div>
-                      <div class="col-xl-10 col-lg-12 col-sm-12 col-xs-12 py-2 text-right product-content">
-                          <h2 class="product_heading">{{ $post->title }}</h2>
-                         
-                          <p class="product_text">
+                <div class="row">
+                    @foreach($posts as $post)
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="box_col tab all new">
+                                <div class="box_skin">
+                                    <img src="{{$post->getPicture()}}" alt="" class="box_img">
+                                    <div class="img-overlay"></div>
+                                </div>
+                                <div class="box_content">
+                                    <h2 class="mb-3 black-text text-bold font_size_2">
+                                        <a href="{{route('post.show',['post'=>$post->slug])}}">
+                                            {{$post->title}}
+                                        </a>
+                                    </h2>
+                                    <p class="font_size_0_8">{{$post->short_description}}</p>
+                                </div>
+                                <div class="box-footer">
 
-                              {!! Str::limit($post->description, 400, '...') !!}
-                          </p>
-                          <br>
-                          <audio class="w-100" controls>
-                            <source src="{{$post->getFileUrl()}}" type="audio/mpeg">
-                            Your browser does not support the audio tag.
-                        </audio>
-                      </div>
-                  </div>
+                                    <div>
+                                    <span>
+                                        10:00 <img src="{{asset('assets/imgs/iconfinder_10_171505.png')}}" alt="">
+                                    </span>
+                                    </div>
+                                    <div>
+                                    <span>
+                                        199 <img src="{{asset('assets/imgs/iconfinder_view-show_3671905.png')}}" alt="">
+                                    </span>
+                                        <span>
+                                        10 <img src="{{asset('assets/imgs/iconfinder_icons_Message_1564513.png')}}" alt="">
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
 
-               
-                
-                {{ $posts->links() }}
-              
+                </div>
+
+                  {{ $posts->links() }}
+
             </div>
+        </div>
     </section>
     <!--end products section-->
 @endsection

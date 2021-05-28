@@ -10,12 +10,12 @@
         <div class="carousel-inner">
             @foreach ($sliders as $key=>$slider)
             <div class="carousel-item text-right {{$key == 0 ? ' active' : ''}}">
-
                 <div class="banner_content">
                     <h1 class="banner_title">{{$slider->title}}</h1>
                     <div class="banner_border"></div>
-                    <p class="banner_desc">
-                        {!! Str::limit($slider->description, 300, '...') !!}</p>
+                    <p class="banner_desc mb-3">
+                        {!! Str::limit($slider->description, 300, '...') !!}
+                    </p>
                     <a href="{{ route('post.show',$slider->post->slug) }}" class="banner_btn btn_orange btn btn-lg mb-2">مشاهده ادامه مطالب</a>
                     {{-- <a href="#" class="banner_btn btn btn-lg">ثبت نام در وبینار</a> --}}
                 </div>
@@ -94,7 +94,7 @@
                 </div> --}}
         <div style="display: flex;align-items: center;height: 100%;">
             <p class="sg_text" style="line-height: 2.3rem;text-align: justify;">
-                سایت آموزشی تک وان 24 با هدف ارتقاء سطح علمی در زمینه امنیت اطلاعات راه اندازی شده است و در این سایت قصد داریم تا شما را با جدیدترین آسیب پذیری ها و روش های دفاعی مربوط به این آسیب پذیری ها و نیز روش های جرم شناسی در زمینه امنیت اطلاعات آشنا کنیم در این راستا با برگزاری وبینارهای آموزشی و نیز مقالات و پادکست ها و فیلم های آموزشی کنار شما خواهیم بود و برای رسیدن به این هدف  از امکانات آموزشی لازم و مدرسین مجرب که چندین سال در زمینه امنیت سابقه دارند استفاده شده است .               
+                سایت آموزشی تک وان 24 با هدف ارتقاء سطح علمی در زمینه امنیت اطلاعات راه اندازی شده است و در این سایت قصد داریم تا شما را با جدیدترین آسیب پذیری ها و روش های دفاعی مربوط به این آسیب پذیری ها و نیز روش های جرم شناسی در زمینه امنیت اطلاعات آشنا کنیم در این راستا با برگزاری وبینارهای آموزشی و نیز مقالات و پادکست ها و فیلم های آموزشی کنار شما خواهیم بود و برای رسیدن به این هدف  از امکانات آموزشی لازم و مدرسین مجرب که چندین سال در زمینه امنیت سابقه دارند استفاده شده است .
                  </p>
         </div>
                 {{-- <div class="sg_details row">
@@ -145,16 +145,16 @@
             <div class="course-item">
                 <img src="assets/imgs/microsoft_b.png" class="dark_img" alt="linux">
             </div>
-        
+
             <div class="course-item">
                 <img src="assets/imgs/sans_black.png" class="dark_img" alt="linux">
             </div>
-           
-           
+
+
             <div class="course-item">
                 <img src="assets/imgs/cisco_black_0.png" class="dark_img" alt="linux">
             </div>
-          
+
         </div>
     </div>
 </section>
@@ -208,11 +208,10 @@
                 </div>
                 <div class="teacher_card_content">
                     <p class="teacher_name">{{ fullName($teacher->id) }}</p>
-                    <p class="teacher_info">مدرس {{ $teacher->ability }}</p>
+                    <p class="teacher_info"> {{ $teacher->ability }}</p>
                 </div>
             </div>
             @endforeach
-
         </div>
     </div>
 </section>
@@ -231,7 +230,6 @@
             @foreach ($blogs as $blog)
                 @include('common-components.blog-item',['blog'=>$blog])
             @endforeach
-
         </div>
     </div>
 </section>

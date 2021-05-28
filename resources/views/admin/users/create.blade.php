@@ -55,8 +55,8 @@
                     <div class="form-group row">
                         <label for="example-text-input" class="col-md-2 col-form-label">نام کاربری</label>
                         <div class="col-md-4">
-                            <input class="form-control" type="text" 
-                            pattern="[a-zA-Z]{4,12}" title="نام کاربری شامل حروف لاتین و بین 4 تا 12 حرف میباشد"
+                            <input class="form-control" type="text"
+                            pattern="[a-zA-Z\d]{5,12}" title="نام کاربری بایستی با حروف لاتین شروع شود و از 5 تا 12 کاراکتر میباشد"
                             name="username" value="{{$user->username ?? ''}}" required
                                 id="example-text-input">
                         </div>
@@ -84,8 +84,8 @@
                         <label for="example-text-input" class="col-md-2 col-form-label">رمز عبور جدید</label>
                         <div class="col-md-4">
                             <input class="form-control" type="text"
-                            pattern=".{6,}"
-                            title="رمز عبور حداقل شامل 6 کاراکتر میباشد"
+                            pattern=".{8,}"
+                            title="رمز عبور حداقل شامل 8 کاراکتر میباشد"
                             name="password" value=""
                                 id="example-text-input">
                         </div>
@@ -103,18 +103,18 @@
                     <div class="form-group row " id="ability" @isset($user)@else style="display: none" @endisset>
                         <label for="example-text-input" class="col-md-2 col-form-label">تخصص : (به طور مثال 'امنیت شبکه')</label>
                         <div class="col-md-4">
-                            <input class="form-control" type="text" 
-                            name="ability" value="{{$user->ability ?? ''}}" 
+                            <input class="form-control" type="text"
+                            name="ability" value="{{$user->ability ?? ''}}"
                                 id="example-text-input">
                         </div>
                     </div>
 
-               
+
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary waves-effect waves-light">
                             @isset($user)
                             ویرایش
-                            @else    
+                            @else
                             ثبت
                             @endisset
 
