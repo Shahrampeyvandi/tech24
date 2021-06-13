@@ -53,6 +53,8 @@ class Blog extends Model
         return $this->morphMany(Video::class, 'videoble');
     }
 
+
+
     public function get_shamsi_date()
     {
         return Jalalian::forge($this->created_at)->format('%B %d، %Y'); // دی 02، 1391

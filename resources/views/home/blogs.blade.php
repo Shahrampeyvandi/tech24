@@ -27,13 +27,12 @@
                         </menu>
                     </div>
                 </div>
-               
-              
-
                     @foreach ($blogs as $blog)
-                    <div class="product_box product text-right row">
+                    <div class="product_box product text-right row" style="width: auto">
                         <div class="col-xl-2 col-lg-12 col-sm-12 col-xs-12 product_img">
-                            <img src="{{ $blog->getPicture() }}" alt="{{ $blog->title }}">
+                            <a href="{{ $blog->url() }}" >
+                                <img src="{{ $blog->getPicture() }}" alt="{{ $blog->title }}">
+                            </a>
                         </div>
                         <div class="col-xl-10 col-lg-12 col-sm-12 col-xs-12 py-3 text-right product-content">
                             <h2 class="product_heading">{{ $blog->title }}</h2>

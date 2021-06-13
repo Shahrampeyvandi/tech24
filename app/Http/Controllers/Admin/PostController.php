@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\AdobeGroup;
+use App\Http\Services\AdobeService;
+use App\Http\Services\HTTPRequest;
 use App\Tag;
 use App\Post;
 use App\Quiz;
@@ -21,6 +23,7 @@ class PostController extends Controller
 {
     public $page_title = 'دوره';
     public $post_type = 'course';
+
 
     public function __construct()
     {
@@ -75,23 +78,12 @@ class PostController extends Controller
         return view('admin.course.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
 
-//         dd($request->all());
-
-        // dd($_FILES['picture']['tmp_name']);
-
-
-        if (isset($request->action) && $request->action == 'edit') {
-
-            $post = Post::find($request->post_id);
+        if ($request->action == 'edit') {
+            $post = Post::findOrFail($request->post_id);
             $rules = ['title' => 'required|unique:posts,title,' . $post->id];
             if ($request['post_type'] == 'podcast' && isset($request->file)) {
                 $post->files()->delete();
@@ -101,19 +93,15 @@ class PostController extends Controller
             $rules = ['title' => 'required|unique:posts'];
         }
 
-
         if ($request['post_type'] == 'podcast') {
             $rules['file'] =  'mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav';
             $rules['url'] = 'required_without:file';
             $mime = 'audio';
-            if($request->post_id) {
+            if($request->action == 'edit') {
                 $rules['file'] =  'nullable|mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav';
                 $rules['url'] = 'nullable';
             }
-        } else {
-            $mime = null;
         }
-
 
         if ($request['post_type'] == 'webinar') {
             $rules['group_name'] = 'required';
@@ -123,7 +111,6 @@ class PostController extends Controller
         $rules['seo_description'] = 'required';
 
         $request->validate($rules);
-        // dd($request->all());
 
         try {
             $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
@@ -148,10 +135,10 @@ class PostController extends Controller
             }
 
             $post->title = $request->title;
-            $post->sco_url = isset($request->sco_id) && $request->sco_id ? $request->sco_id : null;
+            $post->sco_url = $request->sco_id ?? null;
             $post->description = $request->desc;
-            $post->short_description = $request->short_description ? $request->short_description : null;
-            $post->media = $mime ? 'audio' : 'video';
+            $post->short_description = $request->short_description ?? null;
+            $post->media = $mime ?? 'video';
             $post->post_type = $this->post_type;
             $post->duration = $request->duration ?? null;
             $post->cash = $request->cash_type;
@@ -182,6 +169,7 @@ class PostController extends Controller
             $post->save();
 
             if ($request->has('tags')) {
+                $tag_ids = [];
                 foreach ($request->tags as $key => $item) {
                     $tag  = Tag::firstOrCreate(['tagname' => $item]);
                     $tag_ids[] = $tag->id;
@@ -194,7 +182,6 @@ class PostController extends Controller
                     $post->prerequisites()->sync($request->prerequisites);
                 }
 
-
                 if ($request->has('quiz') && $request->quiz) {
                     $q = Quiz::find($request->quiz);
                     $q->quizable_id = $post->id;
@@ -202,19 +189,12 @@ class PostController extends Controller
                     $q->save();
                 }
 
-                // if ($request->has('group') && $request->group) {
-                //     $g = Group::find($request->group);
-                //     $g->post_id = 3;
-                //     $g->save();
-                // }
-
                 if ($request->has('certificate') && $request->certificate) {
                     $c = Certificate::find($request->certificate);
                     $c->post_id = $request->certificate;
                     $c->save();
                 }
             }
-
 
             if (isset($request->file) && $request->file) {
                 if (isset($request->action) && $request->action == 'edit') {
@@ -237,11 +217,15 @@ class PostController extends Controller
                 ]);
             }
 
-            if (isset($request->action) && $request->action == 'edit') {
-            } else {
-                if ($request->group_name && $request['post_type'] == 'webinar') {
 
-                    $response =  $this->create_group_adobe($post, $request->group_name);
+
+                if ($request->action !== 'edit' && $request->group_name && $request['post_type'] == 'webinar') {
+
+                    $adobe = new AdobeService;
+                    $groupCreated =  $adobe->createGroup($request->group_name);
+                    if(! $groupCreated) throw new \Exception("Oops not connected to adobe ; check internet  :/");
+                     $response = json_decode(json_encode(simplexml_load_string($groupCreated)), true);
+
                     if ($response['status']['@attributes']['code'] == 'ok') {
                         $group = new AdobeGroup;
                         $group->principal_id = $response['principal']['@attributes']['principal-id'];
@@ -251,13 +235,15 @@ class PostController extends Controller
                         $group->save();
                     }
                 }
-            }
+
 
 
             $post->teachers()->sync($request->teachers);
 
         } catch (\Exception $th) {
-            return $th->getMessage();
+
+            return Response::json(['status' => 'error', 'message' => $th->getMessage() . ' in line ' . $th->getLine()], 500);
+
         }
         return Response::json(['status' => 'success', 'url' => url('admin-panel/posts') . '?post_type=' . $request['post_type'] . ''], 200);
     }
@@ -377,8 +363,6 @@ class PostController extends Controller
     {
 
 
-
-        try {
             $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=login&login=' . env('ADOBE_CONNECT_USER_NAME') . '&password=' . env('ADOBE_CONNECT_PASSWORD') . '');
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -396,35 +380,31 @@ class PostController extends Controller
             curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
             $data = curl_exec($ch);
             curl_close($ch);
+            if(! $data) throw new \Exception("Oops not connected to adobe ; check internet  :/");
             return $arr = json_decode(json_encode(simplexml_load_string($data)), true);
-        } catch (\Exception $th) {
-            throw $th;
-        }
+
     }
 
     public function getInfoSCO($sco_id)
     {
 
-        $ch = curl_init('http://online.techone24.com/api/xml?action=login&login=test@gmail.com&password=123456');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
-        curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
-        $data = curl_exec($ch);
-        // dd($data);
-        curl_close($ch);
+        $adobe = new AdobeService();
 
-        $ch = curl_init('' . env('ADOBE_CONNECT_HOST') . '/api/xml?action=sco-info&sco-id=' . $sco_id . '');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookies');
-        curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookies');
-        $data = curl_exec($ch);
-        // echo '<pre>';
-        // var_dump($data);
-        // echo '</pre>';
+        $adobe->login();
+
+        $adobe
+
+
+
+
+        $query = [
+            'action'=>'sco-info',
+            'sco-id' =>$sco_id,
+        ];
+
+      $data =  HTTPRequest::HTTPGet($url,$query);
+
+
         return json_decode(json_encode(simplexml_load_string($data)), true);
     }
 }

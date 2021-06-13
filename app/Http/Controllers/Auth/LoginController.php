@@ -55,7 +55,7 @@ class LoginController extends Controller
 
         if (Auth::user()->hasRole('admin')) {
 
-            return redirect('/admin-panel/index');
+            return redirect(RouteServiceProvider::ADMIN);
         }
         return redirect($this->redirectTo);
     }

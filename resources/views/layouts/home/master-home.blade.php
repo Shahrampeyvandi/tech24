@@ -18,14 +18,16 @@
   @include('layouts.home.head')
 </head>
 
-<body>
+<body >
   @include('layouts.home.topbar-home')
 
   @include('layouts.home.navbar-home')
 
   @include('layouts.home.searchbox-home')
 
-  @yield('content')
+  <div id="app">
+    @yield('content')
+  </div>
 
   @include('layouts.home.footer-home')
   

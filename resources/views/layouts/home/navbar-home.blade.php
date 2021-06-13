@@ -42,7 +42,6 @@
                  </li>
                 @endif
             </ul>
-            <a href="{{ URL::route('baseurl') }}" class="navbar_logo"><img src="{{ URL::asset('assets/imgs/Logo.png') }}" alt="Tech-one"></a>
         </div>
     </nav>
     <!--end nvabar-->

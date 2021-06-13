@@ -1,3 +1,4 @@
+
 const nav = document.querySelector(".navbar_wraper");
 window.addEventListener("scroll", () => {
     addSticky(window.innerHeight / 3);
@@ -83,11 +84,61 @@ CategoryBoxBtns.forEach(CategoryBoxBtn => {
 })
 
 let addComment = event => {
+    // console.log($("form textarea").offset().top)
     let commentId = $(event.target).data('id')
     if (commentId) {
         $('form').find('input[name="parent_id"]').val(commentId)
     }
     $('form').slideDown()
     $('form textarea').focus()
-    $("html, body").animate({ scrollTop: $("form textarea").scrollTop() + 250 }, 1000);
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("form textarea").offset().top - 100
+    }, 500);
+}
+
+
+
+
+var typingTimer;
+var doneTypingInterval = 1500;
+
+$('.search_box_field').on('keyup', function (e) {
+    event.preventDefault()
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(typing, doneTypingInterval);
+})
+
+$('.search_box_field').on('keydown', function () {
+    clearTimeout(typingTimer);
+});
+
+function typing(e) {
+    let key = $('.search_box_field').val();
+    let url = mainUrl + '/search';
+    if(key.length < 2) return
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: { word: key, _token: token },
+        success: function (res) {
+            let list = '';
+            if (res.results.length) {
+                $.each(res.results, function (index, item) {
+                    list += `<li><a href="${mainUrl + '/' + item.slug}">${item.title}</a></li>`
+                })
+            } else {
+                list += '<li><a href="#">موردی یافت نشد</a></li>';
+            }
+
+            $('.results').html(`
+                        <h5>نتایج جست و جو:</h5>
+                        <ul >
+                         ${list}
+                        </ul>
+                        `)
+            request = false;
+        }, error: function (error) {
+
+        }
+    })
 }

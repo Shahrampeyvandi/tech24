@@ -12,7 +12,6 @@ class TicketController extends Controller
 {
     public function store(Request $request)
     {
-        // dd($request->all());
         Ticket::create([
             'first_name' => $request['firstname'],
             'last_name' => $request['lastname'],
@@ -22,6 +21,6 @@ class TicketController extends Controller
         ]);
         Toastr::success('پیام شما با موفقیت ارسال شد','موفق');
         return Redirect::back();
-        // return 
+        // return
     }
 }

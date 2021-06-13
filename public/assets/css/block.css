@@ -51,7 +51,6 @@
     color: white;
     -webkit-transform: translate(15%, -50%);
     transform: translate(15%, -50%);
-    font-family: 'Yekan';
     text-align: justify;
 }
 
@@ -120,7 +119,6 @@
 }
 
 .cta_title {
-    font-family: Yekan;
     font-weight: 600;
     font-size: 1.25rem;
     margin-right: 1rem;

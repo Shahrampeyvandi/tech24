@@ -26,14 +26,14 @@
                         <i class="mdi mdi-airplay"></i>
                         <span>مشاهده سایت</span>
                     </a>
-                   
+
                 </li>
                 <li>
                     <a href="{{URL::route('admin.index')}}" class="waves-effect">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span>داشبورد</span>
                     </a>
-                   
+
                 </li>
 
                 <li>
@@ -57,10 +57,10 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{URL::route('categories.index')}}">لیست</a></li>
                         <li><a href="{{URL::route('categories.create')}}">جدید</a></li>
-                 
+
                     </ul>
                 </li>
-              
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-inbox-full"></i>
@@ -84,7 +84,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{URL::route('posts.index')}}?post_type=webinar">لیست</a></li>
                         <li><a href="{{URL::route('posts.create')}}?post_type=webinar">جدید</a></li>
-                 
+
                     </ul>
                 </li>
                 <li>
@@ -95,7 +95,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{URL::route('posts.index')}}?post_type=podcast">لیست</a></li>
                         <li><a href="{{URL::route('posts.create')}}?post_type=podcast">جدید</a></li>
-                 
+
                     </ul>
                 </li>
                 <li>
@@ -106,8 +106,15 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{URL::route('blogs.index')}}">لیست</a></li>
                         <li><a href="{{URL::route('blogs.create')}}">جدید</a></li>
-                 
+
                     </ul>
+                </li>
+                <li>
+                    <a href="{{URL::route('comments.index')}}?q=unapproved" class="waves-effect">
+                        <i class="mdi mdi-comment"></i>
+                        <span> دیدگاه ها<span class="badge badge-pill badge-primary float-right">{{ \App\Comment::where('approved',0)->count()  }}</span></span>
+                    </a>
+
                 </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -118,7 +125,7 @@
                         <li><a href="{{URL::route('sliders.index')}}">اسلایدر</a></li>
                         <li><a href="{{URL::route('upload.media')}}">رسانه</a></li>
                         <li><a href="{{URL::route('settings.index')}}">تنظیمات</a></li>
-                 
+
                     </ul>
                 </li>
                 {{-- <li>

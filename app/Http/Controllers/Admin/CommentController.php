@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class CommentController extends Controller
@@ -22,11 +23,13 @@ class CommentController extends Controller
 //        $this->middleware('can:delete-comment')->only(['destroy']);
     }
 
+
     /**
      * Display a listing of the resource.
      *
      * @return Factory|View
      */
+
     public function index()
     {
         $comments = Comment::query();
@@ -37,8 +40,19 @@ class CommentController extends Controller
             });
         }
 
-        $comments = $comments->whereApproved(1)->latest()->paginate(15);
-        return view('admin.comments.approved-list', compact('comments'));
+        if(request()->query('q') == 'unapproved') {
+            $approved = 0;
+        }else{
+            $approved = 1;
+        }
+
+        $data['comments'] = $comments->whereApproved($approved)->latest()->get();
+        $data['count'] = [
+            'approvedComments' => Comment::where('approved',1)->count(),
+            'unapprovedComments' => Comment::where('approved',0)->count(),
+        ];
+
+        return view('admin.comments.index',$data);
     }
 
     /**
@@ -52,6 +66,19 @@ class CommentController extends Controller
         return view('admin.comments.unapproved-list', compact('comments'));
     }
 
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Comment $comment)
+    {
+        // dd($comment);
+        return view('admin.comments.create',['comment'=>$comment]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -59,10 +86,11 @@ class CommentController extends Controller
      * @param Comment $comment
      * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, Comment $comment) : RedirectResponse
     {
-        $comment->update(['approved' => 1]);
-        return back();
+        
+        $comment->update(['approved' => 1,'comment'=>$request->comment]);
+        return Redirect::route('comments.index',['q'=>'approved']);
     }
 
     /**

@@ -2,19 +2,32 @@
 
 namespace App;
 
+use App\Http\Traits\FullTextSearch;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Support\Facades\Auth;
 use  Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Post extends Model
 {
-     use Sluggable;
+     use Sluggable,FullTextSearch;
+    
+  
 
        public const PODCASTS_COUNT=6;
        public const COURSES_COUNT=4;
        public const WEBINARS_COUNT=4;
-    /**
+   
+
+       /**
+      * The columns of the full text index
+      */
+      protected $searchable = [
+        'title',
+        'description'
+    ];
+
+     /**
      * Return the sluggable configuration array for this model.
      *
      * @return array

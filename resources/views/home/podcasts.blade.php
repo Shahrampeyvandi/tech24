@@ -15,14 +15,14 @@
                 <div class="d-flex text-center justify-content-sm-between align-items-center mb-4">
                     <h1 class="section_heading font_size_3">پادکست های <span>تک وان 24</span></h1>
                     <div class="d-flex justify-content-center">
-                        <button class="all-cats" onclick="showCategory('all')"><i class="icon-view_comfy"></i></button>
+                        <button class="all-cats" ><i class="icon-view_comfy"></i></button>
                         <menu class="dropdown mr-3">
                             <button class="dropdown-toggle btn btn-lg" data-toggle="dropdown"> جدیدترین پادکست ها </button>
                             <ul class="dropdown-menu">
                                 <div class="dropdown-divider"></div>
-                                <li class="dropdown-item" onclick="showCategory('new')">جدیدترین پادکست ها</li>
+                                <li class="dropdown-item" >جدیدترین پادکست ها</li>
                                 <div class="dropdown-divider"></div>
-                                <li class="dropdown-item" onclick="showCategory('popular')">پربازدیدترین پادکست ها</li>
+                                <li class="dropdown-item" >پربازدیدترین پادکست ها</li>
                             </ul>
                         </menu>
                     </div>
@@ -33,7 +33,7 @@
                             <div class="box_col tab all new">
                                 <div class="box_skin">
                                     <img src="{{$post->getPicture()}}" alt="" class="box_img">
-                                    <div class="img-overlay"></div>
+                                    <a href="{{route('post.show',['post'=>$post->slug])}}" class="img-overlay"></a>
                                 </div>
                                 <div class="box_content">
                                     <h2 class="mb-3 black-text text-bold font_size_2">
@@ -44,18 +44,19 @@
                                     <p class="font_size_0_8">{{$post->short_description}}</p>
                                 </div>
                                 <div class="box-footer">
-
                                     <div>
                                     <span>
                                         10:00 <img src="{{asset('assets/imgs/iconfinder_10_171505.png')}}" alt="">
                                     </span>
                                     </div>
                                     <div>
+
                                     <span>
-                                        199 <img src="{{asset('assets/imgs/iconfinder_view-show_3671905.png')}}" alt="">
+                                        250 <img src="{{asset('assets/imgs/iconfinder_view-show_3671905.png')}}" alt="">
                                     </span>
+
                                         <span>
-                                        10 <img src="{{asset('assets/imgs/iconfinder_icons_Message_1564513.png')}}" alt="">
+                                       {{$post->comments()->where('approved',1)->count()}} <img src="{{asset('assets/imgs/iconfinder_icons_Message_1564513.png')}}" alt="">
                                     </span>
                                     </div>
                                 </div>

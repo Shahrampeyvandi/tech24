@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], f
     Route::resource('blogs', 'BlogController')->except(['show', 'update']);
     Route::resource('sliders', 'SliderController')->except(['show', 'update']);
     Route::resource('settings', 'SettingController')->except(['show', 'update']);
+    Route::resource('comments', 'CommentController')->except(['show']);
 
     Route::resource('categories', 'CategoryController')->except(['show', 'update']);
 

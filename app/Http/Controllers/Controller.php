@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Blog;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -15,17 +16,42 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+
     public function createComment(Request $request)
     {
 
-        $post = Post::findOrFail($request->post('post_id'));
+        if(! $request->post('comment')) {
+            Toastr::error('لطفا دیدگاه خود را وارد کنید', ' پیغام');
+            return Redirect::back();
+        }
 
-        $post->comments()->create([
+        if($id = $request->post('post_id')) {
+            $post = Post::query();
+        }
+        elseif($id = $request->post('blog_id')){
+            $post = Blog::query();
+        }else{
+            Toastr::error('خطا در دریافت اطلاعات', ' پیغام');
+            return Redirect::back();
+        }
+
+        $model = $post->findOrFail($id);
+        // dd($model);
+
+       $comment = $model->comments()->create([
            'user_id' => getCurrentUser()->id,
            'comment' => $request->post('comment'),
-            'parent_id' => $request->post('parent_id')
+            'parent_id' => $request->post('parent_id'),
+            'approved' => getCurrentUser()->hasRole('admin') ? 1 : 0
         ]);
-        Toastr::info('نظر شما با موفقیت ارسال شد و پس از تایید در سایت قابل مشاهده خواهد بود', ' پیغام');
+
+        if ($comment->approved) {
+            Toastr::success('پیام شما با موفقیت منتشر شد', ' پیغام');
+
+        }else{
+            Toastr::info('نظر شما با موفقیت ارسال شد و پس از تایید در سایت قابل مشاهده خواهد بود', ' پیغام');
+
+        }
         return Redirect::back();
 
     }

@@ -48,6 +48,8 @@ Route::get('/pay','Home\PayController@pay')->name('pay')->middleware('auth');
 Route::get('/pay/callback','Home\PayController@callback')->name('pay.callback')->middleware('auth');
 Route::get('/play/{slug}','Home\PostController@play')->name('play');
 Route::post('/ticket/send','Home\TicketController@store')->name('ticket.store');
+Route::get('/search','Home\SearchController@index');
+Route::post('/search','Home\SearchController@search');
 Route::get('/{post}','Home\PostController@show')->name('post.show');
 Route::get('/{post}/register','Home\PostController@register')->name('post.register')->middleware('auth');
 

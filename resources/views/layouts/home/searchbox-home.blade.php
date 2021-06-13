@@ -3,10 +3,14 @@
     <section class="search_box">
         <form action="" class="search_box_form">
             <label for="searchbox_toggle" class="text-white"><i class="icon-close"></i></label>
-            <input type="text" placeholder="جست و جو کنید ..." class="search_box_field">
-            <button class="search_box_btn btn_orange"><i class="icon-search"></i></button>
+            <input   type="text" placeholder="جست و جو کنید ..." class="search_box_field">
         </form>
+        <div class="results">
+
+        </div>
     </section>
+
+    
     <!--END SEARCH BAR-->
     <!--BACK TO TOP BUTTON-->
     <button id="back_to_top"><i class="icon-angle-up"></i></button>

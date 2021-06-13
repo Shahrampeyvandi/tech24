@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Home;
 
+use Toastr;
+use App\Blog;
+use App\Lesson;
+use App\Comment;
 use App\AdobeGroup;
 use App\AdobeUsers;
-use App\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use App\Lesson;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Toastr;
-use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Illuminate\Support\Facades\Redirect;
 use Artesaos\SEOTools\Facades\TwitterCard;
 
 class BlogController extends Controller
@@ -27,6 +29,17 @@ class BlogController extends Controller
             ->latest()->take(3)->get();
 
         $data['title'] = 'تکوان | ' . $data['blog']->title;
+
+        $parents = $data['blog']->comments()->where(['parent_id'=>0,'approved'=>1])->get();
+        $col = new Collection();
+        foreach ($parents as $key => $parent) {
+            $col->push($parent);
+            foreach (Comment::where(['parent_id'=>$parent->id,'approved'=>1])->latest()->get() as $key => $value) {
+                $col->push($value);
+            }
+        }
+       
+        $data['comments'] =  $col->paginate(6);
 
          /* Seo Tools */
          SEOMeta::setTitle($data['blog']->seo_title);

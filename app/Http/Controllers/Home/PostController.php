@@ -6,6 +6,7 @@ use App\AdobeGroup;
 use App\AdobeUsers;
 use App\Post;
 use App\Category;
+use App\Comment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,11 +17,32 @@ use Toastr;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Response;
 
 class PostController extends Controller
 {
+
+    public function getChildComments($collection)
+    {
+   
+        foreach($collection as $item){
+           
+            $commentsArray[] = $item;
+            if(count(Comment::where(['parent_id'=>$item,'approved'=>1])->get())) {
+                
+                $this->getChildComments(Comment::where(['parent_id'=>$item,'approved'=>1])->get());
+              
+            }
+        }
+
+        return $commentsArray;
+    }
+
     public function show($slug = null)
     {
+        
 //         dd($slug);
         $data['post'] = Post::whereSlug($slug)->first();
         if (!$data['post']) abort(404);
@@ -29,6 +51,22 @@ class PostController extends Controller
             ->where('start_date', '>=', Carbon::now())
             ->where('id', '!=', $data['post']->id)
             ->latest()->take(8)->get();
+
+
+
+        $parents = $data['post']->comments()->where(['parent_id'=>0,'approved'=>1])->get();
+        $col = new Collection();
+        foreach ($parents as $key => $parent) {
+            $col->push($parent);
+            foreach (Comment::where(['parent_id'=>$parent->id,'approved'=>1])->latest()->get() as $key => $value) {
+                $col->push($value);
+            }
+        }
+       
+        $data['comments'] =  $col->paginate(6);
+
+        
+
 
         $data['title'] = 'تکوان | ' . $data['post']->title;
         /* Seo Tools */
@@ -226,4 +264,6 @@ class PostController extends Controller
         Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
         return Redirect::route('member.posts', ['user' => getCurrentUser()->username, 'post_type' => $post->post_type]);
     }
+    
+  
 }

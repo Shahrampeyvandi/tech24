@@ -12,8 +12,14 @@
 @section('css')
 <link href="{{URL::asset('libs/select2/select2.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{URL::asset('libs/datepicker-jalali/bootstrap-datepicker.min.css')}}" rel="stylesheet">
 
 <style>
+    .datepicker {
+        border: 1px solid #ced4da !important;
+        padding: 8px;
+        z-index: 999 !important;
+    }
     .progress {
 
         height: 1rem !important;
@@ -148,12 +154,9 @@
                         </div>
                         @if($post_type == 'webinar')
                             <div class="col-md-4">
-                                <label for="input-date1" class="col-form-label"><span class="text-danger">*</span> تاریخ
-                                </label>
-                                <input id="input-date1" name="date" class="form-control input-mask" @isset($post)
-                                value="{{jalaliDate($post->start_date)}}" @endisset data-inputmask="'alias': 'datetime'"
-                                       data-inputmask-inputformat="dd/mm/yyyy" required>
-                                <span class="text-muted">e.g "dd/mm/yyyy"</span>
+                                <label for="input-date1" class="col-form-label">تاریخ شروع</label>
+                                <input  required name="date" class="form-control datepicker"
+                                        value="{{isset($post) ? jalaliDate($post->start_date) : ''}}"  >
                             </div>
                         @endif
 
@@ -182,7 +185,7 @@
                                 <option value="money" {{isset($post) && $post->cach == 'money' ? 'selected' : ''}}>
                                     غیررایگان</option>
                             </select>
-                            <input type="number" id="cash" class="form-control mt-1 hidden" placeholder="قیمت به تومان">
+                            <input type="number" id="cash" class="form-control mt-1 _hidden" placeholder="قیمت به تومان">
                         </div>
                         <div class="col-md-4">
                             <label class="col-form-label">عمومی یا اختصاصی</label>
@@ -193,10 +196,20 @@
                                     اختصاصی</option>
                             </select>
                         </div>
-                        {{-- <div class="col-md-4">
-                            <label class="col-form-label">ظرفیت گروه</label>
-                            <input type="number" id="limit" name="limit" class="form-control ">
-                        </div> --}}
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label"><span class="text-danger">*</span> دسته بندی</label>
+                                <select class="form-control select2 enable-tag" id="category" name="category" required>
+                                    <option value="">باز کردن فهرست انتخاب </option>
+                                    @foreach (\App\Category::orderBy('title')->get() as $item)
+                                        <option value="{{$item->title}}"
+                                            {{isset($post) && $post->category->id == $item->id ? 'selected' : ''}}>
+                                            {{$item->title}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group row">
@@ -265,33 +278,8 @@
                             </div>
                         </div>
                         @endif
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="col-form-label"><span class="text-danger">*</span> دسته بندی</label>
-                                <select class="form-control select2 enable-tag" id="category" name="category" required>
-                                    <option value="">باز کردن فهرست انتخاب </option>
-                                    @foreach (\App\Category::orderBy('title')->get() as $item)
-                                    <option value="{{$item->title}}"
-                                        {{isset($post) && $post->category->id == $item->id ? 'selected' : ''}}>
-                                        {{$item->title}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="col-form-label"><span class="text-danger">*</span> دسته بالایی</label>
-                                <select class="form-control select2 enable-tag" id="parent_category"
-                                    name="parent_category" required>
-                                    <option value="0">ندارد </option>
-                                    @foreach (\App\Category::orderBy('title')->get() as $item)
-                                    <option value="{{$item->id}}"
-                                        {{isset($post) && $post->category->parent_id == $item->id ? 'selected' : ''}}>
-                                        {{$item->title}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+
+
 
                     </div>
 
@@ -309,7 +297,7 @@
                     <div class="col-md-6">
                         <video width="320" height="240" controls>
                             <source src="{{$post->getFileUrl()}}" type="video/mp4">
-                            <source src="movie.ogg" type="video/ogg">
+
                             Your browser does not support the video tag.
                         </video>
                     </div>
@@ -362,7 +350,7 @@
                         </div>
                     </div>
             </div>
-            <div class="col-md-12 my-3 btn--wrapper">
+            <div class="col-md-12 m-3 btn--wrapper">
 
                 <button type="submit" class="btn btn-primary waves-effect waves-light" >
                     @isset($post)
@@ -408,7 +396,12 @@
 
 <script src="{{asset('assets/js/jquery.form.min.js')}}"></script>
 
+<script src="{{URL::asset('/libs/datepicker-jalali/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{URL::asset('/libs/datepicker-jalali/bootstrap-datepicker.fa.min.js')}}"></script>
+
 <script>
+    $(".datepicker").datepicker();
+
     CKEDITOR.replace('desc',{
 
 
@@ -423,17 +416,17 @@
    $(".input-mask").inputmask();
    $('#cash_type').change(function(e){
        if($(this).val()== 'money'){
-           $('#cash').removeClass('hidden').addClass('show')
+           $('#cash').removeClass('_hidden').addClass('_show')
        }else{
-           $('#cash').removeClass('show').addClass('hidden')
+           $('#cash').removeClass('_show').addClass('_hidden')
        }
    })
 
    $('#archive').change(function(e){
        if($(this).val()== 'yes'){
-           $('.archive').removeClass('hidden').addClass('show')
+           $('.archive').removeClass('_hidden').addClass('_show')
        }else{
-           $('.archive').removeClass('show').addClass('hidden')
+           $('.archive').removeClass('_show').addClass('_hidden')
        }
    })
 
@@ -492,6 +485,7 @@
 
       error:function(data){
         $("#errors").html('')
+          console.log(data)
           if(data.status == 500) {
             $("#errors").append("<li class='alert alert-danger'>"+data.responseJSON.message+"</li>")
           }

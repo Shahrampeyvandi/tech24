@@ -24,15 +24,16 @@
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <h1 class="font_size_3  text-bold mb-3">اطلاعات تماس <span class="orange-text">تک وان 24</span></h1>
                 <b class="text-black mb-3"><i class="icon-phone ml-2"></i> شماره تلفن :</b>
-                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Mobile)->first()->value ?? '' }}</p>
+                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Mobile)->first()->value ?? '02188615745' }}</p>
                 <b class="text-black mb-3"><i class="icon-fax ml-2"></i> فاکس :</b>
-                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Fax)->first()->value ?? '' }}</p>
+                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Fax)->first()->value ?? '02188032165' }}</p>
                 <b class="text-black mb-3"><i class="icon-envelope ml-2"></i> ایمیل:</b>
-                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Email)->first()->value ?? '' }}</p>
+                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Email)->first()->value ?? 'support@techone24.com' }}</p>
                 <b class="text-black mb-3"><i class="icon-map-marker ml-2"></i> آدرس :</b>
-                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Address)->first()->value ?? '' }}</p>
+                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Address)->first()->value ?? 'تهران، ملاصدرا، خيابان شيراز جنوبي، خيابان برزيل غربي، پلاک 59 ،
+                    طبقه همکف، واحد دوم' }}</p>
                 <b class="text-black mb-3"><i class="icon-home ml-2"></i> کد پستی :</b>
-                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Postalcode)->first()->value ?? '' }}</p>
+                <p class="mb-4">{{\App\Setting::where('key',\App\Setting::Postalcode)->first()->value ?? '1435814761' }}</p>
                 <div class="contact_socials">
                     <a href="#" class="contact_social"><i class="icon-twitter"></i></a>
                     <a href="#" class="contact_social"><i class="icon-facebook"></i></a>
@@ -77,7 +78,7 @@
 <!--end contact us -->
 <br><br>
 <!--start map-->
-<iframe class="google_map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d27261.877523233234!2d48.67366058786623!3d31.33869940089554!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3fc3df1b208ad869%3A0x9fd64eaece9c90aa!2sKianpars%2C%20Ahvaz%2C%20Khuzestan%20Province!5e0!3m2!1sen!2s!4v1610809589989!5m2!1sen!2s"
+<iframe class="google_map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d809.4892434075521!2d51.401118170832376!3d35.75186228714154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e06e88a604c07%3A0xc9b4ce301a8c36b8!2z2LTYsdqp2Kog2LPYsdmF2KfbjNmHINqv2LDYp9ix24wg2K7ZiNin2LHYstmF24w!5e0!3m2!1sfa!2s!4v1622632355058!5m2!1sfa!2s"
     frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
 <!--end map-->
 <br><br>
