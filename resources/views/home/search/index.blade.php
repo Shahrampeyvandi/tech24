@@ -36,7 +36,7 @@
                     <div class="search-content">
                        <div v-if="totalResults !== 0">
                        <div class="loading" v-if="loading">درحال دریافت اطلاعات ...</div>
-                        <div class="search-item" v-for="post in data.data">
+                        <div v-if="totalResult" class="search-item" v-for="post in data.data">
                             <h3><a :href="post.slug">@{{post.title}}</a></h3>
                             <p>
                                @{{post.short_description}}

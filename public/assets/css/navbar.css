@@ -42,13 +42,12 @@
     margin: 3px 15px 0;
     color: var(--text-secondary);
   }
-  
-  @media (max-width: 1200px) {
-      .topbar {
-          display: none;
-          flex-direction: column;
-      }
+  .topbar_row{
+    display: flex;
+    justify-content: space-between;
   }
+  
+  
   
   .navbar_wraper {
       background-color: white;

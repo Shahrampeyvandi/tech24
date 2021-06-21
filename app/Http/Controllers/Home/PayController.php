@@ -44,6 +44,7 @@ class PayController extends Controller
             'CallbackURL' => route('pay.callback') . '?id=' . $payment->id,
             'Description' => 'پرداخت از سایت'
         );
+        
         $jsonData = json_encode($data);
         if ($debugmode == 1) {
             $ch = curl_init('https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentRequest.json');

@@ -24,9 +24,7 @@
                     <ul class="pd-0">
                         <li class="orange_list"><a href="{{route('baseurl')}}">خانه</a></li>
                         <li class="orange_list"><a href="{{ url('blogs') }}">بلاگ</a></li>
-                        @if (! Auth::check())
-                        <li class="orange_list"><a href="{{ route('register') }}">ثبت نام</a></li>
-                        @endif
+                       
                        
                     </ul>
                 </div>

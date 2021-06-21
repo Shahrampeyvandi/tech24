@@ -9,9 +9,11 @@
         </div>
     </div>
     <div class="box_content">
-        <h2 class="box_title black-text text-bold font_size_2">
-            <a href="#">{{ $post->title }}</a></h2>
+       <div>
+        <h3 class="mb-2">
+            <a href="#" style="color: var(--gray);">{{ $post->title }}</a></h3>
         <a href="#" class="box_desc">{!! Str::limit($post->short_description, 100, '...') !!}</a>
+       </div>
         <small class="box_subtext"><i class="icon-user-o"></i> مدرس : {{ $post->getTeacher() }}</small>
     </div>
 </div>

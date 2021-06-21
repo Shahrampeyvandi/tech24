@@ -24,7 +24,7 @@ class AdobeService
 
 
     /**
-     * login to adobe connect
+     * login to AdobeConnect In http:/online.techone24.com
      *
      * @return bool|string
      */
@@ -60,6 +60,55 @@ class AdobeService
 
     }
 
+
+    /**
+     * Add User in AdobeConnect In http:/online.techone24.com
+     * 
+     * @param string $groupName
+     * @return bool|string
+     */
+    public function addUserInAdobe(object $user)
+    {
+        if ($this->login()) {
+
+            $query = [
+                'action'=>'principal-update',
+                'first-name' => str_replace(' ', '', $user->fname),
+                'last-name'=> str_replace(' ', '', $user->lname),
+                'has-children' => '0',
+                'login'=> $user->email,
+                'type' => 'user'
+            ];
+
+            return $this->httpRequest->HTTPGet(self::URL,$query);
+        }
+
+    }
+
+
+    
+    /**
+     * Add User in AdobeConnect Group In http:/online.techone24.com
+     * 
+     * @param string $groupName
+     * @return bool|string
+     */
+    public function addUserInAdobeGroup($principalId,$groupId)
+    {
+        if ($this->login()) {
+
+            $query = [
+                'action'=>'group-membership-update',
+                'group-id' => $groupId,
+                'principal-id'=> $principalId,
+                'is-member' => '1',
+               
+            ];
+
+            return $this->httpRequest->HTTPGet(self::URL,$query);
+        }
+
+    }
 
 
 }

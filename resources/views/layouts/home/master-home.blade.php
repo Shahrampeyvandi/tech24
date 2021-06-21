@@ -16,21 +16,25 @@
   {!! Twitter::generate() !!}
 
   @include('layouts.home.head')
+  <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
+  </script>
 </head>
 
 <body >
+  <div id="app">
   @include('layouts.home.topbar-home')
 
   @include('layouts.home.navbar-home')
 
   @include('layouts.home.searchbox-home')
 
-  <div id="app">
+  
+ 
     @yield('content')
-  </div>
+ 
 
   @include('layouts.home.footer-home')
-  
+</div>
  
   @include('layouts.home.footer-script-home')
 

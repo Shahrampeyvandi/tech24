@@ -1660,3 +1660,7 @@ header .right-nav .right-menu .right-Items a span {
     background: #c4c4c4;
     box-shadow: 0 0 21px rgb(231 231 231 / 58%);
   }
+
+  .alert{
+      font-size: 12px;
+  }

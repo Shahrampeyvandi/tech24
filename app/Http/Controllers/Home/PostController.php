@@ -2,38 +2,40 @@
 
 namespace App\Http\Controllers\Home;
 
+use Toastr;
+use App\Post;
+use App\Lesson;
+use App\Comment;
+use App\Category;
+use Carbon\Carbon;
 use App\AdobeGroup;
 use App\AdobeUsers;
-use App\Post;
-use App\Category;
-use App\Comment;
-use Carbon\Carbon;
+use App\Notification;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Lesson;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Toastr;
-use Artesaos\SEOTools\Facades\OpenGraph;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use App\Http\Services\AdobeService;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\OpenGraph;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Artesaos\SEOTools\Facades\TwitterCard;
+use Morilog\Jalali\Jalalian;
 
 class PostController extends Controller
 {
 
     public function getChildComments($collection)
     {
-   
-        foreach($collection as $item){
-           
+
+        foreach ($collection as $item) {
+
             $commentsArray[] = $item;
-            if(count(Comment::where(['parent_id'=>$item,'approved'=>1])->get())) {
-                
-                $this->getChildComments(Comment::where(['parent_id'=>$item,'approved'=>1])->get());
-              
+            if (count(Comment::where(['parent_id' => $item, 'approved' => 1])->get())) {
+
+                $this->getChildComments(Comment::where(['parent_id' => $item, 'approved' => 1])->get());
             }
         }
 
@@ -42,8 +44,8 @@ class PostController extends Controller
 
     public function show($slug = null)
     {
-        
-//         dd($slug);
+
+        //         dd($slug);
         $data['post'] = Post::whereSlug($slug)->first();
         if (!$data['post']) abort(404);
         $data['post']->increment('views');
@@ -54,18 +56,18 @@ class PostController extends Controller
 
 
 
-        $parents = $data['post']->comments()->where(['parent_id'=>0,'approved'=>1])->get();
+        $parents = $data['post']->comments()->where(['parent_id' => 0, 'approved' => 1])->get();
         $col = new Collection();
         foreach ($parents as $key => $parent) {
             $col->push($parent);
-            foreach (Comment::where(['parent_id'=>$parent->id,'approved'=>1])->latest()->get() as $key => $value) {
+            foreach (Comment::where(['parent_id' => $parent->id, 'approved' => 1])->latest()->get() as $key => $value) {
                 $col->push($value);
             }
         }
-       
+
         $data['comments'] =  $col->paginate(6);
 
-        
+
 
 
         $data['title'] = 'تکوان | ' . $data['post']->title;
@@ -140,7 +142,6 @@ class PostController extends Controller
             }
 
             $q->where('post_type', $post_type);
-
         })->orderByDesc($order)->paginate($paginate);
         // dd($data);
 
@@ -150,7 +151,7 @@ class PostController extends Controller
 
 
         if ($data['post_type'] == 'podcast') {
-//            dd(strip_tags($data['posts']->first()->description));
+            //            dd(strip_tags($data['posts']->first()->description));
             return view('home.podcasts', $data);
         }
 
@@ -197,11 +198,10 @@ class PostController extends Controller
 
     public function register($slug)
     {
-        // dd(getCurrentUser());
+
 
         $post = Post::whereSlug($slug)->first();
         if (!$post) abort(404);
-
 
         if (getCurrentUser()->posts->contains($post->id)) {
 
@@ -209,61 +209,79 @@ class PostController extends Controller
             return Redirect::route('post.show', $post->slug);
         }
 
+        try {
 
+            if ($post->post_type == 'webinar') {
+                $name = 'وبینار';
 
+                if (!AdobeUsers::where('user_id', getCurrentUser()->id)->first()) {
+                    $adobe = new AdobeService;
+                    $addedUser =  $adobe->addUserInAdobe(getCurrentUser());
+                    if (!$addedUser) throw new \Exception("Oops not connected to adobe ; check internet  :/");
+                    $response = json_decode(json_encode(simplexml_load_string($addedUser)), true);
 
-
-        if ($post->post_type == 'webinar') {
-            $name = 'وبینار';
-
-            if (!AdobeUsers::where('user_id', getCurrentUser()->id)->first()) {
-                $response =  $this->create_user_in_adobe();
-                if (is_array($response) && $response['status']['@attributes']['code'] == 'ok') {
-                    $userobj = new AdobeUsers;
-                    $userobj->principal_id = $response['principal']['@attributes']['principal-id'];
-                    $userobj->account_id = $response['principal']['@attributes']['account-id'];
-                    $userobj->user_id = getCurrentUser()->id;
-                    $userobj->save();
+                    if (is_array($response) && $response['status']['@attributes']['code'] == 'ok') {
+                        $userobj = new AdobeUsers;
+                        $userobj->principal_id = $response['principal']['@attributes']['principal-id'];
+                        $userobj->account_id = $response['principal']['@attributes']['account-id'];
+                        $userobj->user_id = getCurrentUser()->id;
+                        $userobj->save();
+                    } else {
+                        Toastr::info('خطایی در روند ثبت نام رخ داد!', ' پیغام');
+                        return Redirect::route('post.show', $post->slug);
+                    }
                 } else {
-                    Toastr::info('خطایی در روند ثبت نام رخ داد!', ' پیغام');
-                    return Redirect::route('post.show', $post->slug);
+                    $userobj = AdobeUsers::where('user_id', getCurrentUser()->id)->first();
+                }
+
+                // dd($response);
+
+
+                $group = AdobeGroup::where('post_id', $post->id)->first();
+                if ($group) {
+                    $adobe = new AdobeService;
+                    $addedUserToGroup =  $adobe->addUserInAdobeGroup($userobj->principal_id, $group->principal_id);
+                    $response = json_decode(json_encode(simplexml_load_string($addedUserToGroup)), true);
+                    if ($response['status']['@attributes']['code'] == 'ok') {
+
+                        $group->users()->attach($userobj->id);
+
+                        getCurrentUser()->posts()->attach($post->id);
+
+                        //------ ارسال پیامک ثبت نام در وبینار
+                        // $patterncode = "q9uaxab7bs";
+                        // $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
+                        // $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
+
+
+                        $notification = new Notification;
+                        $notification->title = 'ثبت نام در وبینار';
+                        $notification->text = "کاربر عزیز 
+                         شما با موفقیت در وبینار ".str_replace('وبینار','',$post->title)." ثبت نام کردید 
+                         تاریخ برگزاری وبینار ".Jalalian::forge($post->start_date)->ago()." دیگر به مدت ".$post->duration." میباشد.
+                         یک ساعت قبل از برگزاری وبینار از طریق پیامک به شما اطلاع رسانی خواهد شد.";
+                        $notification->user_id = getCurrentUser()->id;
+                        $notification->save();
+
+                    } else {
+                        throw new \Exception("User No Added To AdobeGroup :/");
+                    }
                 }
             } else {
-                $userobj = AdobeUsers::where('user_id', getCurrentUser()->id)->first();
+                $name = 'دوره';
+
+                getCurrentUser()->posts()->attach($post->id);
+
+                //------ ارسال پیامک ثبت نام در دوره
+                $patterncode = "ts5qit1pfb";
+                $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
+                $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
             }
 
-            // dd($response);
-
-
-            $group = AdobeGroup::where('post_id', $post->id)->first();
-            if ($group) {
-                $res = $this->add_user_to_adobegroup($userobj->principal_id, $group->principal_id);
-                if ($res['status']['@attributes']['code'] == 'ok') {
-                    $group->users()->attach($userobj->id);
-                    getCurrentUser()->posts()->attach($post->id);
-
-
-                    //------ ارسال پیامک ثبت نام در وبینار
-                    $patterncode = "q9uaxab7bs";
-                    $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
-                    $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
-                } else {
-                }
-            }
-        } else {
-            $name = 'دوره';
-
-            getCurrentUser()->posts()->attach($post->id);
-
-            //------ ارسال پیامک ثبت نام در دوره
-            $patterncode = "ts5qit1pfb";
-            $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
-            $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
+            Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
+            return Redirect::route('member.posts', ['user' => getCurrentUser()->username, 'post_type' => $post->post_type]);
+        } catch (\Exception $th) {
+            return $th->getMessage() . " in line: " . $th->getLine();
         }
-
-        Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
-        return Redirect::route('member.posts', ['user' => getCurrentUser()->username, 'post_type' => $post->post_type]);
     }
-    
-  
 }

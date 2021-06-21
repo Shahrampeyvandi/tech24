@@ -107,6 +107,7 @@
 }
 
 .box_col {
+    position: relative;
     border-bottom: solid 0.25rem #f79521;
     padding-bottom: 00.5rem;
     background-color: white;
@@ -125,14 +126,10 @@
 .box_skin img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
-.box_img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+
 
 .box_overlay {
     background-color: #1c3c729a;
@@ -182,10 +179,11 @@
 
 .box_content {
     padding: 0.5rem;
+    margin-bottom: 10px;
 }
 
 .box_desc {
-    color: #242424;
+    color: var(--text-secondary) !important;
     display: block;
     font-size: 1rem;
     margin-bottom: 0.5rem;
@@ -199,6 +197,9 @@
 
 .box_subtext {
     font-size: 0.75rem;
+    position: absolute;
+    bottom: 5px;
+    margin-top: 10px;
 }
 
 @media (max-width:1200px) {

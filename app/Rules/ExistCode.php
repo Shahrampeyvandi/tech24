@@ -28,6 +28,7 @@ class ExistCode implements Rule
      */
     public function passes($attribute, $value)
     {
+       
         $passreset = TokenReset::where('mobile', $this->data['mobile'])->where('code', $value)->first();
 
         if($passreset){

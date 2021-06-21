@@ -15,6 +15,7 @@ export default {
           index:1,type:'all'
       },
       loading: false,
+      totalResult:0
     };
   },
   mounted() {},
@@ -33,8 +34,9 @@ export default {
         },
       })
         .then((res) => {
-        //   const { data } = res.data;
-          this.data = res.data
+          const { total } = res.data.data;
+          this.totalResult = total;
+          this.data = res.data.data
           this.loading = false
         })
         .catch((err) => {
@@ -57,7 +59,9 @@ export default {
         },
       })
         .then((res) => {
-          this.data = res.data
+           const { total } = res.data.data;
+          this.totalResult = total;
+          this.data = res.data.data
           this.loading = false
           this.btnClass.disabled = false;
         })
@@ -71,8 +75,10 @@ export default {
 <style scoped>
 .search-wrap {
   display: flex;
-  gap: 2rem;
   margin: 4rem 0;
+}
+.search-wrap input{
+      margin-left: 1rem;
 }
 .search-content {
   min-height: 200px;
@@ -85,7 +91,10 @@ export default {
 
 .search-tabs {
   display: flex;
-  gap: 2rem;
+}
+.search-tabs li{
+   margin-left: 1.5rem;
+
 }
 .search-item-type{
     font-size: .7rem;

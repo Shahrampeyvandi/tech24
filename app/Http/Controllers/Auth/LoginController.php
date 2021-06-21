@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -40,28 +42,85 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function login(Request $request)
+    {
+
+
+
+        $request->validate([
+            'g-recaptcha-response' => ['required', new Recaptcha()],
+            'username' => 'required|string',
+            'password' => 'required',
+        ]);
+
+
+        if ($this->guard()->attempt(
+            $this->credentials($request),
+            $request->filled('remember')
+        )) {
+            return response()->json([
+                'auth' => auth()->check(),
+                // 'user' => $user,
+                'redirect' => auth()->user()->hasRole('admin') ?
+                    route('admin.index') : (request()->query('afterLogin') ?  request()->query('afterLogin') : route('member.dashboard', ['user' => auth()->user()->username]))
+
+            ]);
+        }
+
+        throw ValidationException::withMessages(['message' => 'اطلاعات وارد شده اشتباه است']);
+    }
     public function logout()
     {
 
         Auth::logout();
-        return redirect('/login');
+        return redirect('/');
     }
 
-    protected function authenticated(Request $request, $user)
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(\Illuminate\Http\Request $request, $user)
     {
-        // if ($user->isAdmin()) { // do your magic here
-        //     return redirect()->route('dashboard');
-        // }
 
-        if (Auth::user()->hasRole('admin')) {
 
-            return redirect(RouteServiceProvider::ADMIN);
+        return response()->json([
+            'auth' => auth()->check(),
+            // 'user' => $user,
+            'redirect' => $user->hasRole('admin') ?
+                route('admin.index') : route('member.dashboard', ['user' => $user->username])
+
+        ]);
+    }
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        if (is_numeric($request->get('username'))) {
+            return ['mobile' => $request->get('username'), 'password' => $request->get('password')];
+        } elseif (filter_var($request->get('username'), FILTER_VALIDATE_EMAIL)) {
+            return ['email' => $request->get('username'), 'password' => $request->get('password')];
         }
-        return redirect($this->redirectTo);
+        return ['username' => $request->get('username'), 'password' => $request->get('password')];
     }
 
+    /**
+     * return username 
+     *
+     * @return void
+     */
     public function username()
     {
+        if (filter_var(request('username'), FILTER_VALIDATE_EMAIL)) {
+            return 'email';
+        }
         return 'mobile';
     }
 }

@@ -1,32 +1,94 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+require("./bootstrap");
 
-require('./bootstrap');
+window.Vue = require("vue");
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+import locale from "element-ui/lib/locale/lang/en";
+import request from "./utils/request";
 
-window.Vue = require('vue');
+Vue.use(ElementUI, { locale });
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+Vue.prototype.$baseUrl = process.env.APP_URL;
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+export const EventBus = new Vue();
 
-Vue.component('search-component', require('./components/SearchComponent.vue').default);
-Vue.component('pagination', require('laravel-vue-pagination'));
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import Vuex from "vuex";
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+    state: {
+        showLogin: false,
+        showRegister: false
+    },
+    mutations: {
+        'SHOW_LOGIN'(state) {
+            state.showLogin = true;
+        },
+        'SHOW_REGISTER'(state) {
+            state.showRegister = true;
+        }
+    },
+    actions: {
+        showLogin({ commit }) {
+            commit("SHOW_LOGIN");
+        },
+        showRegister({ commit }) {
+            commit("SHOW_REGISTER");
+        },
+        login({ commit }, userInfo) {
+            //  console.log(userInfo)
+            const { username, password, recaptcha } = userInfo;
+            const Params = new URLSearchParams(window.location.search);
+            if(Params.get('afterLogin')) {
+                var url = "/login?afterLogin=" + Params.get('afterLogin')
+            }else{
+                var url = "/login"
+            }
+            return request({
+                url,
+                method: "post",
+                data: {
+                    username: username,
+                    password: password,
+                    "g-recaptcha-response": recaptcha
+                }
+            });
+        },
+        register({ commit }, userInfo) {
+          //  console.log(userInfo)
+          const { firstName,lastName,uniqueName,activationCode,mobile, password, recaptcha } = userInfo;
+          return request({
+              url: "/register",
+              method: "post",
+              data: {
+                firstName,
+                lastName,
+                activationCode,
+                mobile,
+                password,
+                uniqueName,
+                "g-recaptcha-response": recaptcha
+              }
+          });
+      }
+    }
+});
+
+Vue.component(
+    "search-component",
+    require("./components/SearchComponent.vue").default
+);
+Vue.component("pagination", require("laravel-vue-pagination"));
+Vue.component("login-component", require("./components/auth/Login.vue").default);
+Vue.component("register-component", require("./components/auth/Register.vue").default);
+
+Vue.component(
+    "button-component",
+    require("./components/auth/Buttons.vue").default
+);
 
 const app = new Vue({
-    el: '#app',
+    el: "#app",
+    store
 });

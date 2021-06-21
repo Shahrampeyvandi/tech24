@@ -26,6 +26,19 @@
 
 </head>
 
+<style>
+    ._alert {
+        position: absolute !important;
+        width: 6px !important;
+        background: rgb(226, 68, 68);
+        height: 6px !important;
+        padding: 0 !important;
+        border-radius: 2px;
+        left: 10px !important;
+        right: auto !important;
+    }
+</style>
+
 <body>
     <img class="panel-bg" src="{{ asset('panel-assets/Images/Dashboard/1.png') }}" alt="">
     <header>
@@ -67,6 +80,9 @@
                 </li>
                 <li class="right-Items">
                     <a href="{{ route('member.dashboard',['user'=>$user->username]) }}">
+                        @if (count(getUnreadedNotifications()))
+                        <span class="_alert"></span>
+                        @endif
                         <img class="img" src="{{ asset('panel-assets/Images/Dashboard/header/notification.png') }}"
                             alt="">
                         <img class="hover"

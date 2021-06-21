@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Group;
 use App\Post;
 use App\User;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Group;
+use Carbon\Carbon;
+use App\TokenReset;
 use App\Notification;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Toastr;
+
 
 class UserController extends Controller
 {
@@ -22,7 +31,7 @@ class UserController extends Controller
      */
     public function index($slug = null)
     {
-        // dd($slug);
+        
 
 
 
@@ -186,11 +195,38 @@ class UserController extends Controller
     }
     public function updateProfile($username)
     {
-        // dd($username);
-        $user= User::where('username', $username)->firstOrFail();
+
+        if(Auth::user()->id != request('user_id')) {
+            if (!Auth::user()->hasRole('admin')) abort(403);
+        }
+        $user= User::where('id', request('user_id'))->firstOrFail();
+       
+        $validator = Validator::make(request()->all(), [
+            'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u'],
+            'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'username' => ['required', Rule::unique('users')->ignore($user->id), 'string', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u','min:5', 'max:15'],
+            'phone' => ['required', 'regex:/(09)[0-9]{9}/', Rule::unique('users','mobile')->ignore($user->id)],
+        ],[
+
+            'fname.regex' => 'نام شما باید تنها شامل حروف لاتین باشد',
+            'lname.regex' => 'نام خانوادگی شما باید تنها شامل حروف لاتین باشد',
+            'code' => 'کد ارسالی شما مطابقت ندارد لطفا لحظاتی دیگر مجددا تلاش کنید',
+            'password.regex' => 'رمز عبور باستی حداقل 8 کاراکتر و شامل حداقل یک حرف کوچک یک حرف بزرگ و یک عدد و یک کاراکتر خاص باشد',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+    
+
         $user->fname = request()->firstname;
         $user->lname = request()->lastname;
-        // $user->lname = request()->email;
+        $user->email = request()->email;
+        $user->mobile = request()->phone;
+       
+        $user->username = request()->username;
+
         if(request()->avatar) 
         {
             $name = $this->upload_avatar($username,request()->avatar);
@@ -198,8 +234,31 @@ class UserController extends Controller
         }
 
         $user->save();
+        $message = 'اطلاعات شما با موفقیت بروزرسانی شد';
         
-        return Redirect::route('member.profile',$username);
+
+        if(request()->code){
+            $passreset = TokenReset::where('mobile', request()->phone)
+            ->where('code', request()->code)->first();
+                if($passreset){
+
+                    $user->mobile_verified = 1;
+                    $message = 'اطلاعات شما با موفقیت به روز رسانی و شماره موبایل شما مورد تایید قرار گرفت';
+                    $notification = new Notification;
+                    $notification->title = 'تایید شماره موبایل';
+                    $notification->text = "کاربر عزیز \n شماره موبایل شما با شماره $user->mobile مورد تایید قرار گرفت";
+                    $notification->user_id = $user->id;
+                    $notification->save();
+                    $user->save();
+
+               
+                }
+            }
+
+            
+
+        Toastr::success($message);
+        return Redirect::route('member.profile',$user->username);
     }
 
     public function chat(Group $group)
@@ -216,5 +275,48 @@ class UserController extends Controller
 
         $file->move(public_path('uploads/' . $date . '/photos'), $imageName);
         return 'uploads/' . $date . '/photos/' . $imageName;
+    }
+    
+    /**
+     * verifyMobile
+     *
+     * @param  mixed $request
+     * @return JsonResponse
+     */
+    public function verifyMobile(Request $request) : JsonResponse
+    {
+        $user = Auth::user();
+        $patterncode  = '6onq2eu1g2';
+        // validate mobile
+        $validator = Validator::make($request->all(),[
+            'mobile' => ['required', Rule::unique('users')->ignore($user->id, 'id'),'regex:/(09)[0-9]{9}/']
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(['status' => false, 'errors' => ['message' => $validator->errors()]], 422);
+
+        }
+
+
+        $passreset = TokenReset::where('mobile', $request->mobile)->where('updated_at', '>', Carbon::now()->subMinutes(2))->first();
+
+        if ($passreset) {
+            return Response::json(['status' => false, 'errors' => ['message' => ['لطفا دقایقی دیگر دوباره تلاش کنید']]], 422);
+        }
+        $passreset = TokenReset::firstOrCreate(['mobile' => $request->mobile], ['code' => mt_rand(100000, 999999)]);
+        //        $passreset->code = mt_rand(100000, 999999);
+        $passreset->updated_at = Carbon::now();
+        $passreset->save();
+
+
+        // send sms
+        $this->sendSMS($patterncode, $request->mobile, array('code' => strval($passreset->code)));
+
+       
+        return Response::json([
+            'success' => true,
+            'timer' => date('Y/m/d H:i:s', strtotime('00:02:00'))
+        ], 200);
+        
     }
 }

@@ -9,7 +9,7 @@
     <div class="container px-3 py-2 product_container">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12 text-center product_img">
-                <img src="{{ URL::asset($post->picture) }}" class="w-100" alt="{{ $post->title }}">
+                <img src="{{ $post->getPicture() }}" class="w-100" alt="{{ $post->title }}">
             </div>
             @include('common-components.post-details',['post'=>$post,'showbtn'=>true])
         </div>

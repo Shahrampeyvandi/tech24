@@ -159,7 +159,8 @@ return [
         'unique' => 'یکتا',
         'fname' => 'نام',
         'lname' => 'نام خانوادگی',
-        'g-recaptcha-response' => 'کپچا'
+        'g-recaptcha-response' => 'کپچا',
+        'phone' => 'شماره'
 
     ],
 

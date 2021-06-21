@@ -29,23 +29,37 @@
                             <th>دسته بندی</th>
                             <th>نام استاد(ها)</th>
                             <th>تعداد دانشجویان </th>
+                            @if ($post_type == 'webinar')
+                            <th>تاریخ شروع </th>
+                            <th>مدت زمان</th>
+                            @endif
                             <th>عملیات</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($posts as $key=>$course)
+                        @foreach ($posts as $key=>$post)
                         <tr>
                             <td>{{($key+1)}}</td>
-                            <td>{{$course->title}}</td>
-                            <td>{{$course->private == 1 ? 'خصوصی' : 'عمومی'}}</td>
-                            <td>{{$course->category->title}}</td> 
-                            <td>{{$course->teacher_name()}}</td> 
-                            <td>0</td>
+                            <td>{{$post->title}}</td>
+                            <td>{{$post->private == 1 ? 'خصوصی' : 'عمومی'}}</td>
+                            <td>{{$post->category->title}}</td>
+                            <td>{{$post->teacher_name()}}</td>
+                            <td>
+                                {{count($post->registered)}}
+                            </td>
+                            @if ($post_type == 'webinar')
+                            <td>
+                                {{\Morilog\Jalali\Jalalian::forge($post->start_date)->format('Y-m-d')}}
+                            </td>
+                            <td>
+                                {{$post->duration}}
+                            </td>
+                            @endif
 
                             <td>
                                 <div class="d-flex">
-                                    <form class="form-inline" action="{{route('posts.destroy',$course->id)}}"
+                                    <form class="form-inline" action="{{route('posts.destroy',$post->id)}}"
                                         method="post">
                                         @csrf
                                         @method('delete')
@@ -54,8 +68,12 @@
                                             <i class="mdi mdi-trash-can-outline"></i>
                                         </button>
                                     </form>
-                                    <a href="{{route('posts.edit',$course->id)}}?post_type={{$post_type}}" class="btn btn-sm btn-info">
+                                    <a title="ویرایش" href="{{route('posts.edit',$post->id)}}?post_type={{$post_type}}"
+                                        class="btn btn-sm btn-info ml-1">
                                         <i class="mdi mdi-file-edit-outline "></i></a>
+                                    <a title="کاربران" href="{{route('posts.users',$post->id)}}?post_type={{$post_type}}"
+                                        class="btn btn-sm btn-primary ml-1">
+                                        <i class="mdi mdi-group "></i></a>
                                 </div>
                             </td>
                         </tr>

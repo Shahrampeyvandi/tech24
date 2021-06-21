@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class IndexController extends Controller
@@ -24,10 +25,7 @@ class IndexController extends Controller
     public function index()
     {
 
-
-    //    dd((new AdobeService)->login());
-
-
+       
 
         if (isset(request()->order)) {
             if (request()->order == 'latest') {

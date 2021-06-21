@@ -36,9 +36,7 @@
                 <li class="nav_item d-block d-md-none">
                     <a href="{{ URL::route('member.dashboard',Auth::user()->username) }}" class="nav_link">پنل کاربری</a>
                 </li>
-                 @else   
-                 <li class="nav_item d-block d-md-none">
-                     <a href="{{ URL::route('login') }}" class="nav_link">ورود</a>
+                
                  </li>
                 @endif
             </ul>

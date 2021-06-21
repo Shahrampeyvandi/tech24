@@ -42,7 +42,6 @@ class CreateUsersTable extends Migration
                 'password'=>Hash::make('123456'),
                 'email'=>'test@gmail.com',
                 'remember_token'=>null
-
                 )
         );
     }

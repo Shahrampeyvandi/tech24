@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,19 +15,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
+Route::post('/verify-mobile','Panel\UserController@verifyMobile');
 // Authentication Routes...
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('login', function(){
+    return redirect('/');
+})->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('logout', 'Auth\LoginController@logout');
-
+Route::get('auth/{provider}', 'Auth\SocialController@redirect');
+Route::get('auth/{provider}/callback','Auth\SocialController@Callback');
 // Registration Routes...
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::get('register',function(){
+    return redirect('/');
+})->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
 Route::post('/check-mobile', 'Auth\RegisterController@checkMobile');
-
-
 
 
 
@@ -51,7 +57,9 @@ Route::post('/ticket/send','Home\TicketController@store')->name('ticket.store');
 Route::get('/search','Home\SearchController@index');
 Route::post('/search','Home\SearchController@search');
 Route::get('/{post}','Home\PostController@show')->name('post.show');
-Route::get('/{post}/register','Home\PostController@register')->name('post.register')->middleware('auth');
+Route::get('/{post}/register','Home\PostController@register')->name('post.register')
+->middleware(['auth','userAccount'])
+;
 
 
 

@@ -1,8 +1,11 @@
 <?php
 
 use App\User;
+use App\Notification;
+use Illuminate\Support\Collection;
 use Morilog\Jalali\Jalalian;
 use Morilog\Jalali\CalendarUtils;
+use Illuminate\Validation\Rules\In;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
@@ -18,6 +21,15 @@ if (!function_exists('getCurrentUser')) {
             return Auth::user();
       }
 }
+if (!function_exists('getUnreadedNotifications')) {
+      function getUnreadedNotifications(): ?Collection
+      {
+            $all_notif =  Notification::whereIn('for', [Auth::user()->id, 'all'])->orWhere('user_id',Auth::user()->id)->latest()->get();
+            $unreaded  = Notification::whereIn('for', [Auth::user()->id, 'all'])->orWhere('user_id',Auth::user()->id)->latest()->get();
+          return  $unreaded = collect($unreaded)->whereNotIn('id',Auth::user()->readedNotifications()->pluck('id')->toArray());
+      }
+}
+
 
 if (!function_exists('carbonDate')) {
       function carbonDate(string $date)
@@ -73,5 +85,14 @@ if (!function_exists('connectToAdobe')) {
             curl_close($ch);
             // check the HTTP status code of the request
             return json_decode(json_encode(simplexml_load_string($data)), true)['status']['@attributes']['code'];
+      }
+}
+
+
+if (!function_exists('randomUserName')) {
+      function randomUserName($fname,$lname)
+      {
+           
+            return strtolower($fname) . "@" . substr(strtoupper($lname),0,3);
       }
 }

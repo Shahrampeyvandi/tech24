@@ -82,16 +82,22 @@ class Post extends Model
         return $this->hasOne(AdobeGroup::class);
     }
 
+    
+
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
 
 
+     
+        
     /**
-     * Get the post's files.
+     *  Relation with Files
+     *
+     * @return MorphMany
      */
-    public function files()
+    public function files() : MorphMany
     {
         return $this->morphMany(File::class, 'filable');
     }
@@ -118,6 +124,7 @@ class Post extends Model
      public function getImplodeCategories():string
      {
         $category_id = $this->category_id;
+        
          do {
 
             $cat = Category::find($category_id);
@@ -193,10 +200,7 @@ class Post extends Model
         if(count($teachers)) {
             foreach ($teachers as $key => $teacher) {
                 $name .= $teacher->fname . ' ' . $teacher->lname . ' ' ;
-
-
             }
-
         }
 
         return $name;

@@ -2,9 +2,16 @@
 
 @section('content')
 <section class="main-section">
+    @if ($errors->any())
+    @foreach ($errors->all() as $error)
+    <div class="alert alert-danger">{{$error}}</div>
+    @endforeach
+    @endif
     <div class="card-dashboard">
-        <form action="{{ route('member.profile',$user->username) }}" method="POST" class="change-detail-box" enctype="multipart/form-data">
+        <form action="{{ route('member.profile',$user->username) }}" method="POST" class="change-detail-box"
+            enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="user_id" value="{{$user->id}}">
             <div class="profile-images">
                 <div class="backdrop">
                     <img class="backdrop" src="{{ asset('panel-assets/Images/Dashboard/header/bg.jpg') }}" alt="">
@@ -46,17 +53,29 @@
                             <label for="Email">
                                 ایمیل:
                             </label>
-                            <input type="text" id="Email" name="email" value="{{$user->email}}" readonly
-                                autocomplete="off">
+                            <input type="text" id="Email" name="email" value="{{$user->email}}" autocomplete="off">
                         </div>
                     </div>
                     <div class="col-12 col-lg-3">
                         <div class="input-place">
                             <label for="Phone">
-                                شماره تماس:
+                                موبایل {{$user->mobile_verified ? '(تایید شده)' : '(شماره موبایل خود را تایید کنید)'}}
                             </label>
-                            <input type="text" id="Phone" value="{{$user->mobile}}" name="phone" readonly
-                                autocomplete="off">
+                            <input type="text" id="Phone" value="{{$user->mobile}}" name="phone" autocomplete="off">
+                            <a href="#" onclick="sendSMS(event)" class="btn--ripple" type="submit">
+                                تایید موبایل
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <div class="input-place">
+                            <label for="Phone">
+                                کد تایید موبایل
+                            </label>
+                            <input type="text" id="code" 
+                            value=""
+                             name="code" autocomplete="off">
+                           
                         </div>
                     </div>
                     <div class="col-12 col-lg-3">
@@ -72,13 +91,13 @@
                                 </label>
                             </a>
                             <ul class="select_items">
-                                <li class="select-option" id="Evidence1">مدرک1</li>
+                                {{-- <li class="select-option" id="Evidence1">مدرک1</li>
                                 <li class="select-option" id="Evidence2">مدرک2</li>
                                 <li class="select-option" id="Evidence3">مدرک3</li>
                                 <li class="select-option" id="Evidence4">مدرک4</li>
                                 <li class="select-option" id="Evidence5">مدرک5</li>
                                 <li class="select-option" id="Evidence6">مدرک6</li>
-                                <li class="select-option" id="Evidence7">مدرک7</li>
+                                <li class="select-option" id="Evidence7">مدرک7</li> --}}
                             </ul>
                         </div>
                     </div>
@@ -91,8 +110,8 @@
                                             <label for="username">
                                                 نام کاربری:
                                             </label>
-                                            <input type="text" id="username" name="username" readonly
-                                                value="{{$user->username}}" autocomplete="off">
+                                            <input type="text" id="username" name="username" value="{{$user->username}}"
+                                                autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-5 col-lg-4 no-padding-left">
@@ -100,7 +119,7 @@
                                             <label for="birthday">
                                                 تاریخ تولد
                                             </label>
-                                            <input type="text" id="birthday" name="birthday" class="input-mask" 
+                                            <input type="text" id="birthday" name="birthday" class="input-mask"
                                                 autocomplete="off" data-inputmask="'alias': 'datetime'"
                                                 data-inputmask-inputformat="dd/mm/yyyy">
                                         </div>
@@ -127,5 +146,26 @@
 <script src="{{URL::asset('/libs/inputmask/inputmask.min.js')}}"></script>
 <script>
     $(".input-mask").inputmask();
+    function sendSMS(event){
+        event.preventDefault()
+      
+        let mobile = $('input[name="phone"]').val()
+   var  request = $.post('/verify-mobile', {  mobile: mobile, _token: token });
+    request.fail(function (err) {
+        // alert(err.responseJSON.errors.message[0])
+      $.each(err.responseJSON.errors.message,(i,n)=>{
+          if(err.responseJSON.errors.message[i] instanceof Array) {
+            toastr.error(err.responseJSON.errors.message[i][0])
+          }else{
+            toastr.error(err.responseJSON.errors.message[i])
+          }
+      })
+    })
+    
+    request.done(function (res) {
+        // alert('کد برای شما پیامک شد')
+        toastr.success('کد به شماره موبایل شما پیامک شد')
+    })
+}
 </script>
 @endsection
