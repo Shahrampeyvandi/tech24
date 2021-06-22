@@ -18,6 +18,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use App\Http\Services\AdobeService;
 use App\Http\Controllers\Controller;
+use App\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -205,10 +206,18 @@ class PostController extends Controller
         $post = Post::whereSlug($slug)->first();
         if (!$post) abort(404);
 
+
         if (getCurrentUser()->posts->contains($post->id)) {
 
             Toastr::info('ثبت نام مجدد امکان پذیر نمیباشد', ' پیغام');
             return Redirect::route('post.show', $post->slug);
+        }
+
+        if($post->cash == 'money' && $post->price) {
+            if(! Payment::where('post_id',$post->id)
+            ->where('user_id',getCurrentUser()->id)->first()) {
+                abort(403);
+            }
         }
 
         try {

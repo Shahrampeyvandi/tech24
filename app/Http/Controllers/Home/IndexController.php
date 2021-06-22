@@ -15,6 +15,7 @@ use Morilog\Jalali\Jalalian;
 use App\Http\Services\HTTPRequest;
 use App\Http\Services\AdobeService;
 use App\Http\Controllers\Controller;
+use App\Http\Services\PaymentService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -26,6 +27,10 @@ class IndexController extends Controller
 {
     public function index()
     {
+        // $pay = new PaymentService(User::find(6),Post::find(15),'d');
+        // dd($pay->start());
+
+       
 
         // dd(Mail::to('yasfuny@gmail.com')->send(new PostRegistered(User::find(6),Post::find(15))));
 

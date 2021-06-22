@@ -42,19 +42,30 @@
             مشاهده
           </a>
         @else 
-              @if (Auth::check() && Auth::user()->posts->contains($post->id) )
-                  @if ($post->post_type !== 'webinar')
-                  <a href="{{ route('member.course.lessons',['user'=>getCurrentUser()->username,'id'=>$post->id]) }}" class="py-2 px-5 btn_orange mr-4 mt-2">
-                    مشاهده
-                  </a>
-                  @else
-                    <span style="border: 1px dashed;
-                    padding: .4rem .5rem;
-                    border-radius: 10px;
-                    margin-right: 1rem;">شما در این وبینار ثبت نام کرده اید</span>
-                  
+              @if (Auth::check() )
+                @if(Auth::user()->posts->contains($post->id))
+                    @if ($post->post_type !== 'webinar')
+                    <a href="{{ route('member.course.lessons',['user'=>getCurrentUser()->username,'id'=>$post->id]) }}" class="py-2 px-5 btn_orange mr-4 mt-2">
+                      مشاهده
+                    </a>
+                    @else
+                      <span style="border: 1px dashed;
+                      padding: .4rem .5rem;
+                      border-radius: 10px;
+                      margin-right: 1rem;">شما در این وبینار ثبت نام کرده اید</span>
+                    
 
-                  @endif
+                    @endif
+                @elseif($post->cash == 'money' && ! \App\Payment::where('post_id',$post->id)
+                ->where('user_id',getCurrentUser()->id)->first())   
+                 <a href="{{ route('pay') }}?id={{$post->id}}" class="py-2 px-5 btn_orange mr-4 mt-2">
+                  پرداخت 
+                </a>
+                @else
+                <a href="{{ route('post.register',$post->slug) }}" class="py-2 px-5 btn_orange mr-4 mt-2">
+                  ثبت نام
+                </a>
+                @endif 
               @else
                 @if ($post->cash == 'money')
                 <a href="{{ route('pay') }}?id={{$post->id}}" class="py-2 px-5 btn_orange mr-4 mt-2">

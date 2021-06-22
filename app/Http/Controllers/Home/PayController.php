@@ -117,6 +117,7 @@ class PayController extends Controller
         if ($err) {
             echo "cURL Error #:" . $err;
         } else {
+           
             if ($result['Status'] == 100) {
                 //echo 'Transation success. RefID:' . $result['RefID'];
 
@@ -124,63 +125,8 @@ class PayController extends Controller
                 $payment->transaction_code = $result['RefID'];
                 $payment->update();
 
-                $post = Post::find($payment->post_id);
-                if (!$post) abort(404);
-                // getCurrentUser()->posts()->attach($post->id);
-
-                if ($post->post_type == 'webinar') {
-                    $name = 'وبینار';
-        
-                    if (!AdobeUsers::where('user_id', getCurrentUser()->id)->first()) {
-                        $response =  $this->create_user_in_adobe();
-                        if (is_array($response) && $response['status']['@attributes']['code'] == 'ok') {
-                            $userobj = new AdobeUsers;
-                            $userobj->principal_id = $response['principal']['@attributes']['principal-id'];
-                            $userobj->account_id = $response['principal']['@attributes']['account-id'];
-                            $userobj->user_id = getCurrentUser()->id;
-                            $userobj->save();
-                        } else {
-                            Toastr::info('خطایی در روند ثبت نام رخ داد!', ' پیغام');
-                            return Redirect::route('post.show', $post->slug);
-                        }
-                    } else {
-                        $userobj = AdobeUsers::where('user_id', getCurrentUser()->id)->first();
-                    }
-        
-                    // dd($response);
-        
-        
-                    $group = AdobeGroup::where('post_id', $post->id)->first();
-                    if ($group) {
-                        $res = $this->add_user_to_adobegroup($userobj->principal_id, $group->principal_id);
-                        if ($res['status']['@attributes']['code'] == 'ok') {
-                            $group->users()->attach($userobj->id);
-                            getCurrentUser()->posts()->attach($post->id);
-        
-        
-                            //------ ارسال پیامک ثبت نام در وبینار
-                            $patterncode = "q9uaxab7bs";
-                            $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
-                            $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
-                            
-                        } else {
-                        }
-                    }
-                } else {
-                    $name = 'دوره';
-        
-                    getCurrentUser()->posts()->attach($post->id);
-        
-                    //------ ارسال پیامک ثبت نام در دوره
-                    $patterncode = "ts5qit1pfb";
-                    $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
-                    $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
-                }
-
-
-
-                Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
-                return redirect()->route('member.posts', ['user'=>getCurrentUser()->username,'post_type' => $post->post_type]);
+                
+              return Redirect::route('post.register',['post'=>Post::find($payment->post_id)->slug]);
             } else {
 
                 // تراکنش ناموفق بوده

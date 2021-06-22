@@ -32,7 +32,7 @@ class HTTPRequest {
      * @param       array $params
      * @return bool|string
      */
-    public static function HTTPPost($url, array $params) {
+    public static function HTTPPost($url, array $params , $headers = false) {
         $query = http_build_query($params);
         $ch    = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -42,6 +42,7 @@ class HTTPRequest {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+        if( $headers !== false )  curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
         $response = curl_exec($ch);
         curl_close($ch);
         return $response;
