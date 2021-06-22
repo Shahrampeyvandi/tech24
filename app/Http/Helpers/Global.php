@@ -21,6 +21,7 @@ if (!function_exists('getCurrentUser')) {
             return Auth::user();
       }
 }
+
 if (!function_exists('getUnreadedNotifications')) {
       function getUnreadedNotifications(): ?Collection
       {

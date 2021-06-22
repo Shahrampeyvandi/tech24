@@ -11,18 +11,20 @@ use Carbon\Carbon;
 use App\AdobeGroup;
 use App\AdobeUsers;
 use App\Notification;
+use App\Mail\PostRegistered;
 use Illuminate\Http\Request;
+use Morilog\Jalali\Jalalian;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use App\Http\Services\AdobeService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Artesaos\SEOTools\Facades\TwitterCard;
-use Morilog\Jalali\Jalalian;
 
 class PostController extends Controller
 {
@@ -253,7 +255,10 @@ class PostController extends Controller
                         // $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
                         // $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
 
+                        // Send Mail To User
+                        Mail::to(getCurrentUser()->email)->send(new PostRegistered(getCurrentUser(),$post));
 
+                        // Generate Notification For User
                         $notification = new Notification;
                         $notification->title = 'ثبت نام در وبینار';
                         $notification->text = "کاربر عزیز 

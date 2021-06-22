@@ -3,27 +3,31 @@
 namespace App\Http\Controllers\Home;
 
 use App\Blog;
-use App\Http\Services\AdobeService;
-use App\Http\Services\HTTPRequest;
 use App\Post;
 use App\Quiz;
 use App\User;
 use App\Slider;
 use Carbon\Carbon;
 use App\TokenReset;
+use App\Mail\PostRegistered;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
+use App\Http\Services\HTTPRequest;
+use App\Http\Services\AdobeService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class IndexController extends Controller
 {
     public function index()
     {
+
+        // dd(Mail::to('yasfuny@gmail.com')->send(new PostRegistered(User::find(6),Post::find(15))));
 
        
 
