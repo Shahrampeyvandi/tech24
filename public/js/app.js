@@ -3810,6 +3810,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3874,6 +3882,10 @@ __webpack_require__.r(__webpack_exports__);
     // },
   },
   methods: {
+    visibleRegister: function visibleRegister() {
+      this.visibleLogin = false;
+      _EventBus__WEBPACK_IMPORTED_MODULE_3__["default"].$emit('show_register');
+    },
     google: function google() {
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/login/google", {
         withCredentials: true,
@@ -10897,7 +10909,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.el-link.el-link--danger {\r\n  color: #606266;\r\n  background: #ff5c5c;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link.el-link--info {\r\n  color: #606266;\r\n  background: #5ccbff;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link:hover {\r\n  color: white !important;\n}\n.el-link--inner {\r\n  display: flex;\n}\n.el-link--inner svg {\r\n  fill: white;\r\n      margin-left: .5rem;\n}\n.el-dialog {\r\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\r\n    width: 95%;\n}\n}\n.el-form-item {\r\n  margin-bottom: 30px;\n}\n.el-input__inner {\r\n  padding: 0 40px;\n}\n.svg-container {\r\n  position: absolute;\r\n  z-index: 1;\r\n  right: 15px;\n}\n.el-checkbox__label {\r\n  padding-right: 10px;\n}\n.el-form-item__content {\r\n  text-align: right;\n}\n.el-dialog__header {\r\n  text-align: center;\n}\n.el-form-item__error {\r\n  right: 0;\n}\n.el-dialog__body {\r\n  text-align: right;\n}\r\n", ""]);
+exports.push([module.i, "\n.el-link.el-link--danger {\r\n     color: #606266;\r\n    background: #ff5c5c;\r\n    color: white;\r\n    padding: 0.6rem 1.5rem 0.6rem 1.5rem !important;\r\n    width: 100%;\r\n    border-radius: 5px;\n}\n.el-link.el-link--info {\r\n  color: #606266;\r\n  background: #5ccbff;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link.el-link--primary:hover {\r\n    color: #66b1ff !important;\n}\n.el-link--inner {\r\n  display: flex;\n}\n.el-link--inner svg {\r\n  fill: white;\r\n      margin-left: .5rem;\n}\n.el-dialog {\r\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\r\n    width: 95%;\n}\n}\n.el-form-item {\r\n  margin-bottom: 30px;\n}\n.el-input__inner {\r\n  padding: 0 40px;\n}\n.svg-container {\r\n  position: absolute;\r\n  z-index: 1;\r\n  right: 15px;\n}\n.el-checkbox__label {\r\n  padding-right: 10px;\n}\n.el-form-item__content {\r\n  text-align: right;\n}\n.el-dialog__header {\r\n  text-align: center;\n}\n.el-form-item__error {\r\n  right: 0;\n}\n.el-dialog__body {\r\n  text-align: right;\n}\r\n", ""]);
 
 // exports
 
@@ -101970,76 +101982,105 @@ var render = function() {
               ),
               _vm._v(" "),
               _c(
-                "el-form-item",
+                "el-row",
+                { attrs: { gutter: 20, type: "flex", justify: "start" } },
                 [
                   _c(
-                    "el-button",
-                    {
-                      staticStyle: { width: "100%" },
-                      attrs: { loading: _vm.loading, type: "warning" },
-                      nativeOn: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.handleLogin.apply(null, arguments)
-                        }
-                      }
-                    },
-                    [_vm._v("\n          ورود\n        ")]
-                  ),
-                  _vm._v(" "),
-                  _vm.errorMessage
-                    ? _c("div", { staticClass: "el-form-item__error" }, [
-                        _vm._v(
-                          "\n          " +
-                            _vm._s(_vm.errorMessage) +
-                            "\n        "
-                        )
-                      ])
-                    : _vm._e()
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "el-row",
-            { attrs: { gutter: 20, type: "flex", justify: "start" } },
-            [
-              _c(
-                "el-col",
-                { attrs: { span: 12, xs: 24, md: 12 } },
-                [
-                  _c(
-                    "el-link",
-                    { attrs: { type: "danger", href: "/auth/google" } },
+                    "el-col",
+                    { attrs: { span: 12, xs: 24, md: 12 } },
                     [
                       _c(
-                        "svg",
-                        {
-                          attrs: {
-                            width: "20",
-                            height: "20",
-                            viewBox: "0 0 20 20",
-                            xmlns: "http://www.w3.org/2000/svg",
-                            "data-svg": "google"
-                          }
-                        },
+                        "el-form-item",
                         [
-                          _c("path", {
-                            attrs: {
-                              d:
-                                "M17.86,9.09 C18.46,12.12 17.14,16.05 13.81,17.56 C9.45,19.53 4.13,17.68 2.47,12.87 C0.68,7.68 4.22,2.42 9.5,2.03 C11.57,1.88 13.42,2.37 15.05,3.65 C15.22,3.78 15.37,3.93 15.61,4.14 C14.9,4.81 14.23,5.45 13.5,6.14 C12.27,5.08 10.84,4.72 9.28,4.98 C8.12,5.17 7.16,5.76 6.37,6.63 C4.88,8.27 4.62,10.86 5.76,12.82 C6.95,14.87 9.17,15.8 11.57,15.25 C13.27,14.87 14.76,13.33 14.89,11.75 L10.51,11.75 L10.51,9.09 L17.86,9.09 L17.86,9.09 Z"
-                            }
-                          })
+                          _c(
+                            "el-button",
+                            {
+                              staticStyle: { width: "100%" },
+                              attrs: { loading: _vm.loading, type: "warning" },
+                              nativeOn: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.handleLogin.apply(null, arguments)
+                                }
+                              }
+                            },
+                            [_vm._v("\n          ورود\n        ")]
+                          ),
+                          _vm._v(" "),
+                          _vm.errorMessage
+                            ? _c(
+                                "div",
+                                { staticClass: "el-form-item__error" },
+                                [
+                                  _vm._v(
+                                    "\n          " +
+                                      _vm._s(_vm.errorMessage) +
+                                      "\n        "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "el-col",
+                    { attrs: { span: 12, xs: 24, md: 12 } },
+                    [
+                      _c(
+                        "el-link",
+                        { attrs: { type: "danger", href: "/auth/google" } },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                width: "20",
+                                height: "20",
+                                viewBox: "0 0 20 20",
+                                xmlns: "http://www.w3.org/2000/svg",
+                                "data-svg": "google"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M17.86,9.09 C18.46,12.12 17.14,16.05 13.81,17.56 C9.45,19.53 4.13,17.68 2.47,12.87 C0.68,7.68 4.22,2.42 9.5,2.03 C11.57,1.88 13.42,2.37 15.05,3.65 C15.22,3.78 15.37,3.93 15.61,4.14 C14.9,4.81 14.23,5.45 13.5,6.14 C12.27,5.08 10.84,4.72 9.28,4.98 C8.12,5.17 7.16,5.76 6.37,6.63 C4.88,8.27 4.62,10.86 5.76,12.82 C6.95,14.87 9.17,15.8 11.57,15.25 C13.27,14.87 14.76,13.33 14.89,11.75 L10.51,11.75 L10.51,9.09 L17.86,9.09 L17.86,9.09 Z"
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v("\n          ورود با حساب گوگل\n        ")
                         ]
-                      ),
-                      _vm._v("\n          ورود با حساب گوگل\n        ")
-                    ]
+                      )
+                    ],
+                    1
                   )
                 ],
                 1
+              ),
+              _vm._v(" "),
+              _c(
+                "el-link",
+                {
+                  attrs: { type: "primary", href: "#" },
+                  nativeOn: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.visibleRegister.apply(null, arguments)
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n         \n          چنانچه حساب کاربری ندارید ثبت نام کنید\n        "
+                  )
+                ]
               )
             ],
             1

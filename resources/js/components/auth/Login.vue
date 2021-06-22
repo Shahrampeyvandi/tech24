@@ -44,7 +44,10 @@
           <el-checkbox label="مرا به خاطر بسپار" name="type"></el-checkbox>
         </el-form-item>
 
-        <el-form-item>
+      
+        <el-row :gutter="20" type="flex" justify="start">
+       <el-col :span="12" :xs="24" :md="12">
+           <el-form-item>
           <el-button
             :loading="loading"
             type="warning"
@@ -57,9 +60,7 @@
             {{ errorMessage }}
           </div>
         </el-form-item>
-      </el-form>
-      <el-row :gutter="20" type="flex" justify="start">
-       
+       </el-col>
         <el-col :span="12" :xs="24" :md="12">
           <el-link type="danger" href="/auth/google">
             <svg
@@ -77,6 +78,13 @@
           </el-link>
         </el-col>
       </el-row>
+
+          <el-link type="primary" @click.native.prevent="visibleRegister" href="#" >
+           
+            چنانچه حساب کاربری ندارید ثبت نام کنید
+          </el-link>
+      </el-form>
+      
     </el-dialog>
   </div>
 </template>
@@ -142,6 +150,11 @@ export default {
     // },
   },
   methods: {
+    visibleRegister(){
+      this.visibleLogin = false
+       EventBus.$emit('show_register');
+
+    },
     google() {
       axios
         .get("/login/google", {
@@ -220,11 +233,12 @@ export default {
 
 <style  >
 .el-link.el-link--danger {
-  color: #606266;
-  background: #ff5c5c;
-  color: white;
-  padding: 0.8rem 2rem 0.8rem 1.5rem;
-  width: 100%;
+     color: #606266;
+    background: #ff5c5c;
+    color: white;
+    padding: 0.6rem 1.5rem 0.6rem 1.5rem !important;
+    width: 100%;
+    border-radius: 5px;
 }
 .el-link.el-link--info {
   color: #606266;
@@ -233,8 +247,8 @@ export default {
   padding: 0.8rem 2rem 0.8rem 1.5rem;
   width: 100%;
 }
-.el-link:hover {
-  color: white !important;
+.el-link.el-link--primary:hover {
+    color: #66b1ff !important;
 }
 .el-link--inner {
   display: flex;
