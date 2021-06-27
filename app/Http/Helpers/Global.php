@@ -57,7 +57,7 @@ if (!function_exists('carbonDate')) {
 if (!function_exists('jalaliDate')) {
       function jalaliDate(string $date)
       {
-            return $date = Jalalian::forge($date)->format('d/m/Y');
+            return $date = Jalalian::forge($date)->format('Y/m/d');
       }
 }
 

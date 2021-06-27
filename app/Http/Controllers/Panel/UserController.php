@@ -31,10 +31,7 @@ class UserController extends Controller
      */
     public function index($slug = null)
     {
-        
-
-
-
+    
 
 
         $data['user'] = User::where('username', $slug)->firstOrFail();
@@ -205,7 +202,7 @@ class UserController extends Controller
             'firstname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u'],
             'lastname' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'username' => ['required', Rule::unique('users')->ignore($user->id), 'string', 'regex:/^[a-zA-Z]+[a-zA-Z\d]*$/u','min:5', 'max:15'],
+            'username' => ['required', Rule::unique('users')->ignore($user->id), 'string', 'regex:/^[a-zA-Z]+[a-zA-Z\d_~\-!@#\$%\^&*\(\)]*$/u','min:5', 'max:15'],
             'phone' => ['required', 'regex:/(09)[0-9]{9}/', Rule::unique('users','mobile')->ignore($user->id)],
         ],[
 

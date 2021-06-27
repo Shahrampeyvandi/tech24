@@ -18,6 +18,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use App\Http\Services\AdobeService;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendEmailJob;
+use App\Jobs\SendSMSJob;
 use App\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -155,8 +157,11 @@ class PostController extends Controller
 
         if ($data['post_type'] == 'podcast') {
             //            dd(strip_tags($data['posts']->first()->description));
+            
             return view('home.podcasts', $data);
         }
+
+        // dd($data);
 
         return view('home.posts', $data);
     }
@@ -178,7 +183,7 @@ class PostController extends Controller
 
         if (isset($request->lesson) && $request->lesson) {
             $lesson = Lesson::findOrFail($request->lesson);
-            if (getCurrentUser()->hasRole('admin')) {
+            if (Auth::user()->hasRole('admin')) {
             } else {
 
                 if ($lesson->quiz) {
@@ -203,19 +208,22 @@ class PostController extends Controller
     {
 
 
+
         $post = Post::whereSlug($slug)->first();
         if (!$post) abort(404);
 
 
-        if (getCurrentUser()->posts->contains($post->id)) {
+
+
+        if (Auth::user()->posts->contains($post->id)) {
 
             Toastr::info('ثبت نام مجدد امکان پذیر نمیباشد', ' پیغام');
             return Redirect::route('post.show', $post->slug);
         }
 
-        if($post->cash == 'money' && $post->price) {
-            if(! Payment::where('post_id',$post->id)
-            ->where('user_id',getCurrentUser()->id)->first()) {
+        if ($post->cash == 'money' && $post->price) {
+            if (!Payment::where('post_id', $post->id)
+                ->where('user_id', Auth::user()->id)->where('success', 1)->first()) {
                 abort(403);
             }
         }
@@ -225,27 +233,46 @@ class PostController extends Controller
             if ($post->post_type == 'webinar') {
                 $name = 'وبینار';
 
-                if (!AdobeUsers::where('user_id', getCurrentUser()->id)->first()) {
+                if (!AdobeUsers::where('user_id', Auth::user()->id)->first()) {
                     $adobe = new AdobeService;
-                    $addedUser =  $adobe->addUserInAdobe(getCurrentUser());
+                    $addedUser =  $adobe->addUserInAdobe(Auth::user());
                     if (!$addedUser) throw new \Exception("Oops not connected to adobe ; check internet  :/");
                     $response = json_decode(json_encode(simplexml_load_string($addedUser)), true);
 
+                    // dd($response);
                     if (is_array($response) && $response['status']['@attributes']['code'] == 'ok') {
                         $userobj = new AdobeUsers;
                         $userobj->principal_id = $response['principal']['@attributes']['principal-id'];
                         $userobj->account_id = $response['principal']['@attributes']['account-id'];
-                        $userobj->user_id = getCurrentUser()->id;
+                        $userobj->user_id = Auth::user()->id;
                         $userobj->save();
                     } else {
-                        Toastr::info('خطایی در روند ثبت نام رخ داد!', ' پیغام');
-                        return Redirect::route('post.show', $post->slug);
+
+                        $adobe = new AdobeService;
+                        $getListUsers = $adobe->getListUsers();
+                        $list = json_decode(json_encode(simplexml_load_string($getListUsers)), true);
+                        //    dd($list['principal-list']['principal']);
+                        if (is_array($list) && $list['status']['@attributes']['code'] == 'ok') {
+                        foreach ($list['principal-list']['principal'] as $key => $item) {
+                            if (isset($item['login']) && $item['login'] == Auth::user()->email) {
+                                $userobj = new AdobeUsers;
+                                $userobj->principal_id = $item['@attributes']['principal-id'];
+                                $userobj->account_id = $item['@attributes']['account-id'];
+                                $userobj->user_id = Auth::user()->id;
+                                $userobj->save();
+                                break;
+                            }
+                        }
+                    }else{
+                        throw new \Exception("Error When Get User Adobe Details ... ");
+                    }
+
+                        
                     }
                 } else {
-                    $userobj = AdobeUsers::where('user_id', getCurrentUser()->id)->first();
+                    $userobj = AdobeUsers::where('user_id', Auth::user()->id)->first();
                 }
 
-                // dd($response);
 
 
                 $group = AdobeGroup::where('post_id', $post->id)->first();
@@ -257,45 +284,52 @@ class PostController extends Controller
 
                         $group->users()->attach($userobj->id);
 
-                        getCurrentUser()->posts()->attach($post->id);
+                        //  ===== Attach Post To User ====== //
+                        Auth::user()->posts()->attach($post->id);
 
-                        //------ ارسال پیامک ثبت نام در وبینار
-                        // $patterncode = "q9uaxab7bs";
-                        // $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
-                        // $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
+
+                        // Send SMS To User
+                        $patterncode = "q9uaxab7bs";
+                        $data = array("name" => Auth::user()->username, 'post-title' => $post->title);
+                        // dispatch(new SendSMSJob($patterncode,$data,Auth::user()));
 
                         // Send Mail To User
-                        Mail::to(getCurrentUser()->email)->send(new PostRegistered(getCurrentUser(),$post));
+                        // dispatch(new SendEmailJob(Auth::user()->email,$post));
+
+                        Mail::to(Auth::user()->email)->send(new PostRegistered(getCurrentUser(), $post));
 
                         // Generate Notification For User
+                        $startDate = jalalian::forge($post->start_date)->format('Y/m/d');
                         $notification = new Notification;
                         $notification->title = 'ثبت نام در وبینار';
                         $notification->text = "کاربر عزیز 
-                         شما با موفقیت در وبینار ".str_replace('وبینار','',$post->title)." ثبت نام کردید 
-                         تاریخ برگزاری وبینار ".Jalalian::forge($post->start_date)->ago()." دیگر به مدت ".$post->duration." میباشد.
-                         یک ساعت قبل از برگزاری وبینار از طریق پیامک به شما اطلاع رسانی خواهد شد.";
-                        $notification->user_id = getCurrentUser()->id;
+                        شما با موفقیت در وبینار " . str_replace('وبینار', '', $post->title) . " ثبت نام کردید 
+                        تاریخ برگزاری وبینار روز $startDate ساعت $post->start_time میباشد .
+                        مدت زمان وبینار $post->duration دقیقه خواهد بود.
+                        یک ساعت قبل از برگزاری وبینار از طریق پیامک به شما اطلاع رسانی خواهد شد.";
+                        $notification->user_id = Auth::user()->id;
                         $notification->save();
-
                     } else {
                         throw new \Exception("User No Added To AdobeGroup :/");
                     }
+                } else {
+                    throw new \Exception("Webinar Group Not Created Yet ...");
                 }
             } else {
                 $name = 'دوره';
 
-                getCurrentUser()->posts()->attach($post->id);
+                Auth::user()->posts()->attach($post->id);
 
                 //------ ارسال پیامک ثبت نام در دوره
                 $patterncode = "ts5qit1pfb";
-                $data = array("name" => getCurrentUser()->username, 'post-title' => $post->title);
-                $this->sendSMS($patterncode, getCurrentUser()->mobile, $data);
+                $data = array("name" => Auth::user()->username, 'post-title' => $post->title);
+                $this->sendSMS($patterncode, Auth::user()->mobile, $data);
             }
 
             Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
-            return Redirect::route('member.posts', ['user' => getCurrentUser()->username, 'post_type' => $post->post_type]);
+            return Redirect::route('member.posts', ['user' => Auth::user()->username, 'post_type' => $post->post_type]);
         } catch (\Exception $th) {
-            return $th->getMessage() . " in line: " . $th->getLine();
+            return $th->getMessage() . " in line: " . $th->getLine() . ' in file: ' . $th->getFile();
         }
     }
 }

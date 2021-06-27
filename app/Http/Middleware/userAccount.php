@@ -21,7 +21,7 @@ class userAccount
 
             return $next($request);
         }
-        Toastr::error("کاربر گرامی قبل از ثبت نام لازم است مشخصات خود را تکمیل کنید");
+        Toastr::error("کاربر گرامی اطلاعات کاربری شما کامل نیست لطفا شماره موبایل خود را تایید کنید");
         return redirect()->route('member.profile',['user'=>Auth::user()->username]);
     }
 }

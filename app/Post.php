@@ -116,7 +116,7 @@ class Post extends Model
          return '#';
      }
 
-     public function getPicture():string
+     public function getPicture()
      {
          return $this->picture ? asset($this->picture) : asset('assets/imgs/Logo.png');
      }

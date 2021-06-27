@@ -153,7 +153,7 @@ class PostController extends Controller
             $post->price = $request->price;
             $post->views = 1;
             $post->teacher_id = $request->teachers;
-            $post->start_date = $request->date ? carbonDate($request->date) : null;
+
             $post->private = $request->public_type == 'private' ? 1 : 0;
 
 
@@ -161,6 +161,10 @@ class PostController extends Controller
             $post->seo_description = $request->seo_description;
             $post->seo_canonical = $request->seo_canonical;
 
+            if ($request['post_type'] == 'webinar') {
+                $post->start_date = $request->date ? carbonDate($request->date) : null;
+                $post->start_time = $request->time;
+            }
 
             if ($request->archive == 'yes') {
                 $post->archive = 1;
@@ -425,7 +429,7 @@ class PostController extends Controller
         //     return json_decode(json_encode(simplexml_load_string($data)), true);
     }
 
-    
+
     /**
      * Show Users Where Has Post
      *
@@ -434,14 +438,13 @@ class PostController extends Controller
      */
     public function showUsers(Post $post)
     {
-        
+
         $data['title'] = 'کاربران ' . $post->title;
         $data['users'] = $post->registered;
         $data['post'] = $post;
-        return view('admin.course.usersList',$data);
-
+        return view('admin.course.usersList', $data);
     }
-    
+
     /**
      * Remove User From Post 
      *
@@ -449,12 +452,11 @@ class PostController extends Controller
      * @param  User $user
      * @return void
      */
-    public function deleteUser(Post $post,User $user)
+    public function deleteUser(Post $post, User $user)
     {
-       
-        $user->posts()->where('post_id',request('post_id'))->detach();
-        
-        return back();
 
+        $user->posts()->where('post_id', request('post_id'))->detach();
+
+        return back();
     }
 }

@@ -110,5 +110,17 @@ class AdobeService
 
     }
 
+    public function getListUsers()
+    {
+        if ($this->login()) {
+        $query = [
+            'action'=>'principal-list',
+           
+        ];
+
+        return $this->httpRequest->HTTPGet(self::URL,$query);
+    }
+        
+    }
 
 }

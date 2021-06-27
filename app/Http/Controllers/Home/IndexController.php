@@ -9,16 +9,18 @@ use App\User;
 use App\Slider;
 use Carbon\Carbon;
 use App\TokenReset;
+use App\Notification;
+use Illuminate\Support\Str;
 use App\Mail\PostRegistered;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use App\Http\Services\HTTPRequest;
 use App\Http\Services\AdobeService;
 use App\Http\Controllers\Controller;
-use App\Http\Services\PaymentService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Services\PaymentService;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\TwitterCard;
@@ -27,12 +29,28 @@ class IndexController extends Controller
 {
     public function index()
     {
+
+        $adobe = new AdobeService;
+        // echo '<pre>';
+        $getListUsers = $adobe->getListUsers();
+       $list = json_decode(json_encode(simplexml_load_string($getListUsers)), true);
+       dd($list);
+    //    dd($list['principal-list']['principal']);
+       foreach ($list['principal-list']['principal'] as $key => $item) {
+           
+            if(isset($item['login']) && $item['login'] == 'yasfuny@gmail.com') {
+                dd($item);
+            }
+       }
+        // echo '</pre>';
+        // dd('d');
+       
         // $pay = new PaymentService(User::find(6),Post::find(15),'d');
         // dd($pay->start());
 
        
 
-        // dd(Mail::to('yasfuny@gmail.com')->send(new PostRegistered(User::find(6),Post::find(15))));
+      //  dd(Mail::to('yasfuny@gmail.com')->send(new PostRegistered(User::find(9),Post::find(4))));
 
        
 

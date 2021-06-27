@@ -42,7 +42,8 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('teacher_id')->nullable();
             $table->foreign('teacher_id')->references('id')->on('users');
             $table->unsignedBigInteger('group_id')->nullable();
-            $table->string('start_date');
+            $table->string('start_date')->nullable();
+            $table->string('start_time')->nullable();
             $table->integer('sell_count')->default(0);
             $table->boolean('private')->default(0);
             $table->timestamps();

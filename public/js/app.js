@@ -10909,7 +10909,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.el-link.el-link--danger {\r\n     color: #606266;\r\n    background: #ff5c5c;\r\n    color: white;\r\n    padding: 0.6rem 1.5rem 0.6rem 1.5rem !important;\r\n    width: 100%;\r\n    border-radius: 5px;\n}\n.el-link.el-link--info {\r\n  color: #606266;\r\n  background: #5ccbff;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link.el-link--primary:hover {\r\n    color: #66b1ff !important;\n}\n.el-link--inner {\r\n  display: flex;\n}\n.el-link--inner svg {\r\n  fill: white;\r\n      margin-left: .5rem;\n}\n.el-dialog {\r\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\r\n    width: 95%;\n}\n}\n.el-form-item {\r\n  margin-bottom: 30px;\n}\n.el-input__inner {\r\n  padding: 0 40px;\n}\n.svg-container {\r\n  position: absolute;\r\n  z-index: 1;\r\n  right: 15px;\n}\n.el-checkbox__label {\r\n  padding-right: 10px;\n}\n.el-form-item__content {\r\n  text-align: right;\n}\n.el-dialog__header {\r\n  text-align: center;\n}\n.el-form-item__error {\r\n  right: 0;\n}\n.el-dialog__body {\r\n  text-align: right;\n}\r\n", ""]);
+exports.push([module.i, "\n.el-link.el-link--danger {\n     color: #606266;\n    background: #ff5c5c;\n    color: white;\n    padding: 0.6rem 1.5rem 0.6rem 1.5rem !important;\n    width: 100%;\n    border-radius: 5px;\n}\n.el-link.el-link--info {\n  color: #606266;\n  background: #5ccbff;\n  color: white;\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\n  width: 100%;\n}\n.el-link.el-link--primary:hover {\n    color: #66b1ff !important;\n}\n.el-link--inner {\n  display: flex;\n}\n.el-link--inner svg {\n  fill: white;\n      margin-left: .5rem;\n}\n.el-dialog {\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\n    width: 95%;\n}\n}\n.el-form-item {\n  margin-bottom: 30px;\n}\n.el-input__inner {\n  padding: 0 40px;\n}\n.svg-container {\n  position: absolute;\n  z-index: 1;\n  right: 15px;\n}\n.el-checkbox__label {\n  padding-right: 10px;\n}\n.el-form-item__content {\n  text-align: right;\n}\n.el-dialog__header {\n  text-align: center;\n}\n.el-form-item__error {\n  right: 0;\n}\n.el-dialog__body {\n  text-align: right;\n}\n", ""]);
 
 // exports
 
@@ -10928,7 +10928,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.el-link.el-link--danger {\r\n  color: #606266;\r\n  background: #ff5c5c;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link.el-link--info {\r\n  color: #606266;\r\n  background: #5ccbff;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link:hover {\r\n  color: white !important;\n}\n.el-link--inner {\r\n  display: flex;\n}\n.el-link--inner svg {\r\n  fill: white;\r\n  margin-left: 0.5rem;\n}\n.el-dialog {\r\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\r\n    width: 95%;\n}\n}\n.el-form-item {\r\n  margin-bottom: 30px;\n}\n.el-input__inner {\r\n  padding: 0 40px;\n}\n.svg-container {\r\n  position: absolute;\r\n  z-index: 1;\r\n  right: 15px;\n}\n.el-checkbox__label {\r\n  padding-right: 10px;\n}\n.el-form-item__content {\r\n  text-align: right;\n}\n.el-dialog__header {\r\n  text-align: center;\n}\n.el-form-item__error {\r\n  right: 0;\n}\n.el-dialog__body {\r\n  text-align: right;\n}\r\n", ""]);
+exports.push([module.i, "\n.el-link.el-link--danger {\n  color: #606266;\n  background: #ff5c5c;\n  color: white;\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\n  width: 100%;\n}\n.el-link.el-link--info {\n  color: #606266;\n  background: #5ccbff;\n  color: white;\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\n  width: 100%;\n}\n.el-link:hover {\n  color: white !important;\n}\n.el-link--inner {\n  display: flex;\n}\n.el-link--inner svg {\n  fill: white;\n  margin-left: 0.5rem;\n}\n.el-dialog {\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\n    width: 95%;\n}\n}\n.el-form-item {\n  margin-bottom: 30px;\n}\n.el-input__inner {\n  padding: 0 40px;\n}\n.svg-container {\n  position: absolute;\n  z-index: 1;\n  right: 15px;\n}\n.el-checkbox__label {\n  padding-right: 10px;\n}\n.el-form-item__content {\n  text-align: right;\n}\n.el-dialog__header {\n  text-align: center;\n}\n.el-form-item__error {\n  right: 0;\n}\n.el-dialog__body {\n  text-align: right;\n}\n", ""]);
 
 // exports
 
@@ -10947,7 +10947,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.el-link.el-link--danger {\r\n  color: #606266;\r\n  background: #ff5c5c;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link.el-link--info {\r\n  color: #606266;\r\n  background: #5ccbff;\r\n  color: white;\r\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\r\n  width: 100%;\n}\n.el-link:hover {\r\n  color: white !important;\n}\n.el-link--inner {\r\n  display: flex;\n}\n.el-link--inner svg {\r\n  fill: white;\r\n  margin-left: 0.5rem;\n}\n.el-dialog {\r\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\r\n    width: 95%;\n}\n}\n.el-form-item {\r\n  margin-bottom: 30px;\n}\n.el-input__inner {\r\n  padding: 0 40px;\n}\n.svg-container {\r\n  position: absolute;\r\n  z-index: 1;\r\n  right: 15px;\n}\n.el-checkbox__label {\r\n  padding-right: 10px;\n}\n.el-form-item__content {\r\n  text-align: right;\n}\n.el-dialog__header {\r\n  text-align: center;\n}\n.el-form-item__error {\r\n  right: 0;\n}\n.el-dialog__body {\r\n  text-align: right;\n}\r\n", ""]);
+exports.push([module.i, "\n.el-link.el-link--danger {\n  color: #606266;\n  background: #ff5c5c;\n  color: white;\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\n  width: 100%;\n}\n.el-link.el-link--info {\n  color: #606266;\n  background: #5ccbff;\n  color: white;\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\n  width: 100%;\n}\n.el-link:hover {\n  color: white !important;\n}\n.el-link--inner {\n  display: flex;\n}\n.el-link--inner svg {\n  fill: white;\n  margin-left: 0.5rem;\n}\n.el-dialog {\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\n    width: 95%;\n}\n}\n.el-form-item {\n  margin-bottom: 30px;\n}\n.el-input__inner {\n  padding: 0 40px;\n}\n.svg-container {\n  position: absolute;\n  z-index: 1;\n  right: 15px;\n}\n.el-checkbox__label {\n  padding-right: 10px;\n}\n.el-form-item__content {\n  text-align: right;\n}\n.el-dialog__header {\n  text-align: center;\n}\n.el-form-item__error {\n  right: 0;\n}\n.el-dialog__body {\n  text-align: right;\n}\n", ""]);
 
 // exports
 
@@ -117047,7 +117047,7 @@ function validMoble(mobile) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp1\htdocs\tech24\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /opt/lampp/htdocs/tech24/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })
