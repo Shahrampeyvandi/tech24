@@ -1,8 +1,8 @@
 <div class="col-lg-8 col-md-8 col-sm-12 mt-3 text-right product-content">
   <h2 class="product_heading">{{$post->title}}</h2>
   <div class="product_sub_heading">
-    <small><i class="icon-user"></i> مدرس : {{ $post->getTeacher() }}</small>
-    <small><i class="icon-calander"></i> زمان برگزاری : {{ jalaliDate($post->start_date) }}</small>
+    <small><i class="icon-user"></i> مدرس : {{ $post->getTeacher() }}</small> |
+    <small><i class="icon-calander"></i> زمان برگزاری : {{ jalaliDate($post->start_date) }}</small> |
     <small><i class="icon-clock"></i>طول دوره : {{ $post->duration }}</small>
   </div>
   <p class="product_text">

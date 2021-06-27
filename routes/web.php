@@ -50,7 +50,7 @@ Route::get('/blogs/{category?}','Home\BlogController@posts');
 Route::get('/blog/{slug}','Home\BlogController@show');
 Route::get('/podcasts/{category?}','Home\PostController@posts');
 Route::get('/category/{slug}','Home\CategoryController@posts');
-Route::get('/pay','Home\PayController@pay')->name('pay')->middleware('auth');
+Route::get('/pay','Home\PayController@pay')->name('pay')->middleware(['auth','userAccount']);
 Route::get('/pay/callback','Home\PayController@callback')->name('pay.callback')->middleware('auth');
 Route::get('/play/{slug}','Home\PostController@play')->name('play');
 Route::post('/ticket/send','Home\TicketController@store')->name('ticket.store');

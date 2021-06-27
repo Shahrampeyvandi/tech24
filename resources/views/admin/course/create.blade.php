@@ -74,6 +74,7 @@
                         name="group_name"
                         @isset($post)
                         value="{{$post->adobeGroup->name ?? ''}}"
+                        readonly
                         @else
                         required
                         @endisset
@@ -158,6 +159,15 @@
                                 <input  required name="date" class="form-control datepicker"
                                         value="{{isset($post) ? jalaliDate($post->start_date) : ''}}"  >
                             </div>
+                            <div class="col-md-4">
+                                <label for="example-text-input" class=" col-form-label"><span class="text-danger">*</span>
+                                    ساعت شروع </label>
+                                <div class="">
+                                    <input id="input-date1" name="time" class="form-control input-mask"
+                                        data-inputmask="'mask': '99:99'" required value="{{ $post->start_time ?? '' }}">
+                                    <span class="text-muted">e.g "HH:MM"</span>
+                                </div>
+                            </div>
                         @endif
 
                         @if ($post_type !== 'podcast')
@@ -185,7 +195,13 @@
                                 <option value="money" {{isset($post) && $post->cach == 'money' ? 'selected' : ''}}>
                                     غیررایگان</option>
                             </select>
-                            <input type="number" id="cash" class="form-control mt-1 _hidden" placeholder="قیمت به تومان">
+                            @if (isset($post) && $post->price)
+                            <input type="number" id="cash" value="{{$post->price }}" name="price" class="form-control mt-1 _show" placeholder="قیمت به تومان">
+
+                             @else 
+                             <input type="number" id="cash" name="price" class="form-control mt-1 _hidden" placeholder="قیمت به تومان">
+
+                            @endif
                         </div>
                         <div class="col-md-4">
                             <label class="col-form-label">عمومی یا اختصاصی</label>

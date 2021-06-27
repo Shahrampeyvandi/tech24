@@ -198,8 +198,8 @@ table[class=hide], img[class=hide], td[class=hide] {
                      از ثبت نام شما در {{$post->getPostType('fa')}} {{str_replace($post->getPostType('fa'),'',$post->title)}} متشکریم.
                       
                       <br />
-                      تاریخ برگزاری وبینار {{\Morilog\Jalali\Jalalian::forge($post->start_date)->ago()}} دیگر به مدت {{$post->duration}} میباشد.
-                        
+					  تاریخ برگزاری وبینار روز {{\Morilog\Jalali\Jalalian::forge($post->start_date)->format('Y/m/d')}} ساعت {{$post->start_time}} میباشد .
+                        مدت زمان وبینار {{$post->duration}} دقیقه خواهد بود.
                      @endif
                         <br />
                         یک ساعت قبل از برگزاری وبینار از طریق پیامک به شما اطلاع رسانی خواهد شد
