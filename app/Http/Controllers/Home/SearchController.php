@@ -30,7 +30,6 @@ class SearchController extends Controller
         
         $posts = Post::search($request['word'])->latest()->paginate(8);
         if($type !== 'all') $posts=Post::search($request['word'])->where('post_type',$type)->latest()->paginate(8);
-        
         return Response::json(['data'=>$posts,'status'=>'success'],200);
     }
 }

@@ -55,6 +55,32 @@
                         </div>
                     </div>
 
+                    @isset($category->picture)
+                    <div class="col-md-6">
+                       <img src="{{ asset($category->picture) }}" width="100px" alt="">
+                    </div>
+                    @endisset
+
+                  <div class="row form-group">
+                    <div class=" col-md-6">
+                        <label for="" class="col-form-label">انتخاب آیکون </label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="image" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                            <span class="file-name text-success"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label">نمایش در سایت </label>
+                        <select class="form-control" name="appearance" id="appearance">
+                            <option value="0" {{isset($category) && $category->appearance == 0 ? 'selected' : ''}}>
+                                خیر</option>
+                            <option value="1" {{isset($category) && $category->appearance == 1 ? 'selected' : ''}}>
+                                بله</option>
+                        </select>
+                    </div>
+                  </div>
+
 
                     <div class="col-md-12 my-3 btn--wrapper">
 

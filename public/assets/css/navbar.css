@@ -167,6 +167,7 @@
       .open_navbar,
       .close_navbar {
           display: unset;
+          font-size: 1.5rem !important;
       }
       .close_navbar {
           opacity: 0.5;
@@ -196,6 +197,8 @@
       }
       .nav_list .nav_link {
           line-height: 3rem;
+          width: 100%;
+    display: inline-block;
       }
       .nav_list .nav_item {
           text-align: right;
@@ -209,6 +212,8 @@
   
   #navListToggle:checked~.nav_list {
       right: 0;
+      padding-right: 1rem;
+      padding-top: 1rem;
   }
   /*SEARCHBOX*/
   

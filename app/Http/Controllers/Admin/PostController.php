@@ -370,6 +370,7 @@ class PostController extends Controller
 
     public function upload_picture(Request $request, $type, $name)
     {
+ 
         $date = date('Y');
         $request->validate([
             'picture' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',

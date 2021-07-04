@@ -30,18 +30,18 @@ class IndexController extends Controller
     public function index()
     {
 
-        $adobe = new AdobeService;
-        // echo '<pre>';
-        $getListUsers = $adobe->getListUsers();
-       $list = json_decode(json_encode(simplexml_load_string($getListUsers)), true);
-       dd($list);
+    //     $adobe = new AdobeService;
+    //     // echo '<pre>';
+    //     $getListUsers = $adobe->getListUsers();
+    //    $list = json_decode(json_encode(simplexml_load_string($getListUsers)), true);
+    //    dd($list);
     //    dd($list['principal-list']['principal']);
-       foreach ($list['principal-list']['principal'] as $key => $item) {
+    //    foreach ($list['principal-list']['principal'] as $key => $item) {
            
-            if(isset($item['login']) && $item['login'] == 'yasfuny@gmail.com') {
-                dd($item);
-            }
-       }
+    //         if(isset($item['login']) && $item['login'] == 'yasfuny@gmail.com') {
+    //             dd($item);
+    //         }
+    //    }
         // echo '</pre>';
         // dd('d');
        

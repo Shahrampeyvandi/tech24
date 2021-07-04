@@ -3527,6 +3527,114 @@ function mergeFn (a, b) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PodcastSearch.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PodcastSearch.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/request */ "./resources/js/utils/request.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {},
+  data: function data() {
+    return {
+      showResults: false,
+      results: [],
+      searchWord: "" // auth:this.auth
+
+    };
+  },
+  computed: {
+    searchUrl: function searchUrl() {
+      return "/search";
+    },
+    logoutUrl: function logoutUrl() {
+      return "/logout";
+    },
+    panelUrl: function panelUrl() {
+      return "/panel/" + this.auth.username;
+    }
+  },
+  methods: {
+    search: function search() {
+      var _this = this;
+
+      this.results = [];
+      this.showResults = false;
+      setTimeout(function () {
+        if (_this.searchWord.length > 2) {
+          Object(_utils_request__WEBPACK_IMPORTED_MODULE_0__["default"])({
+            url: "/search",
+            method: "post",
+            data: {
+              word: _this.searchWord,
+              q: "podcast"
+            }
+          }).then(function (res) {
+            if (res.data.data.total) {
+              _this.showResults = true;
+              _this.results = res.data.data.data;
+            } else {
+              _this.showResults = false;
+            }
+          })["catch"](function (err) {
+            console.log(err);
+          });
+        }
+      }, 300);
+    }
+  },
+  created: function created() {
+    this.searchWord = "";
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/SearchComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/SearchComponent.vue?vue&type=script&lang=js& ***!
@@ -101706,6 +101814,101 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "podcasts-header" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "flex-column-center text-white py-8" }, [
+            _c("h3", { staticClass: "mb-3" }, [_vm._v("آموزش بشنوید")]),
+            _vm._v(" "),
+            _c("h2", { staticClass: "mb-5" }, [_vm._v("پادکست های تکوان ۲۴")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row col-12 col-md-10" }, [
+              _c("div", { staticClass: "col-12 col-md-8" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.searchWord,
+                      expression: "searchWord"
+                    }
+                  ],
+                  staticClass: "p-2 w-100",
+                  staticStyle: { border: "none" },
+                  attrs: { type: "text", placeholder: "میخوای چی گوش کنی؟" },
+                  domProps: { value: _vm.searchWord },
+                  on: {
+                    keyup: _vm.search,
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.searchWord = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm.showResults
+                  ? _c("div", { staticClass: "podcast-search-results" }, [
+                      _c(
+                        "ul",
+                        _vm._l(_vm.results, function(result) {
+                          return _c("li", { key: result.id }, [
+                            _c("a", { attrs: { href: result.slug } }, [
+                              _vm._v(_vm._s(result.title))
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 col-md-4" }, [
+      _c(
+        "a",
+        { staticClass: "btn_orange d-block w-100 py-2", attrs: { href: "" } },
+        [_vm._v("مشاهده تمام پادکست ها")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Buttons.vue?vue&type=template&id=6cfc2676&scoped=true&":
 /*!***************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Buttons.vue?vue&type=template&id=6cfc2676&scoped=true& ***!
@@ -116379,6 +116582,7 @@ Vue.component("search-component", __webpack_require__(/*! ./components/SearchCom
 Vue.component("pagination", __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
 Vue.component("login-component", __webpack_require__(/*! ./components/auth/Login.vue */ "./resources/js/components/auth/Login.vue")["default"]);
 Vue.component("register-component", __webpack_require__(/*! ./components/auth/Register.vue */ "./resources/js/components/auth/Register.vue")["default"]);
+Vue.component("search-podcast-component", __webpack_require__(/*! ./components/PodcastSearch.vue */ "./resources/js/components/PodcastSearch.vue")["default"]);
 Vue.component("button-component", __webpack_require__(/*! ./components/auth/Buttons.vue */ "./resources/js/components/auth/Buttons.vue")["default"]);
 var app = new Vue({
   el: "#app",
@@ -116430,6 +116634,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/PodcastSearch.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/PodcastSearch.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PodcastSearch_vue_vue_type_template_id_1441d771_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true& */ "./resources/js/components/PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true&");
+/* harmony import */ var _PodcastSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PodcastSearch.vue?vue&type=script&lang=js& */ "./resources/js/components/PodcastSearch.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PodcastSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PodcastSearch_vue_vue_type_template_id_1441d771_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PodcastSearch_vue_vue_type_template_id_1441d771_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "1441d771",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/PodcastSearch.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/PodcastSearch.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/PodcastSearch.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PodcastSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./PodcastSearch.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PodcastSearch.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PodcastSearch_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PodcastSearch_vue_vue_type_template_id_1441d771_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PodcastSearch.vue?vue&type=template&id=1441d771&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PodcastSearch_vue_vue_type_template_id_1441d771_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PodcastSearch_vue_vue_type_template_id_1441d771_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

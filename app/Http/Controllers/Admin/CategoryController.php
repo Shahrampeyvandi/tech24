@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
-
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        
+
 
         $data = [
             'categories' => Category::with('parent')->latest()->get(),
@@ -55,23 +55,42 @@ class CategoryController extends Controller
     {
         //
 
-           
-        if(isset($request->action)){
-            $q = Category::find($request->category_id);
-        }else{
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+            'title' => 'required'
+        ]);
 
+        if ($request->action == 'edit') {
+            $q = Category::find($request->category_id);
+        } else {
             $q = new Category();
         }
-        // dd($request->q);
+
+        $slug = SlugService::createSlug(Category::class, 'slug', $request->title);
         $q->title = $request->title;
         $q->parent_id = $request->parent_id;
-        $q->slug = SlugService::createSlug(Category::class, 'slug', $request->title);
+        $q->slug = $slug;
+
+        if ($request->image) {
+            if ($request->action == 'edit') {
+                File::delete(public_path($q->picture));
+            }
+            
+            $date = date('Y');
+            $imageName = $slug . '.' . $request->image->extension();
+            $request->image->move(public_path('uploads/' . $date . '/' . 'category'), $imageName);
+            $q->picture = 'uploads/' . $date . '/' . 'category' . '/' . $imageName;
+        }
+
+
+
+
+        $q->appearance = $request->appearance;
 
         $q->save();
 
-     
-        return Redirect::route('categories.index');
 
+        return Redirect::route('categories.index');
     }
 
     /**
@@ -120,9 +139,8 @@ class CategoryController extends Controller
     {
         // dd($id);
         $cat = Category::find($id);
-        Category::where('parent_id',$cat->id)->delete();
+        Category::where('parent_id', $cat->id)->delete();
         $cat->delete();
         return Redirect::route('categories.index');
-
     }
 }

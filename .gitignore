@@ -5,7 +5,7 @@
 /public/images
 /public/js
 /public/assets/fonts
-/storage/*.key
+/storage
 /resources/fonts
 /resources/imgs
 /vendor

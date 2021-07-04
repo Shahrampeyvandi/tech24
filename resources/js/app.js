@@ -82,6 +82,7 @@ Vue.component(
 Vue.component("pagination", require("laravel-vue-pagination"));
 Vue.component("login-component", require("./components/auth/Login.vue").default);
 Vue.component("register-component", require("./components/auth/Register.vue").default);
+Vue.component("search-podcast-component", require("./components/PodcastSearch.vue").default);
 
 Vue.component(
     "button-component",

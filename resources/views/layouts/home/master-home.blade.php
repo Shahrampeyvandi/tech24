@@ -25,8 +25,8 @@
   @include('layouts.home.topbar-home')
 
   @include('layouts.home.navbar-home')
-
-  @include('layouts.home.searchbox-home')
+  <!--BACK TO TOP BUTTON-->
+  <button id="back_to_top"><i class="icon-angle-up"></i></button>
 
   
  

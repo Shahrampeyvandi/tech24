@@ -48,6 +48,7 @@ Route::get('/webinars/{category?}','Home\PostController@posts');
 Route::get('/courses/{category?}','Home\PostController@posts');
 Route::get('/blogs/{category?}','Home\BlogController@posts');
 Route::get('/blog/{slug}','Home\BlogController@show');
+
 Route::get('/podcasts/{category?}','Home\PostController@posts');
 Route::get('/category/{slug}','Home\CategoryController@posts');
 Route::get('/pay','Home\PayController@pay')->name('pay')->middleware(['auth','userAccount']);

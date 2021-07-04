@@ -95,75 +95,87 @@ class PostController extends Controller
     public function posts(Request $request, $category = null)
     {
 
-        if (\Request::path() == 'courses') {
-            $page_title =  'تکوان | دوره ها';
-            $title = 'دوره';
-            $post_type = 'course';
-            $data['latest_posts'] = Post::where('post_type', $post_type)->where('private', 0)->latest()->take(5)->get();
-            $paginate = Post::COURSES_COUNT;
-        } elseif (\Request::path() == 'podcasts') {
-            $page_title =  'تکوان | پادکست ها';
-            $title = 'پادکست';
-            $post_type = 'podcast';
-            $paginate = Post::PODCASTS_COUNT;
-            $data['latest_posts'] = Post::where('post_type', $post_type)->latest()->take(5)->get();
-        } else {
-            $page_title =  'تکوان | وبینار ها';
-            $post_type = 'webinar';
-            $paginate = Post::WEBINARS_COUNT;
-            $title = isset($request->q) && $request->q == 'archive' ? 'وبینارهای گذشته' : 'وبینار';
-            $data['latest_posts'] = Post::where('post_type', $post_type)->where('start_date', '>', Carbon::now())->latest()->take(5)->get();
-        }
-        $seo_description = 'تکوان 24 , آموزش , امنیت , آموزش برنامه نویسی , جرم شناسی در زمینه امنیت اطلاعات , ...';
 
-        /* Seo Tools */
-        SEOMeta::setTitle($page_title);
-        SEOMeta::setDescription($seo_description);
-        SEOMeta::setCanonical(\Request::url());
-        OpenGraph::setTitle($page_title);
-        OpenGraph::setDescription($seo_description);
-        OpenGraph::setUrl(\Request::url());
-        OpenGraph::addImage(asset('assets/imgs/Logo.png'));
-        TwitterCard::setTitle($page_title);
-        TwitterCard::setDescription($seo_description);
-        TwitterCard::setUrl(\Request::url());
-        TwitterCard::addImage(asset('assets/imgs/Logo.png'));
+        // dd(strpos(request()->path(),'courses'));
 
-
-        $order =  $request->order ?? 'created_at';
-
-        $data['posts'] = Post::where(function ($q) use ($category, $post_type, $request) {
-
-            if ($category) {
-                $q->whereHas('category', function ($q) use ($category, $post_type) {
-                    $q->whereSlug($category);
-                });
+        try {
+            if (strpos(request()->path(),'courses') !== false) {
+                $page_title =  'تکوان | دوره ها';
+                $title = 'دوره';
+                $post_type = 'course';
+                $data['latest_posts'] = Post::where('post_type', $post_type)->where('private', 0)->latest()->take(5)->get();
+                $paginate = Post::COURSES_COUNT;
+            } elseif (strpos(request()->path(),'podcasts') !== false) {
+                $page_title =  'تکوان | پادکست ها';
+                $title = 'پادکست';
+                $post_type = 'podcast';
+                $paginate = Post::PODCASTS_COUNT;
+                $data['latest_posts'] = Post::where('post_type', $post_type)->latest()->take(5)->get();
+            } else {
+                $page_title =  'تکوان | وبینار ها';
+                $post_type = 'webinar';
+                $paginate = Post::WEBINARS_COUNT;
+                $title = isset($request->q) && $request->q == 'archive' ? 'وبینارهای گذشته' : 'وبینار';
+                $data['latest_posts'] = Post::where('post_type', $post_type)->where('start_date', '>', Carbon::now())->latest()->take(5)->get();
             }
-            if ($post_type == 'webinar' && isset($request->q) && $request->q == 'archive') {
-                $q->where('archive', 1);
-            } elseif ($post_type == 'podcast') {
-            } elseif ($post_type == 'course') {
-                $q->where('private', 0);
+            $seo_description = 'تکوان 24 , آموزش , امنیت , آموزش برنامه نویسی , جرم شناسی در زمینه امنیت اطلاعات , ...';
+
+            /* Seo Tools */
+            SEOMeta::setTitle($page_title);
+            SEOMeta::setDescription($seo_description);
+            SEOMeta::setCanonical(\Request::url());
+            OpenGraph::setTitle($page_title);
+            OpenGraph::setDescription($seo_description);
+            OpenGraph::setUrl(\Request::url());
+            OpenGraph::addImage(asset('assets/imgs/Logo.png'));
+            TwitterCard::setTitle($page_title);
+            TwitterCard::setDescription($seo_description);
+            TwitterCard::setUrl(\Request::url());
+            TwitterCard::addImage(asset('assets/imgs/Logo.png'));
+
+
+            $order =  $request->order ?? 'created_at';
+
+
+
+            $data['posts'] = Post::where(function ($q) use ($category, $post_type, $request) {
+
+                if ($category) {
+                    $q->whereHas('category', function ($q) use ($category, $post_type) {
+                        $q->whereSlug($category);
+                    });
+                }
+
+                if ($post_type == 'webinar' && isset($request->q) && $request->q == 'archive') {
+                    $q->where('archive', 1);
+                } elseif ($post_type == 'podcast') {
+                } elseif ($post_type == 'course') {
+                    $q->where('private', 0);
+                }
+
+                $q->where('post_type', $post_type);
+            })->orderByDesc($order)->paginate($paginate);
+            // dd($data);
+
+            $data['page_title'] = $page_title;
+            $data['title'] =   $title;
+            $data['post_type'] = $post_type;
+            $data['category'] =$category;
+            $data['order'] = $order;
+
+
+            if ($data['post_type'] == 'podcast') {
+
+                return view('home.podcasts2', $data);
             }
 
-            $q->where('post_type', $post_type);
-        })->orderByDesc($order)->paginate($paginate);
-        // dd($data);
+            // dd($data);
 
-        $data['page_title'] = $page_title;
-        $data['title'] =   $title;
-        $data['post_type'] = $post_type;
-
-
-        if ($data['post_type'] == 'podcast') {
-            //            dd(strip_tags($data['posts']->first()->description));
+            return view('home.posts', $data);
+        } catch (\Throwable $th) {
             
-            return view('home.podcasts', $data);
+            return $th->getMessage() . ' in line ' . $th->getLine();
         }
-
-        // dd($data);
-
-        return view('home.posts', $data);
     }
     public function courses(Request $request)
     {
@@ -253,21 +265,19 @@ class PostController extends Controller
                         $list = json_decode(json_encode(simplexml_load_string($getListUsers)), true);
                         //    dd($list['principal-list']['principal']);
                         if (is_array($list) && $list['status']['@attributes']['code'] == 'ok') {
-                        foreach ($list['principal-list']['principal'] as $key => $item) {
-                            if (isset($item['login']) && $item['login'] == Auth::user()->email) {
-                                $userobj = new AdobeUsers;
-                                $userobj->principal_id = $item['@attributes']['principal-id'];
-                                $userobj->account_id = $item['@attributes']['account-id'];
-                                $userobj->user_id = Auth::user()->id;
-                                $userobj->save();
-                                break;
+                            foreach ($list['principal-list']['principal'] as $key => $item) {
+                                if (isset($item['login']) && $item['login'] == Auth::user()->email) {
+                                    $userobj = new AdobeUsers;
+                                    $userobj->principal_id = $item['@attributes']['principal-id'];
+                                    $userobj->account_id = $item['@attributes']['account-id'];
+                                    $userobj->user_id = Auth::user()->id;
+                                    $userobj->save();
+                                    break;
+                                }
                             }
+                        } else {
+                            throw new \Exception("Error When Get User Adobe Details ... ");
                         }
-                    }else{
-                        throw new \Exception("Error When Get User Adobe Details ... ");
-                    }
-
-                        
                     }
                 } else {
                     $userobj = AdobeUsers::where('user_id', Auth::user()->id)->first();
