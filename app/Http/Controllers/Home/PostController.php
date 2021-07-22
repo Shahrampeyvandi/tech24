@@ -50,9 +50,18 @@ class PostController extends Controller
     public function show($slug = null)
     {
 
+        
+
         //         dd($slug);
-        $data['post'] = Post::whereSlug($slug)->first();
-        if (!$data['post']) abort(404);
+        $data['post'] = Post::whereSlug($slug)->firstOrFail();
+        $parents = $data['post']->comments()->where(['parent_id' => 0, 'approved' => 1])->get();
+        if(request('lesson')){
+            $data['lesson'] = $data['post']->lessons()->where('number',request('lesson'))->firstOrFail();
+            $parents = $data['lesson']->comments()->where(['parent_id' => 0, 'approved' => 1])->get();
+        }
+        
+      
+       
         $data['post']->increment('views');
         $data['related_posts'] = Post::where('post_type', $data['post']->post_type)
             ->where('start_date', '>=', Carbon::now())
@@ -61,7 +70,7 @@ class PostController extends Controller
 
 
 
-        $parents = $data['post']->comments()->where(['parent_id' => 0, 'approved' => 1])->get();
+       
         $col = new Collection();
         foreach ($parents as $key => $parent) {
             $col->push($parent);
@@ -70,9 +79,10 @@ class PostController extends Controller
             }
         }
 
-        $data['comments'] =  $col->paginate(6);
+        $data['comments'] =  $col->paginate(10);
 
 
+      
 
 
         $data['title'] = 'تکوان | ' . $data['post']->title;
@@ -99,13 +109,13 @@ class PostController extends Controller
         // dd(strpos(request()->path(),'courses'));
 
         try {
-            if (strpos(request()->path(),'courses') !== false) {
+            if (strpos(request()->path(), 'courses') !== false) {
                 $page_title =  'تکوان | دوره ها';
                 $title = 'دوره';
                 $post_type = 'course';
                 $data['latest_posts'] = Post::where('post_type', $post_type)->where('private', 0)->latest()->take(5)->get();
                 $paginate = Post::COURSES_COUNT;
-            } elseif (strpos(request()->path(),'podcasts') !== false) {
+            } elseif (strpos(request()->path(), 'podcasts') !== false) {
                 $page_title =  'تکوان | پادکست ها';
                 $title = 'پادکست';
                 $post_type = 'podcast';
@@ -160,7 +170,7 @@ class PostController extends Controller
             $data['page_title'] = $page_title;
             $data['title'] =   $title;
             $data['post_type'] = $post_type;
-            $data['category'] =$category;
+            $data['category'] = $category;
             $data['order'] = $order;
 
 
@@ -173,7 +183,7 @@ class PostController extends Controller
 
             return view('home.posts', $data);
         } catch (\Throwable $th) {
-            
+
             return $th->getMessage() . ' in line ' . $th->getLine();
         }
     }
@@ -306,7 +316,7 @@ class PostController extends Controller
                         // Send Mail To User
                         // dispatch(new SendEmailJob(Auth::user()->email,$post));
 
-                        Mail::to(Auth::user()->email)->send(new PostRegistered(getCurrentUser(), $post));
+                        // Mail::to(Auth::user()->email)->send(new PostRegistered(getCurrentUser(), $post));
 
                         // Generate Notification For User
                         $startDate = jalalian::forge($post->start_date)->format('Y/m/d');
@@ -330,14 +340,34 @@ class PostController extends Controller
 
                 Auth::user()->posts()->attach($post->id);
 
-                //------ ارسال پیامک ثبت نام در دوره
+
+                // Send SMS To User
                 $patterncode = "ts5qit1pfb";
                 $data = array("name" => Auth::user()->username, 'post-title' => $post->title);
-                $this->sendSMS($patterncode, Auth::user()->mobile, $data);
+                // dispatch(new SendSMSJob($patterncode,$data,Auth::user()));
+
+
+                // Mail::to(Auth::user()->email)->send(new PostRegistered(getCurrentUser(), $post));
+
+
+                // Generate Notification For User
+                $startDate = jalalian::forge($post->start_date)->format('Y/m/d');
+                $notification = new Notification;
+                $notification->title = 'ثبت نام در دوره';
+                // $notification->text = "کاربر عزیز 
+                // شما به موفقیت در دوره <a href=" . route('course.lessons', ['id' => $post->id]) . " target='_blanck'>" . str_replace('دوره', '', $post->title) . " ثبت نام کردید.
+                // شما برای همیشه به این دوره دسترسی خواهید داشت.
+                // ";
+                $notification->text = "کاربر عزیز 
+                شما به موفقیت در دوره " . str_replace('دوره', '', $post->title) . " ثبت نام کردید.
+                شما برای همیشه به این دوره دسترسی خواهید داشت.
+                ";
+                $notification->user_id = Auth::user()->id;
+                $notification->save();
             }
 
-            Toastr::success('شما برای همیشه با این ' . $name . ' دسترسی دارید', 'موفق ');
-            return Redirect::route('member.posts', ['user' => Auth::user()->username, 'post_type' => $post->post_type]);
+            Toastr::success('شما برای همیشه به این ' . $name . ' دسترسی دارید', 'موفق ');
+            return Redirect::route('member.dashboard', ['user' => Auth::user()->username]);
         } catch (\Exception $th) {
             return $th->getMessage() . " in line: " . $th->getLine() . ' in file: ' . $th->getFile();
         }

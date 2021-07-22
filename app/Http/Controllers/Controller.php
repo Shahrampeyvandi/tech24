@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\Lesson;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -20,19 +21,24 @@ class Controller extends BaseController
     public function createComment(Request $request)
     {
 
+       
+
         if(! $request->post('comment')) {
             Toastr::error('لطفا دیدگاه خود را وارد کنید', ' پیغام');
             return Redirect::back();
         }
 
-        if($id = $request->post('post_id')) {
-            $post = Post::query();
+        if($id = $request->post('lesson_id')) {
+            $post = Lesson::query();
         }
         elseif($id = $request->post('blog_id')){
             $post = Blog::query();
+        }elseif($id = $request->post('post_id')){
+            $post = Post::query();
         }else{
             Toastr::error('خطا در دریافت اطلاعات', ' پیغام');
             return Redirect::back();
+
         }
 
         $model = $post->findOrFail($id);

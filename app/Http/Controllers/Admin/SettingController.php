@@ -133,9 +133,21 @@ class SettingController extends Controller
         $media = new Media;
         $slug = SlugService::createSlug(Media::class, 'slug', $request->name);
         $fileName = $slug . '.' . $request->file->extension();
-        // dd($request->file->extension());
+        // dd(mime_content_type($request->file));
+        if(isset($_FILES['file'])) {
+            $mime = $_FILES['file']['type'];
+            if(strstr($mime, "video/")){
+            $filetype = "video";
+            }else if(strstr($mime, "image/")){
+            $filetype = "image";
+            }else {
+            return back();
+            } 
+            
+        }
+       
         $date = date('Y');
-        $path = 'public_html/image/' . $date . '/' . $fileName;
+        $path = 'public_html/media/' . $date . '/' . $fileName;
 
         $conn = ftp_connect(env('FTP_HOST'));
         $login = ftp_login($conn, env('FTP_USERNAME'), env('FTP_PASSWORD'));
@@ -143,20 +155,21 @@ class SettingController extends Controller
         ftp_pasv($conn, true);
 
 
-        if (ftp_nlist($conn, 'public_html/image/' . $date) == false) {
-            ftp_mkdir($conn, 'public_html/image/' . $date);
+        if (ftp_nlist($conn, 'public_html/media/' . $date) == false) {
+            ftp_mkdir($conn, 'public_html/media/' . $date);
         }
 
-        if (in_array($path, ftp_nlist($conn, 'public_html/image/' . $date))) {
+        if (in_array($path, ftp_nlist($conn, 'public_html/media/' . $date))) {
             $fileName = $slug . '-' . Str::random() . '.' . $request->file->extension();
         }
 
-        ftp_put($conn, 'public_html/image/' . $date . '/' . $fileName, $_FILES['file']['tmp_name'], FTP_BINARY);
+        ftp_put($conn, 'public_html/media/' . $date . '/' . $fileName, $_FILES['file']['tmp_name'], FTP_BINARY);
         ftp_close($conn);
-        $url = env('DL_HOST_URL') . '/image/' . $date . '/' . $fileName;
+        $url = env('DL_HOST_URL') . '/media/' . $date . '/' . $fileName;
 
         $media->name = $request->name;
         $media->url = $url;
+        $media->media = $filetype;
         $media->save();
 
         return Redirect::route('media.index');
@@ -169,5 +182,20 @@ class SettingController extends Controller
             'title' => 'رسانه'
         ];
         return view('admin.media.index', $data);
+    }
+
+    public function robot()
+    {
+        // $robot_file
+        $data = [
+            'page_title' => 'robot'
+        ];
+        return view('admin.setting.robots', $data);
+    }
+
+    public function storeRobots()
+    {
+        file_put_contents(public_path('robots.txt'),request()->post('robots'));
+        return back();
     }
 }

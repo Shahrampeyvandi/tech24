@@ -1,6 +1,7 @@
 @import "base.css";
 @import "navbar.css";
 @import "component.css";
+
 .banner {
     background: url("../imgs/about_bg.jpg") center no-repeat;
     background-size: cover;

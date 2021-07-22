@@ -1,5 +1,5 @@
 <!--start cta-->
-<section class="cta text-center">
+<section class="cta text-center my-5">
     <div class="container container-fluid">
         <div class="row">
             <div class="col-xl-3 col-md-3 col-sm-6 col-xs-6 d-flex align-items-center">

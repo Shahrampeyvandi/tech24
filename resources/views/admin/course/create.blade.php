@@ -139,7 +139,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات: </label>
-                            <textarea name="desc">{!! $post->description ?? '' !!}</textarea>
+                            <textarea id="elm1" name="desc">{!! $post->description ?? '' !!}</textarea>
                         </div>
                     </div>
 
@@ -341,6 +341,120 @@
 
                     </div>
                     @endif
+
+
+
+                     <h6>سوالات متداول</h6>
+
+                    <div class="questions-container">
+                      @if (isset($quiz) && count($quiz->questions))
+                      @foreach ($quiz->questions as $item)
+                      <input type="hidden" name="question[1][id]" value="{{$item->id}}">
+                    <div class="p-2 bg-light raduis-2">
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-2 col-form-label">عنوان سوال</label>
+                            <div class="col-md-10">
+                                <input class="form-control" name="question[1][title]" type="text" value="{{$item->title}}"
+                                    id="example-text-input">
+                            </div>
+                        </div>
+                        <h4>پاسخ ها</h4>
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">گزینه </label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="question[1][option_one]"
+                                    value="{{$item->option_one}}" id="example-text-input">
+
+                            </div>
+                            <div class="form-check col-md-2">
+                                <input class="form-check-input" type="radio" required name="question[1][answer]"
+                                    id="exampleRadios2" value="option_one"
+                                    {{$item->answer == 'option_one' ? 'checked' : ''}}>
+                                <label class="form-check-label" for="exampleRadios2">
+                                    پاسخ درست
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">گزینه </label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="question[1][option_two]"
+                                    value="{{$item->option_two}}" id="example-text-input">
+
+                            </div>
+                            <div class="form-check col-md-2">
+                                <input class="form-check-input" type="radio" required name="question[1][answer]"
+                                    id="exampleRadios2" value="option_two"
+                                    {{$item->answer == 'option_two' ? 'checked' : ''}}> <label class="form-check-label"
+                                    for="exampleRadios2">
+                                    پاسخ درست
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">گزینه </label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="question[1][option_three]"
+                                    value="{{$item->option_three}}" id="example-text-input">
+
+                            </div>
+                            <div class="form-check col-md-2">
+                                <input class="form-check-input" type="radio" required name="question[1][answer]"
+                                    id="exampleRadios2" value="option_three"
+                                    {{$item->answer == 'option_three' ? 'checked' : ''}}> <label
+                                    class="form-check-label" for="exampleRadios2">
+                                    پاسخ درست
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">گزینه </label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="question[1][option_four]"
+                                    value="{{$item->option_four}}" id="example-text-input">
+
+                            </div>
+                            <div class="form-check col-md-2">
+                                <input class="form-check-input" type="radio" required name="question[1][answer]"
+                                    id="exampleRadios2" value="option_four"
+                                    {{$item->answer == 'option_four' ? 'checked' : ''}}> <label class="form-check-label"
+                                    for="exampleRadios2">
+                                    پاسخ درست
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    @endforeach
+                    @else
+                    <div class=" p-2 bg-light raduis-2">
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">عنوان سوال</label>
+                            <div class="col-md-11">
+                                <input class="form-control" name="question[1][title]" type="text" value=""
+                                    id="example-text-input">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">پاسخ </label>
+                            <div class="col-md-11">
+                                <textarea class="form-control" type="text" name="question[1][answer]" 
+                                    id="example-text-input"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+            </div>
+            <div class="mb-5 mt-2">
+                <a href="#" class="add-question"><i class="mdi mdi-plus-thick"></i> جدید</a>
+            </div>
+
+
+
+
+                <h6>تگ های seo</h6>
                     <div class="form-group col-md-12">
                         <label for="" class="col-form-label">عنوان سئو</label>
                         <div class="custom-file">
@@ -362,12 +476,10 @@
                         <div class="custom-file">
                             <input type="text" name="seo_canonical" id="seo_canonical"
                                 class="form-control" required value="{{ $post->seo_canonical ?? '' }}">
-
                         </div>
                     </div>
             </div>
             <div class="col-md-12 m-3 btn--wrapper">
-
                 <button type="submit" class="btn btn-primary waves-effect waves-light" >
                     @isset($post)
                     ویرایش
@@ -375,9 +487,6 @@
                     ثبت
                     @endisset
                 </button>
-
-
-
             </div>
             <div class="col-md-12">
                 <div class="progress mt-2">
@@ -404,7 +513,12 @@
 @section('script')
 <script src="{{URL::asset('/libs/select2/select2.min.js')}}"></script>
 <!--tinymce js-->
-<script src="{{URL::asset('/libs/ckeditor/ckeditor.js')}}"></script>
+<script src="{{URL::asset('/libs/prism/prism.js')}}" data-manual></script>
+<script src="{{URL::asset('/libs/tinymce/tinymce.min.js')}}"></script>
+<!-- Summernote js -->
+<script src="{{URL::asset('/libs/summernote/summernote.min.js')}}"></script>
+<!-- init js -->
+<script src="{{URL::asset('/js/pages/form-editor.init.js')}}"></script>
 <!-- Sweet Alerts js -->
 <script src="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- form mask -->
@@ -418,11 +532,7 @@
 <script>
     $(".datepicker").datepicker();
 
-    CKEDITOR.replace('desc',{
-
-
-            contentsLangDirection: 'rtl'
-        });
+  
     $(".select2").select2({
         tags:false
     });
@@ -450,9 +560,7 @@
         beforeSerialize:function($Form, options){
         /* Before serialize */
         $("#errors").html('')
-        for ( instance in CKEDITOR.instances ) {
-            CKEDITOR.instances[instance].updateElement();
-        }
+       
         return true;
         },
         beforeSend:function(){
@@ -520,6 +628,32 @@
 
       }
     });
+
+    $('.add-question').click(function(e){
+            e.preventDefault()
+            let id = Date.now()
+            $('.questions-container').append(`
+            <div class=" p-2 bg-light raduis-2">
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">عنوان سوال</label>
+                            <div class="col-md-11">
+                                <input class="form-control" name="question[${id}][title]" type="text" value=""
+                                    id="example-text-input">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-md-1 col-form-label">پاسخ </label>
+                            <div class="col-md-11">
+                                <textarea class="form-control" type="text" name="question[${id}][answer]" 
+                                    id="example-text-input"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+            `)
+            
+        })
 
 </script>
 

@@ -202,8 +202,8 @@ li.link-active a {
     <!-- Initialize Swiper -->
     <script>
         var swiper = new Swiper(".mySwiper", {
-            slidesPerView: 6,
-            spaceBetween: 20,
+            slidesPerView: 7,
+            spaceBetween: 10,
             scrollbar: {
                 el: ".swiper-scrollbar",
                 hide: false,
@@ -227,7 +227,7 @@ li.link-active a {
       slidesPerView: 4,       
       spaceBetween: 10     
    } , 1100: {       
-      slidesPerView: 6,       
+      slidesPerView: 7,       
       spaceBetween: 10     
    } ,
 

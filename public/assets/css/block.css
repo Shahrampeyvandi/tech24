@@ -1,12 +1,12 @@
 .banner_carousel {
     width: 100%;
-    height: 100vh;
+    height: 70vh;
     overflow: hidden;
 }
 
 .banner_carousel .carousel {
     width: 100%;
-    height: 100%;
+    height:100%;
 }
 
 .banner_carousel .carousel .carousel-item,
@@ -18,11 +18,11 @@
 .banner_carousel .carousel .carousel-item img,
 .banner_carousel .carousel .carousel-inner img {
     width: 100%;
-    height: 100%;
     -o-object-position: center;
     object-position: center;
-    -o-object-fit: cover;
-    object-fit: cover;
+    -o-object-fit: fill;
+    object-fit: fill;
+    height: 100%;
 }
 
 .banner_carousel .carousel .carousel-indicators {
@@ -60,7 +60,20 @@
     background-color: white;
     margin: 1.5rem 0rem 0.75rem;
 }
-
+@media (max-width:768px) {
+    .banner_carousel{
+        height: auto !important;
+    }
+    .banner_carousel .carousel-item .banner_content {
+        max-width: 12rem;
+       
+    }
+    
+    .banner_carousel .carousel-item .banner_content .banner_border {
+        width: 8rem;
+      
+    }
+}
 .banner_carousel .carousel-item .banner_content .banner_title {
     font-size: 1.5rem;
     font-weight: 900;

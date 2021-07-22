@@ -125,6 +125,7 @@
                         <li><a href="{{URL::route('sliders.index')}}">اسلایدر</a></li>
                         <li><a href="{{URL::route('upload.media')}}">رسانه</a></li>
                         <li><a href="{{URL::route('settings.index')}}">تنظیمات</a></li>
+                        <li><a href="{{URL::route('robots.create')}}">Robots</a></li>
 
                     </ul>
                 </li>

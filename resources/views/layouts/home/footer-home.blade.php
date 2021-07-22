@@ -1,6 +1,6 @@
      <!--start footer-->
      <footer class="footer_wraper">
-        <div class="container pt-4">
+        <div class="container pt-5">
             <h3 class="text-bold text-center text-white font_size_2">عضویت در خبر نامه</h3>
             <div class="footer_rg">
                 <input type="text" class="footer_field" placeholder="ایمیل یا نام کاربری">

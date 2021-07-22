@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 
 class Lesson extends Model
 {
@@ -35,6 +37,11 @@ class Lesson extends Model
         return $this->morphOne(Quiz::class, 'quizable');
     }
 
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
      /**
      * Get the post's files.
      */
@@ -55,6 +62,35 @@ class Lesson extends Model
             return $file->file;
         }
         return '#';
+    }
+
+    public function getLink()
+    {
+        
+        
+            if($this->cash == 'free') {
+
+                return ['url'=>url($this->post->slug) . '?lesson=' . $this->number,
+                'status'=>'lightgray',
+                'label' => 'رایگان'
+            ];
+
+            }else{
+
+                if(Auth::check() && Auth::user()->posts->contains($this->id)) {
+                    return ['url'=>url($this->post->slug) . '?lesson=' . $this->number,
+                'status'=>'lightgray',
+                'label' => 'رایگان'
+            ];
+                }else{
+                    return ['url'=>'#','status'=>'danger',
+                    'label' => 'غیر رایگان'];
+                }
+
+            }
+             
+            
+        
     }
 
     public function getPicture()

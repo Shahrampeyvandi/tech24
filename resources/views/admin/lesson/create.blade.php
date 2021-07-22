@@ -105,7 +105,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">توضیحات: </label>
-                            <textarea  name="desc">{!! $lesson->description ?? '' !!}</textarea>
+                            <textarea id="elm1"  name="desc">{!! $lesson->description ?? '' !!}</textarea>
                         </div>
                     </div>
 
@@ -182,8 +182,14 @@
 
 @section('script')
 <script src="{{URL::asset('/libs/select2/select2.min.js')}}"></script>
-<script src="{{URL::asset('/libs/ckeditor/ckeditor.js')}}"></script>
-<!-- Sweet Alerts js -->
+<!--tinymce js-->
+<script src="{{URL::asset('/libs/prism/prism.js')}}" data-manual></script>
+<script src="{{URL::asset('/libs/tinymce/tinymce.min.js')}}"></script>
+<!-- Summernote js -->
+<script src="{{URL::asset('/libs/summernote/summernote.min.js')}}"></script>
+<!-- init js -->
+<script src="{{URL::asset('/js/pages/form-editor.init.js')}}"></script>
+
 <script src="{{ URL::asset('/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- form mask -->
 <script src="{{URL::asset('/libs/inputmask/inputmask.min.js')}}"></script>
@@ -191,11 +197,7 @@
 <script src="{{asset('assets/js/jquery.form.min.js')}}"></script>
 
 <script>
-      CKEDITOR.replace('desc',{
-            
-          
-            contentsLangDirection: 'rtl'
-        });
+     
     $(".select2").select2({
         tags:false
     });
@@ -215,9 +217,7 @@
         beforeSerialize:function($Form, options){
         /* Before serialize */
         $("#errors").html('')
-        for ( instance in CKEDITOR.instances ) {
-            CKEDITOR.instances[instance].updateElement();
-        }
+      
         return true; 
         },
         beforeSend:function(){

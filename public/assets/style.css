@@ -1,0 +1,172 @@
+@font-face{
+    font-family: "vazir";
+    src: url(./Vazir.ttf)
+}
+body{
+    direction: rtl;
+    text-align: right;
+    font-family: "vazir" !important;
+}
+
+h3 ,h4 ,h6 , .text-bold{
+    font-weight: bold !important;
+}
+
+.text-small{
+    font-size: 11pt;
+}
+.text-smaller{
+    font-size: 9pt;
+    color: rgb(130, 130, 130);
+}
+
+.text-gray{
+    color: rgb(130, 130, 130);
+}
+.text-lightgray{
+    color: rgb(172, 172, 172);
+}
+
+.margin-left{
+    margin-left: 0.75rem;
+}
+.light-line{
+    width: 100%;
+    border-top: 1px solid rgb(235, 235, 235);
+}
+.spacer-line{
+    border-left: 1px solid rgb(235, 235, 235);
+}
+.float-right{
+    float: right;
+}
+
+
+.border-none{
+    border-width: 0px !important;
+}
+.border-radius{
+    border: 1px solid rgb(235, 235, 235);
+    border-radius: 10px;
+}
+.box-shadow{
+    box-shadow: 0px 2px 5px rgb(235, 235, 235);
+}
+.yellow-border{
+    border-bottom: 3px solid;
+}
+.gray-border{
+    border: 4px solid rgb(161, 161, 161);
+    border-radius: 100%;
+}
+
+
+
+.banner-width{
+    width: 100%;
+}
+.lg-icons{
+    width: 25px;
+}
+.icons-width{
+    width: 20px;
+}
+.sm-icons{
+    width: 10px;
+}
+
+
+.bg-lightgray{
+    background-color: rgb(215, 226, 228);
+}
+.bg-pattern{
+    background-image: url(../shapes/fd0cd451a95db44c1f83563da824dcb3.png);
+}
+.light-overlay{
+    background-color: rgba(221, 233, 236, 0.965);
+}
+.dark-overlay , .hover-light, .hover-black{
+    background-color: rgba(66, 80, 95, 0.985);
+}
+.hover-light:hover{
+    background-color: rgb(86, 105, 124) !important;
+}
+.hover-black:hover{
+    background-color: rgba(45, 55, 65, 0.985);
+}
+.hover-dark:hover{
+    background-color: rgb(200, 200, 200) !important;
+    border-color: rgb(200, 200, 200) !important;
+}
+.hover-yellow:hover{
+    background-color: rgb(243, 202, 18) !important;
+}
+.under-hover{
+    text-decoration: none;
+}
+.under-hover:hover {
+    text-decoration: underline;
+}
+
+.r-position{
+    position: relative;
+}
+.r-position>div:first-child{
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+}
+
+.show-divice{
+    display: none;
+}
+.pagestransfer{
+    display: flex;
+    width: fit-content;
+}
+.transfer-btn{
+    display: none;
+}
+.transfer-btn>button{
+    font-weight: normal;
+}
+
+.profilebox{
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+#view-pro-btn{
+    height: 60px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 0px;
+}
+.profile-pic{
+    width: 9%;
+    margin-left: 15px;
+}
+
+.pic-items{
+    height: 65px;
+    background-size: cover;
+    background-position: center;
+}
+.bg-web{
+    background-image: url(../shapes/دوره-آموزشی-طراحی-سایت-500x286.jpg);
+}
+.bg-bootstrap{
+    background-image: url(../shapes/bootstrap-1.png);
+}
+.bg-js{
+    background-image: url(../shapes/download.png);
+}
+.bg-angular{
+    background-image: url(../shapes/Angular-1.png);
+}
+.bg-webpack{
+    background-image: url(../shapes/unpacking-webpack.jpg);
+}
+.bg-css{
+    background-image: url(../shapes/learn-css-1.jpg);
+}

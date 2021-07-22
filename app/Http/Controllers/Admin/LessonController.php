@@ -50,6 +50,7 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
+      
 
         // $date = date('Y');
         // $conn = ftp_connect(env('FTP_HOST'));
@@ -64,7 +65,7 @@ class LessonController extends Controller
         // dd('d');
 
        
-        // dd($request->all());
+       
 
         $slug = SlugService::createSlug(Lesson::class, 'slug', $request->title);
         if (isset($request->action) && $request->action == 'edit') {
@@ -76,12 +77,12 @@ class LessonController extends Controller
             // dd($lesson->quiz);
         } else {
             $request->validate([
+                'file' => "required|mimes:mp4,3gp",
                 'url' => 'required_without:file',
                 'title' => 'required',
-                'file' => "required|mimes:mp4,3gp"
     
             ]);
-            
+           
             $lesson = new Lesson;
         }
 

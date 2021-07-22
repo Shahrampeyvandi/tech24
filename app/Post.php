@@ -89,6 +89,13 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function faq_s()
+    {
+        return $this->hasMany(FAQ::class);
+    }
+
+
+
 
      
         
@@ -114,6 +121,16 @@ class Post extends Model
              return asset($file->file);
          }
          return '#';
+     }
+
+     public function getLessonVideo($index) : string
+     {
+        $lesson = $this->lessons()->orderBy('number','asc')->get()[$index];
+        if($lesson) {
+
+            return $lesson->files->first()->file ?? '#';
+        }
+        return '#';
      }
 
      public function getPicture()
@@ -146,8 +163,8 @@ class Post extends Model
      public function getTeacher()
      {
          $teacher = $this->teachers->first();
-         if(! $teacher) return '#';
-         return $teacher->fname . ' ' . $teacher->lname;
+         if(! $teacher) return ['name' => 'کاربر' , 'bio' => ''];
+         return ['name' => $teacher->fname . ' ' . $teacher->lname , 'bio' => $teacher->bio] ;
      }
 
      public function getPrice()

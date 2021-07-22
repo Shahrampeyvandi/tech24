@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('age')->nullable();
             $table->enum('group', ['student', 'teacher'])->default('student');
             $table->boolean('active')->default(1);
+            $table->text('info')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

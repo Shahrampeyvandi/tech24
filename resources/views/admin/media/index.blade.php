@@ -47,7 +47,7 @@
                             <td>{{($key+1)}}</td>
                             <td>{{$media->name}}</td>
                             <td>{{$media->url}}</td>
-                            <td>تصویر</td>
+                            <td>{{$media->media}}</td>
                             <td>
                                 @if ($media->media == 'image')
                                     <img src="{{ $media->url }}" alt="" style="width: 150px">

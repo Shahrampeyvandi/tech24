@@ -3573,10 +3573,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
@@ -3926,6 +3922,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3992,7 +3989,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     visibleRegister: function visibleRegister() {
       this.visibleLogin = false;
-      _EventBus__WEBPACK_IMPORTED_MODULE_3__["default"].$emit('show_register');
+      _EventBus__WEBPACK_IMPORTED_MODULE_3__["default"].$emit("show_register");
     },
     google: function google() {
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/login/google", {
@@ -4030,7 +4027,7 @@ __webpack_require__.r(__webpack_exports__);
             if (data.auth) {
               window.location.href = data.redirect;
             } else {
-              _this.errorMessage = 'خطایی در ورود شما اتفاق افتاد';
+              _this.errorMessage = "خطایی در ورود شما اتفاق افتاد";
             }
           })["catch"](function (error) {
             console.log(error.response);
@@ -4056,11 +4053,12 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this2 = this;
 
-    if (window.location.search.indexOf('afterLogin') == 1) {
-      this.visibleLogin = true;
-    }
-
-    _EventBus__WEBPACK_IMPORTED_MODULE_3__["default"].$on('show_login', function () {
+    setTimeout(function () {
+      if (window.location.search.indexOf("afterLogin") == 1) {
+        _this2.visibleLogin = true;
+      }
+    }, 1200);
+    _EventBus__WEBPACK_IMPORTED_MODULE_3__["default"].$on("show_login", function () {
       _this2.visibleLogin = true;
     });
   }
@@ -4080,24 +4078,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EventBus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../EventBus */ "./resources/js/EventBus.js");
 /* harmony import */ var _StepOne_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StepOne.vue */ "./resources/js/components/auth/StepOne.vue");
 /* harmony import */ var _StepTwoElements_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StepTwoElements.vue */ "./resources/js/components/auth/StepTwoElements.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4240,6 +4220,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/request */ "./resources/js/utils/request.js");
 /* harmony import */ var _EventBus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../EventBus */ "./resources/js/EventBus.js");
 /* harmony import */ var _utils_validate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/validate */ "./resources/js/utils/validate.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11017,7 +11018,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.el-link.el-link--danger {\n     color: #606266;\n    background: #ff5c5c;\n    color: white;\n    padding: 0.6rem 1.5rem 0.6rem 1.5rem !important;\n    width: 100%;\n    border-radius: 5px;\n}\n.el-link.el-link--info {\n  color: #606266;\n  background: #5ccbff;\n  color: white;\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\n  width: 100%;\n}\n.el-link.el-link--primary:hover {\n    color: #66b1ff !important;\n}\n.el-link--inner {\n  display: flex;\n}\n.el-link--inner svg {\n  fill: white;\n      margin-left: .5rem;\n}\n.el-dialog {\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\n    width: 95%;\n}\n}\n.el-form-item {\n  margin-bottom: 30px;\n}\n.el-input__inner {\n  padding: 0 40px;\n}\n.svg-container {\n  position: absolute;\n  z-index: 1;\n  right: 15px;\n}\n.el-checkbox__label {\n  padding-right: 10px;\n}\n.el-form-item__content {\n  text-align: right;\n}\n.el-dialog__header {\n  text-align: center;\n}\n.el-form-item__error {\n  right: 0;\n}\n.el-dialog__body {\n  text-align: right;\n}\n", ""]);
+exports.push([module.i, "\n.el-link.el-link--danger {\n  color: #606266;\n  background: #ff5c5c;\n  color: white;\n  padding: 0.6rem 1.5rem 0.6rem 1.5rem !important;\n  width: 100%;\n  border-radius: 5px;\n}\n.el-link.el-link--info {\n  color: #606266;\n  background: #5ccbff;\n  color: white;\n  padding: 0.8rem 2rem 0.8rem 1.5rem;\n  width: 100%;\n}\n.el-link.el-link--primary:hover {\n  color: #66b1ff !important;\n}\n.el-link--inner {\n  display: flex;\n}\n.el-link--inner svg {\n  fill: white;\n  margin-left: 0.5rem;\n}\n.el-dialog {\n  width: 40%;\n}\n@media (max-width: 679px) {\n.el-dialog {\n    width: 95%;\n}\n}\n.el-form-item {\n  margin-bottom: 30px;\n}\n.el-input__inner {\n  padding: 0 40px;\n}\n.svg-container {\n  position: absolute;\n  z-index: 1;\n  right: 15px;\n}\n.el-checkbox__label {\n  padding-right: 10px;\n}\n.el-form-item__content {\n  text-align: right;\n}\n.el-dialog__header {\n  text-align: center;\n}\n.el-form-item__error {\n  right: 0;\n}\n.el-dialog__body {\n  text-align: right;\n}\n", ""]);
 
 // exports
 
@@ -101838,8 +101839,8 @@ var render = function() {
             _vm._v(" "),
             _c("h2", { staticClass: "mb-5" }, [_vm._v("پادکست های تکوان ۲۴")]),
             _vm._v(" "),
-            _c("div", { staticClass: "row col-12 col-md-10" }, [
-              _c("div", { staticClass: "col-12 col-md-8" }, [
+            _c("div", { staticClass: "row col-12" }, [
+              _c("div", { staticClass: "col-12 col-md-10 mx-auto" }, [
                 _c("input", {
                   directives: [
                     {
@@ -101849,7 +101850,7 @@ var render = function() {
                       expression: "searchWord"
                     }
                   ],
-                  staticClass: "p-2 w-100",
+                  staticClass: "p-2 w-100 rounded",
                   staticStyle: { border: "none" },
                   attrs: { type: "text", placeholder: "میخوای چی گوش کنی؟" },
                   domProps: { value: _vm.searchWord },
@@ -101879,9 +101880,7 @@ var render = function() {
                       )
                     ])
                   : _vm._e()
-              ]),
-              _vm._v(" "),
-              _vm._m(0)
+              ])
             ])
           ])
         ])
@@ -101889,20 +101888,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-md-4" }, [
-      _c(
-        "a",
-        { staticClass: "btn_orange d-block w-100 py-2", attrs: { href: "" } },
-        [_vm._v("مشاهده تمام پادکست ها")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -102207,7 +102193,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [_vm._v("\n          ورود\n        ")]
+                            [_vm._v("\n              ورود\n            ")]
                           ),
                           _vm._v(" "),
                           _vm.errorMessage
@@ -102216,9 +102202,9 @@ var render = function() {
                                 { staticClass: "el-form-item__error" },
                                 [
                                   _vm._v(
-                                    "\n          " +
+                                    "\n              " +
                                       _vm._s(_vm.errorMessage) +
-                                      "\n        "
+                                      "\n            "
                                   )
                                 ]
                               )
@@ -102258,7 +102244,7 @@ var render = function() {
                               })
                             ]
                           ),
-                          _vm._v("\n          ورود با حساب گوگل\n        ")
+                          _vm._v("\n            ورود با حساب گوگل\n          ")
                         ]
                       )
                     ],
@@ -102281,7 +102267,7 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n         \n          چنانچه حساب کاربری ندارید ثبت نام کنید\n        "
+                    "\n        چنانچه حساب کاربری ندارید ثبت نام کنید\n      "
                   )
                 ]
               )
@@ -102338,49 +102324,7 @@ var render = function() {
               _vm._v(" "),
               _vm.stepTwo
                 ? _c("StepTwo", { attrs: { username: _vm.username } })
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "el-row",
-                { attrs: { gutter: 20, type: "flex", justify: "start" } },
-                [
-                  _c(
-                    "el-col",
-                    { attrs: { span: 12, xs: 24, md: 12 } },
-                    [
-                      _c(
-                        "el-link",
-                        { attrs: { type: "danger", href: "/auth/google" } },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              attrs: {
-                                width: "20",
-                                height: "20",
-                                viewBox: "0 0 20 20",
-                                xmlns: "http://www.w3.org/2000/svg",
-                                "data-svg": "google"
-                              }
-                            },
-                            [
-                              _c("path", {
-                                attrs: {
-                                  d:
-                                    "M17.86,9.09 C18.46,12.12 17.14,16.05 13.81,17.56 C9.45,19.53 4.13,17.68 2.47,12.87 C0.68,7.68 4.22,2.42 9.5,2.03 C11.57,1.88 13.42,2.37 15.05,3.65 C15.22,3.78 15.37,3.93 15.61,4.14 C14.9,4.81 14.23,5.45 13.5,6.14 C12.27,5.08 10.84,4.72 9.28,4.98 C8.12,5.17 7.16,5.76 6.37,6.63 C4.88,8.27 4.62,10.86 5.76,12.82 C6.95,14.87 9.17,15.8 11.57,15.25 C13.27,14.87 14.76,13.33 14.89,11.75 L10.51,11.75 L10.51,9.09 L17.86,9.09 L17.86,9.09 Z"
-                                }
-                              })
-                            ]
-                          ),
-                          _vm._v("\n          ثبت نام با حساب گوگل\n        ")
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
+                : _vm._e()
             ],
             1
           )
@@ -102456,28 +102400,81 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "el-form-item",
+            "el-row",
+            { attrs: { gutter: 20, type: "flex", justify: "start" } },
             [
               _c(
-                "el-button",
-                {
-                  staticStyle: { width: "100%" },
-                  attrs: { loading: _vm.loading, type: "success" },
-                  nativeOn: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.handleRegister.apply(null, arguments)
-                    }
-                  }
-                },
-                [_vm._v("\n        ارسال کد تایید\n      ")]
+                "el-col",
+                { attrs: { span: 12, xs: 24, md: 12 } },
+                [
+                  _c(
+                    "el-form-item",
+                    [
+                      _c(
+                        "el-button",
+                        {
+                          staticStyle: { width: "100%" },
+                          attrs: { loading: _vm.loading, type: "success" },
+                          nativeOn: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.handleRegister.apply(null, arguments)
+                            }
+                          }
+                        },
+                        [_vm._v("\n            ارسال کد تایید\n          ")]
+                      ),
+                      _vm._v(" "),
+                      _vm.errorMessage
+                        ? _c("div", { staticClass: "el-form-item__error" }, [
+                            _vm._v(
+                              "\n            " +
+                                _vm._s(_vm.errorMessage) +
+                                "\n          "
+                            )
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  )
+                ],
+                1
               ),
               _vm._v(" "),
-              _vm.errorMessage
-                ? _c("div", { staticClass: "el-form-item__error" }, [
-                    _vm._v("\n        " + _vm._s(_vm.errorMessage) + "\n      ")
-                  ])
-                : _vm._e()
+              _c(
+                "el-col",
+                { attrs: { span: 12, xs: 24, md: 12 } },
+                [
+                  _c(
+                    "el-link",
+                    { attrs: { type: "danger", href: "/auth/google" } },
+                    [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            width: "20",
+                            height: "20",
+                            viewBox: "0 0 20 20",
+                            xmlns: "http://www.w3.org/2000/svg",
+                            "data-svg": "google"
+                          }
+                        },
+                        [
+                          _c("path", {
+                            attrs: {
+                              d:
+                                "M17.86,9.09 C18.46,12.12 17.14,16.05 13.81,17.56 C9.45,19.53 4.13,17.68 2.47,12.87 C0.68,7.68 4.22,2.42 9.5,2.03 C11.57,1.88 13.42,2.37 15.05,3.65 C15.22,3.78 15.37,3.93 15.61,4.14 C14.9,4.81 14.23,5.45 13.5,6.14 C12.27,5.08 10.84,4.72 9.28,4.98 C8.12,5.17 7.16,5.76 6.37,6.63 C4.88,8.27 4.62,10.86 5.76,12.82 C6.95,14.87 9.17,15.8 11.57,15.25 C13.27,14.87 14.76,13.33 14.89,11.75 L10.51,11.75 L10.51,9.09 L17.86,9.09 L17.86,9.09 Z"
+                            }
+                          })
+                        ]
+                      ),
+                      _vm._v("\n          ثبت نام با حساب گوگل\n        ")
+                    ]
+                  )
+                ],
+                1
+              )
             ],
             1
           )
@@ -102731,7 +102728,7 @@ var render = function() {
               _c(
                 "el-button",
                 {
-                  staticStyle: { width: "100%" },
+                  staticStyle: { width: "100%", "margin-top": "1rem" },
                   attrs: { loading: _vm.loading, type: "success" },
                   nativeOn: {
                     click: function($event) {

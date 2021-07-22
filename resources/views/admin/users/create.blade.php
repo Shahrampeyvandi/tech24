@@ -62,6 +62,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="">بیو: </label>
+                            <textarea id="elm1" name="bio">{!! $user->bio ?? '' !!}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="example-text-input" class="col-md-2 col-form-label">شماره موبایل</label>
                         <div class="col-md-4">
                             <input class="form-control" type="number" name="mobile"
@@ -135,6 +141,13 @@
 @endsection
 
 @section('script')
+<!--tinymce js-->
+<script src="{{URL::asset('/libs/prism/prism.js')}}" data-manual></script>
+<script src="{{URL::asset('/libs/tinymce/tinymce.min.js')}}"></script>
+<!-- Summernote js -->
+<script src="{{URL::asset('/libs/summernote/summernote.min.js')}}"></script>
+<!-- init js -->
+<script src="{{URL::asset('/js/pages/form-editor.init.js')}}"></script>
 <script>
     $('#group').change(function(e){
        if($(this).val()== 'teacher'){

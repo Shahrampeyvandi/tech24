@@ -35,4 +35,7 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'namespace' => 'Admin'], f
     Route::post('/upload/media','SettingController@submitUploadMedia')->name('upload.media');
     Route::get('/uploaded/index','SettingController@mediaIndex')->name('media.index');
 
+    Route::get('robot','SettingController@robot')->name('robots.create');
+    Route::post('robot','SettingController@storeRobots')->name('robots.create');
+
 });

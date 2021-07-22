@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="" class="col-md-2 col-form-label">انتخاب تصویر </label>
+                        <label for="" class="col-md-2 col-form-label">انتخاب فایل  </label>
                         <div class="custom-file row col-md-6">
                             <input type="file" class="custom-file-input" name="file" id="customFile">
                             <label class="custom-file-label" for="customFile">Choose file</label>

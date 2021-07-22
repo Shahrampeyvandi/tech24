@@ -6,14 +6,14 @@
           <div class="flex-column-center text-white py-8">
             <h3 class="mb-3">آموزش بشنوید</h3>
             <h2 class="mb-5">پادکست های تکوان ۲۴</h2>
-            <div class="row col-12 col-md-10">
-              <div class="col-12 col-md-8">
+            <div class="row col-12">
+              <div class="col-12 col-md-10 mx-auto">
                 <input
                   @keyup="search"
                   v-model="searchWord"
                   type="text"
                   style="border:none"
-                  class="p-2 w-100"
+                  class="p-2 w-100 rounded"
                   placeholder="میخوای چی گوش کنی؟"
                 />
                 <div class="podcast-search-results" v-if="showResults">
@@ -25,11 +25,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="col-12 col-md-4">
-                <a href="" class="btn_orange d-block w-100 py-2"
-                  >مشاهده تمام پادکست ها</a
-                >
-              </div>
+             
             </div>
           </div>
         </div>

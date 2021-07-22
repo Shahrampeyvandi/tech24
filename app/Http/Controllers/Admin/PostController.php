@@ -12,6 +12,7 @@ use App\User;
 use App\Group;
 use App\Category;
 use App\Certificate;
+use App\FAQ;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -88,7 +89,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
+       
+     
 
         if ($request->action == 'edit') {
             $post = Post::findOrFail($request->post_id);
@@ -251,6 +253,23 @@ class PostController extends Controller
 
 
             $post->teachers()->sync($request->teachers);
+
+
+            foreach ($request['question'] as $key => $question) {
+                if($question['title'] && $question['answer']) {
+                     FAQ::firstOrCreate([
+                        'question' => $question['title'],
+        
+                    ], [
+                        'answer' => $question['answer'],
+                        'post_id' => $post->id
+                    ]);
+        
+                }
+            }
+
+
+
         } catch (\Exception $th) {
 
             return Response::json(['status' => 'error', 'message' => $th->getMessage() . ' in line ' . $th->getLine()], 500);

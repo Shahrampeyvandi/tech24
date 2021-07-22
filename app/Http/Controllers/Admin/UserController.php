@@ -93,7 +93,7 @@ class UserController extends Controller
                 'lname' => 'required',
                 'username' => 'required|regex:/(^([a-zA-Z]+)(\d+)?$)/u|unique:users,username,'.$user->id,
                 'email' => 'required|email|unique:users,email,'.$user->id,
-                'password' => 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+                'password' => 'nullable|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
                 'mobile' => 'required|regex:/(09)[0-9]{9}/|unique:users,mobile,'.$user->id,
                 'group' => 'required',
                 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1024',
@@ -128,6 +128,7 @@ class UserController extends Controller
         $user->mobile = $request['mobile'];
         $user->group = $request['group'];
         $user->ability = $request['ability'];
+        $user->bio = $request['bio'];
         $user->save();
 
         if ($request->has('avatar')) {

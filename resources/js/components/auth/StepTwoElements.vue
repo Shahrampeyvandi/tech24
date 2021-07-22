@@ -84,7 +84,7 @@
         <el-button
           :loading="loading"
           type="success"
-          style="width: 100%"
+          style="width: 100% ; margin-top:1rem"
           @click.native.prevent="handleStepTwo"
         >
           تکمیل ثبت نام

@@ -35,6 +35,15 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::post('/check-mobile', 'Auth\RegisterController@checkMobile');
 
 
+// Site Map Routes
+
+Route::get('/sitemap','SitemapController@index');
+Route::get('/sitemap-courses','SitemapController@courses');
+Route::get('/sitemap-webinars','SitemapController@webinars');
+Route::get('/sitemap-podcasts','SitemapController@podcasts');
+Route::get('/sitemap-blogs','SitemapController@blogs');
+
+
 
 Route::get('password/reset','Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
 Route::post('password/reset','Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
@@ -61,7 +70,6 @@ Route::get('/{post}','Home\PostController@show')->name('post.show');
 Route::get('/{post}/register','Home\PostController@register')->name('post.register')
 ->middleware(['auth','userAccount'])
 ;
-
 
 
 

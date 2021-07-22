@@ -18,10 +18,10 @@
                 <li class="nav_item">
                     <a href="{{ url('webinars') }}" class="nav_link">وبینار های پیشرو</a>
                 </li>
-                {{-- <li class=" nav_item">
+                <li class=" nav_item">
                     <a href="{{ url('courses') }}" class="nav_link">دوره ها </a>
                  
-                </li> --}}
+                </li>
 
                 <li class="nav_item">
                     <a href="{{ url('blogs') }}" class="nav_link">بلاگ</a>

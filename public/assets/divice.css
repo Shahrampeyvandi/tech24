@@ -1,0 +1,71 @@
+
+@media(max-width:767px){
+    .icons-width{
+        width: 15px;
+    }
+    .continuation-btn>img , .continuation-btn>p{
+        margin: 0.25rem 0.5rem !important;
+    }
+    .continuation-btn>p{
+        font-size: 10pt;
+    }
+    .show-divice{
+        display: block;
+    }
+    .hide-divice{
+        display: none;
+    }
+    .profile-pic{
+        width: 75px;
+        height: 75px;
+    }
+}
+
+@media(max-width:576px){
+    
+    .pagestransfer{
+        display: none !important;
+    }
+    .transfer-btn{
+        display: flex !important;
+        justify-content: space-between;
+    }
+    .flex-col{
+        flex-direction: column;
+    }
+    .flex-col>div{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+
+    h5{
+        font-size: 1rem !important;
+    }
+}
+
+@media(max-width:425px){
+    h4{
+        font-size: 13pt !important;
+    }
+
+    p, div{
+        font-size: 10pt !important;
+    }
+    section>div:last-child{
+        display: none !important;
+    }
+    .lg-icons{
+        width: 20px;
+    }
+    /* .margin-left{
+        margin-left: 0.25rem;
+    } */
+    .flex-col-mobile{
+        flex-direction: column;
+    }
+    .yellow-border{
+        border: none;
+    }
+}
+
